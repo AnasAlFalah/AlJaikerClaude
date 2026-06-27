@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("user")
+  createdAt     DateTime @default(now())
+
+  diwanyasCreated  Diwanya[]
+  memberships      DiwanyaMember[]
+  sessionsCreated  GameSession[]
+  teamsCreated     Team[]
+}
+
+model Diwanya {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  inviteCode  String   @unique @default(uuid())
+  createdAt   DateTime @default(now())
+
+  createdBy   String
+  creator     User     @relation(fields: [createdBy], references: [id])
+
+  members     DiwanyaMember[]
+  teams       Team[]
+  sessions    GameSession[]
+}
+
+model DiwanyaMember {
+  id        String   @id @default(uuid())
+  nickname  String?
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+
+  diwanyaId String
+  diwanya   Diwanya  @relation(fields: [diwanyaId], references: [id])
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  teamMemberships   TeamMember[]
+  participations    SessionParticipant[]
+  trixKingProgress  TrixKingProgress[]
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  name      String
+  gameType  String?
+  createdAt DateTime @default(now())
+
+  diwanyaId String
+  diwanya   Diwanya  @relation(fields: [diwanyaId], references: [id])
+
+  createdBy String
+  creator   User     @relation(fields: [createdBy], references: [id])
+
+  members       TeamMember[]
+  participations SessionParticipant[]
+}
+
+model TeamMember {
+  id       String   @id @default(uuid())
+  joinedAt DateTime @default(now())
+
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id])
+
+  memberId String
+  member   DiwanyaMember @relation(fields: [memberId], references: [id])
+}
+
+model GameSession {
+  id        String   @id @default(uuid())
+  gameType  String
+  status    String   @default("active")
+  settings  Json
+  shareCode String   @unique @default(uuid())
+  createdAt DateTime @default(now())
+  endedAt   DateTime?
+
+  diwanyaId String?
+  diwanya   Diwanya? @relation(fields: [diwanyaId], references: [id])
+
+  createdBy String?
+  creator   User?    @relation(fields: [createdBy], references: [id])
+
+  participants     SessionParticipant[]
+  rounds           Round[]
+  trixKingProgress TrixKingProgress[]
+}
+
+model SessionParticipant {
+  id         String  @id @default(uuid())
+  guestName  String?
+  seatOrder  Int
+
+  sessionId  String
+  session    GameSession @relation(fields: [sessionId], references: [id])
+
+  memberId   String?
+  member     DiwanyaMember? @relation(fields: [memberId], references: [id])
+
+  teamId     String?
+  team       Team?   @relation(fields: [teamId], references: [id])
+
+  roundScores      RoundScore[]
+  trixKingProgress TrixKingProgress[]
+}
+
+model Round {
+  id           String   @id @default(uuid())
+  roundNumber  Int
+  metadata     Json
+  createdAt    DateTime @default(now())
+
+  sessionId    String
+  session      GameSession @relation(fields: [sessionId], references: [id])
+
+  scores       RoundScore[]
+}
+
+model RoundScore {
+  id               String @id @default(uuid())
+  score            Int
+  cumulativeScore  Int
+  metadata         Json?
+
+  roundId          String
+  round            Round  @relation(fields: [roundId], references: [id])
+
+  participantId    String
+  participant      SessionParticipant @relation(fields: [participantId], references: [id])
+}
+
+model TrixKingProgress {
+  id            String @id @default(uuid())
+  contractsDone Json
+
+  sessionId     String
+  session       GameSession @relation(fields: [sessionId], references: [id])
+
+  participantId String
+  participant   SessionParticipant @relation(fields: [participantId], references: [id])
+
+  memberId      String
+  member        DiwanyaMember @relation(fields: [memberId], references: [id])
+}
