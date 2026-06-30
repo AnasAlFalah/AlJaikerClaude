@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── DIWANYA & USERS ─────────────────────────────────────────────
+
+model Diwanya {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique // short join code e.g. "D7X2"
+  createdAt DateTime @default(now())
+
+  members  DiwanyaMember[]
+  sessions GameSession[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  diwanyas DiwanyaMember[]
+  sessions SessionPlayer[]
+}
+
+model DiwanyaMember {
+  diwanya   Diwanya @relation(fields: [diwanyaId], references: [id])
+  diwanyaId String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@id([diwanyaId, userId])
+}
+
+// ─── GAME SESSION ────────────────────────────────────────────────
+
+enum GameType {
+  KOUT_BO_SITTA
+  HAND
+  GENERAL_SCORING
+  SPIDE
+  TRIX
+}
+
+model GameSession {
+  id        String    @id @default(cuid())
+  diwanya   Diwanya   @relation(fields: [diwanyaId], references: [id])
+  diwanyaId String
+  gameType  GameType
+  status    String    @default("active") // active | finished
+  settings  Json      // target score, player count, mode, etc.
+  shareCode String    @unique // 6-char code for QR live view
+  createdAt DateTime  @default(now())
+  finishedAt DateTime?
+
+  players SessionPlayer[]
+  rounds  Round[]
+}
+
+model SessionPlayer {
+  id        String      @id @default(cuid())
+  session   GameSession @relation(fields: [sessionId], references: [id])
+  sessionId String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  seatOrder Int         // 0-based position around the table
+  teamId    Int?        // null = individual; 0 or 1 for team games
+  totalScore Int        @default(0)
+
+  @@unique([sessionId, userId])
+}
+
+// ─── ROUNDS ──────────────────────────────────────────────────────
+
+model Round {
+  id        String      @id @default(cuid())
+  session   GameSession @relation(fields: [sessionId], references: [id])
+  sessionId String
+  roundNumber Int
+  data      Json        // game-specific round data (see notes below)
+  createdAt DateTime    @default(now())
+
+  scores RoundScore[]
+}
+
+// Per-player score delta for each round (used to rebuild history table)
+model RoundScore {
+  id       String @id @default(cuid())
+  round    Round  @relation(fields: [roundId], references: [id])
+  roundId  String
+  playerId String // references SessionPlayer.id
+  delta    Int    // points added this round (negative = good in trix/spide)
+  runningTotal Int // cumulative after this round
+}
+
+// ─── LEADERBOARD (materialized per diwanya) ──────────────────────
+
+model LeaderboardEntry {
+  id        String @id @default(cuid())
+  diwanyaId String
+  userId    String
+  gameType  GameType
+  wins      Int    @default(0)
+  losses    Int    @default(0)
+  gamesPlayed Int  @default(0)
+
+  @@unique([diwanyaId, userId, gameType])
+}
