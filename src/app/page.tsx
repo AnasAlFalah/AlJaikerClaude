@@ -1,162 +1,169 @@
 import Link from "next/link";
 
 const games = [
-  { id: "kout",    name: "كوت",        icon: "♠", color: "#C8102E", players: "4-6 لاعبين" },
-  { id: "trix",    name: "تريكس",      icon: "♛", color: "#5B3FA6", players: "4-5 لاعبين" },
-  { id: "spide",   name: "سبيد",       icon: "♥", color: "#C8102E", players: "4-6 لاعبين" },
-  { id: "hand",    name: "هند",        icon: "♦", color: "#D4A420", players: "4 لاعبين"   },
-  { id: "general", name: "تسجيل عام",  icon: "★", color: "#4A7C5A", players: "2+ لاعبين"  },
+  { id: "kout",  name: "كوت",    icon: "♠", color: "#C8102E", players: "4-6 لاعبين" },
+  { id: "trix",  name: "تريكس",  icon: "♛", color: "#5B3FA6", players: "4-5 لاعبين" },
+  { id: "spide", name: "سبيد",   icon: "♥", color: "#E74C3C", players: "4-6 لاعبين" },
+  { id: "hand",  name: "هند",    icon: "♦", color: "#D4A420", players: "4 لاعبين"   },
 ];
-
-// Placeholder ongoing sessions — will come from DB later
-const ongoingSessions: { id: string; game: string; players: string; round: string }[] = [];
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: "#F5F5F5" }}>
+    <main style={{
+      minHeight: "100vh",
+      background: "#F5F5F5",
+      display: "flex",
+      flexDirection: "column",
+      maxWidth: 390,
+      margin: "0 auto",
+      fontFamily: "system-ui, -apple-system, sans-serif",
+    }}>
 
       {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-12 pb-5"
-        style={{ background: "var(--felt)" }}
-      >
+      <header style={{
+        background: "#1B5E38",
+        padding: "48px 20px 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        direction: "rtl",
+      }}>
         <div>
-          <div className="text-3xl font-black tracking-tight" style={{ color: "var(--gold-lt)" }}>
+          <div style={{ color: "#F2D060", fontSize: 28, fontWeight: 900, letterSpacing: -1 }}>
             الجيكر
           </div>
-          <div className="text-xs mt-0.5" style={{ color: "rgba(248,242,228,.5)" }}>
+          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 12, marginTop: 2 }}>
             ديوانية الجمعة
           </div>
         </div>
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-black"
-          style={{ background: "var(--felt-dk)", color: "var(--gold)" }}
-        >
+        <div style={{
+          width: 48, height: 48, borderRadius: 12,
+          background: "#0F3D24",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          color: "#D4A420", fontSize: 18, fontWeight: 900,
+        }}>
           J♦
         </div>
       </header>
 
-      <div className="flex-1 px-4 pb-10 flex flex-col gap-6 pt-5">
+      {/* Body */}
+      <div style={{ flex: 1, padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 24, direction: "rtl" }}>
 
-        {/* ── SECTION 1: ONGOING GAMES ── */}
+        {/* Ongoing games */}
         <section>
-          <div className="text-xs font-bold tracking-widest mb-3" style={{ color: "#999" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             الجلسات الجارية
           </div>
-
-          {ongoingSessions.length === 0 ? (
-            <div
-              className="rounded-2xl p-5 flex items-center gap-3"
-              style={{ background: "white", border: "1.5px dashed #DDD" }}
-            >
-              <div className="text-2xl">🃏</div>
-              <div>
-                <div className="text-sm font-semibold" style={{ color: "#AAA" }}>
-                  لا توجد جلسات جارية
-                </div>
-                <div className="text-xs mt-0.5" style={{ color: "#CCC" }}>
-                  ابدأ لعبة جديدة من الأسفل
-                </div>
-              </div>
+          <div style={{
+            background: "white",
+            borderRadius: 16,
+            padding: "16px",
+            border: "1.5px dashed #DDD",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+          }}>
+            <div style={{ fontSize: 24 }}>🃏</div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#AAA" }}>لا توجد جلسات جارية</div>
+              <div style={{ fontSize: 11, color: "#CCC", marginTop: 2 }}>ابدأ لعبة جديدة من الأسفل</div>
             </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {ongoingSessions.map((s) => (
-                <Link key={s.id} href={`/session/${s.id}`} className="block">
-                  <div
-                    className="rounded-2xl p-4 flex items-center gap-3"
-                    style={{ background: "white", border: "1.5px solid #EEE" }}
-                  >
-                    <div className="flex-1">
-                      <div className="text-sm font-bold" style={{ color: "var(--jet)" }}>{s.game}</div>
-                      <div className="text-xs mt-0.5" style={{ color: "#AAA" }}>
-                        {s.players} · {s.round}
-                      </div>
-                    </div>
-                    <div
-                      className="text-xs font-bold px-3 py-1.5 rounded-lg"
-                      style={{ background: "var(--crimson)", color: "white" }}
-                    >
-                      استأنف
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          </div>
         </section>
 
-        {/* ── SECTION 2: NEW GAME ── */}
+        {/* New game */}
         <section>
-          <div className="text-xs font-bold tracking-widest mb-3" style={{ color: "#999" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             لعبة جديدة
           </div>
 
-          <div className="flex flex-col gap-2">
-            {/* 2×2 grid for the 4 main games */}
-            <div className="grid grid-cols-2 gap-2">
-              {games.slice(0, 4).map((game) => (
-                <Link key={game.id} href={`/${game.id}/setup`} className="block">
-                  <div
-                    className="rounded-2xl p-4 flex flex-col gap-3 active:scale-[.98] transition-transform"
-                    style={{ background: "white", border: "1.5px solid #EEE", minHeight: 110 }}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-2xl"
-                      style={{ background: `${game.color}18` }}
-                    >
-                      <span style={{ color: game.color }}>{game.icon}</span>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold" style={{ color: "var(--jet)" }}>{game.name}</div>
-                      <div className="text-xs mt-0.5" style={{ color: "#AAA" }}>{game.players}</div>
-                    </div>
+          {/* 2×2 grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
+            {games.map((game) => (
+              <Link key={game.id} href={`/${game.id}/setup`} style={{ textDecoration: "none" }}>
+                <div style={{
+                  background: "white",
+                  borderRadius: 16,
+                  padding: 16,
+                  border: "1.5px solid #EEE",
+                  minHeight: 110,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  cursor: "pointer",
+                }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 10,
+                    background: `${game.color}18`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 22, color: game.color,
+                  }}>
+                    {game.icon}
                   </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* General Scoring — featured full width at bottom */}
-            <Link href="/general/setup" className="block">
-              <div
-                className="rounded-2xl p-5 flex items-center gap-4 active:scale-[.98] transition-transform"
-                style={{ background: "var(--sage)" }}
-              >
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0"
-                  style={{ background: "rgba(0,0,0,.15)" }}
-                >
-                  ★
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{game.name}</div>
+                    <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{game.players}</div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <div className="text-xl font-black" style={{ color: "white" }}>تسجيل عام</div>
-                  <div className="text-xs mt-1" style={{ color: "rgba(255,255,255,.6)" }}>٢+ لاعبين</div>
-                </div>
-                <div style={{ color: "rgba(255,255,255,.4)", fontSize: 22 }}>←</div>
-              </div>
-            </Link>
+              </Link>
+            ))}
           </div>
+
+          {/* General scoring full width */}
+          <Link href="/general/setup" style={{ textDecoration: "none" }}>
+            <div style={{
+              background: "#4A7C5A",
+              borderRadius: 16,
+              padding: "18px 20px",
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+              cursor: "pointer",
+            }}>
+              <div style={{
+                width: 52, height: 52, borderRadius: 12,
+                background: "rgba(0,0,0,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 28, flexShrink: 0,
+              }}>
+                ★
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 18, fontWeight: 900, color: "white" }}>تسجيل عام</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 2 }}>2+ لاعبين</div>
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 20 }}>←</div>
+            </div>
+          </Link>
         </section>
 
-        {/* ── SECTION 3: HISTORY ── */}
+        {/* History */}
         <section>
-          <div className="text-xs font-bold tracking-widest mb-3" style={{ color: "#999" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             السجل
           </div>
-          <Link href="/history" className="block">
-            <div
-              className="rounded-2xl p-4 flex items-center gap-3 active:scale-[.98] transition-transform"
-              style={{ background: "white", border: "1.5px solid #EEE" }}
-            >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                style={{ background: "rgba(212,164,32,.12)" }}
-              >
+          <Link href="/history" style={{ textDecoration: "none" }}>
+            <div style={{
+              background: "white",
+              borderRadius: 16,
+              padding: 16,
+              border: "1.5px solid #EEE",
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              cursor: "pointer",
+            }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 10,
+                background: "rgba(212,164,32,0.12)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 20, flexShrink: 0,
+              }}>
                 🏆
               </div>
-              <div className="flex-1">
-                <div className="text-sm font-bold" style={{ color: "var(--jet)" }}>السجل والترتيب</div>
-                <div className="text-xs mt-0.5" style={{ color: "#AAA" }}>الإحصائيات والانتصارات</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>السجل والترتيب</div>
+                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>الإحصائيات والانتصارات</div>
               </div>
               <div style={{ color: "#CCC", fontSize: 20 }}>←</div>
             </div>
