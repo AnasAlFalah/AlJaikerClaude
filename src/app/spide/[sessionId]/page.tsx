@@ -151,16 +151,18 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
 
         {/* Player scores — individual or team */}
         {session.mode === "teams" ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 12 }}>
-            {[0, 1].map(teamIdx => {
-              const teamTotal = totals.filter((_, i) => i % 2 === teamIdx).reduce((a, b) => a + b, 0);
-              const otherTotal = totals.filter((_, i) => i % 2 !== teamIdx).reduce((a, b) => a + b, 0);
-              const isLead = teamTotal <= otherTotal;
-              const teamName = session.teams?.[teamIdx]?.name ?? (teamIdx === 0 ? "الفريق الأول" : "الفريق الثاني");
+          <div style={{ display: "flex", alignItems: "center", gap: 6, paddingBottom: 12 }}>
+            {(session.teams ?? []).map((team, teamIdx) => {
+              const n = session.teams!.length;
+              const teamTotal = totals.filter((_, i) => i % n === teamIdx).reduce((a, b) => a + b, 0);
+              const allTeamTotals = session.teams!.map((_, t) => totals.filter((_, i) => i % n === t).reduce((a, b) => a + b, 0));
+              const minTotal = Math.min(...allTeamTotals);
+              const isLead = teamTotal === minTotal;
+              const COLORS = ["#3DEB7A", "#E74C3C", "#3B8BEB"];
               return (
                 <div key={teamIdx} style={{ flex: 1, textAlign: "center", background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "8px 4px" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 2, color: isLead ? "#D4A420" : "rgba(248,242,228,0.5)" }}>{teamName}</div>
-                  <div style={{ fontSize: 30, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: isLead ? "#fff" : "rgba(248,242,228,0.7)" }}>{teamTotal}</div>
+                  <div style={{ fontSize: 9, fontWeight: 700, marginBottom: 2, color: isLead ? COLORS[teamIdx] : "rgba(248,242,228,0.4)" }}>{team.name}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: isLead ? "#fff" : "rgba(248,242,228,0.7)" }}>{teamTotal}</div>
                 </div>
               );
             })}
@@ -640,14 +642,15 @@ function GameOver({ session, totals, onRestart, onHome }: {
   const isTeams = session.mode === "teams";
 
   if (isTeams) {
-    // Team game over
-    const teamATotal = totals.filter((_, i) => i % 2 === 0).reduce((a, b) => a + b, 0);
-    const teamBTotal = totals.filter((_, i) => i % 2 === 1).reduce((a, b) => a + b, 0);
-    const teamAName = session.teams?.[0]?.name ?? "الفريق الأول";
-    const teamBName = session.teams?.[1]?.name ?? "الفريق الثاني";
-    const winnerName = teamATotal <= teamBTotal ? teamAName : teamBName;
-    const winnerScore = Math.min(teamATotal, teamBTotal);
-    const loserScore = Math.max(teamATotal, teamBTotal);
+    // Team game over — supports 2 or 3 teams
+    const n = session.teams!.length;
+    const teamStandings = session.teams!.map((team, t) => ({
+      name: team.name,
+      total: totals.filter((_, i) => i % n === t).reduce((a, b) => a + b, 0),
+    })).sort((a, b) => a.total - b.total);
+    const winnerName = teamStandings[0].name;
+    const winnerScore = teamStandings[0].total;
+    const loserScore = teamStandings[teamStandings.length - 1].total;
 
     return (
       <main style={s.page}>
@@ -675,10 +678,7 @@ function GameOver({ session, totals, onRestart, onHome }: {
           {/* Team standings */}
           <div style={{ padding: "16px 16px 0" }}>
             <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>ترتيب الفرق</div>
-            {[
-              { name: teamAName, total: teamATotal },
-              { name: teamBName, total: teamBTotal },
-            ].sort((a, b) => a.total - b.total).map(({ name, total }, rank) => (
+            {teamStandings.map(({ name, total }, rank) => (
               <div key={name} style={{
                 display: "flex", alignItems: "center", gap: 12,
                 background: rank === 0 ? "rgba(212,164,32,0.1)" : "rgba(255,255,255,0.04)",

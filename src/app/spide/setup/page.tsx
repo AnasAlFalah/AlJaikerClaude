@@ -9,19 +9,25 @@ import {
 
 const TARGETS: SpideTarget[] = [100, 150, 200, 250];
 
+const TEAM_COLORS = ["#3DEB7A", "#E74C3C", "#3B8BEB"];
+const TEAM_BORDER_COLORS = ["rgba(61,235,122,0.3)", "rgba(231,76,60,0.3)", "rgba(59,139,235,0.3)"];
+
 export default function SpideSetupPage() {
   const router = useRouter();
   const [playerCount, setPlayerCount] = useState<4 | 5 | 6>(4);
   const [mode, setMode] = useState<SpideMode>("individual");
+  const [numTeams, setNumTeams] = useState<2 | 3>(2);
   const [names, setNames] = useState<string[]>(["", "", "", "", "", ""]);
-  const [teamAName, setTeamAName] = useState("الفريق الأول");
-  const [teamBName, setTeamBName] = useState("الفريق الثاني");
+  const [teamNames, setTeamNames] = useState(["الفريق الأول", "الفريق الثاني", "الفريق الثالث"]);
   const [target, setTarget] = useState<SpideTarget>(150);
   const [savedTeams, setSavedTeams] = useState<SavedSpideTeam[]>([]);
 
   useEffect(() => {
     setSavedTeams(getSavedSpideTeams());
   }, []);
+
+  // 3 teams only valid with 6 players
+  const effectiveNumTeams = (mode === "teams" && playerCount === 6) ? numTeams : 2;
 
   const activePlayers = names.slice(0, playerCount);
   const allFilled = activePlayers.every(n => n.trim().length > 0);
@@ -41,15 +47,21 @@ export default function SpideSetupPage() {
     setSavedTeams(getSavedSpideTeams());
   }
 
+  function setTeamName(idx: number, val: string) {
+    setTeamNames(prev => prev.map((n, i) => i === idx ? val : n));
+  }
+
   function handleStart() {
     const players = activePlayers.map((name, i) => ({
       name: name.trim(),
       avatarColor: getAvatarColor(i),
     }));
-    const teams = mode === "teams" ? [
-      { name: teamAName.trim() || "الفريق الأول", players: players.filter((_, i) => i % 2 === 0).map(p => p.name) },
-      { name: teamBName.trim() || "الفريق الثاني", players: players.filter((_, i) => i % 2 === 1).map(p => p.name) },
-    ] : undefined;
+    const n = effectiveNumTeams;
+    const teams = mode === "teams" ? Array.from({ length: n }, (_, t) => ({
+      name: teamNames[t].trim() || `الفريق ${t + 1}`,
+      players: players.filter((_, i) => i % n === t).map(p => p.name),
+    })) : undefined;
+
     const session: SpideSession = {
       id: crypto.randomUUID(),
       mode,
@@ -113,7 +125,11 @@ export default function SpideSetupPage() {
               );
             })}
           </div>
-          {mode === "teams" && <div style={{ fontSize: 10, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>الفرق تتطلب عدد زوجي من اللاعبين</div>}
+          {mode === "teams" && (
+            <div style={{ fontSize: 10, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>
+              الفرق تتطلب عدد زوجي من اللاعبين (4 أو 6)
+            </div>
+          )}
         </div>
 
         <div>
@@ -134,36 +150,50 @@ export default function SpideSetupPage() {
           </div>
         </div>
 
+        {/* Number of teams — only shown for 6 players teams mode */}
+        {mode === "teams" && playerCount === 6 && (
+          <div>
+            <div style={s.secLabel}>عدد الفرق</div>
+            <div style={{ ...s.toggleStrip, gridTemplateColumns: "1fr 1fr" }}>
+              <button
+                style={{ ...s.toggleBtn, ...(numTeams === 2 ? s.toggleActive : {}) }}
+                onClick={() => setNumTeams(2)}
+              >
+                فريقان · 3×2
+              </button>
+              <button
+                style={{ ...s.toggleBtn, ...(numTeams === 3 ? s.toggleActive : {}) }}
+                onClick={() => setNumTeams(3)}
+              >
+                3 فرق · 2×2×2
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Team name inputs */}
         {mode === "teams" && (
           <div>
             <div style={s.secLabel}>أسماء الفرق</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#3DEB7A", flexShrink: 0 }} />
-                <input
-                  style={s.playerInput}
-                  value={teamAName}
-                  onChange={e => setTeamAName(e.target.value)}
-                  dir="rtl"
-                  placeholder="الفريق الأول"
-                />
-                <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
-                  م {[...Array(playerCount)].filter((_, i) => i % 2 === 0).map(i => i).join("،")} اللاعبين
-                </div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#E74C3C", flexShrink: 0 }} />
-                <input
-                  style={s.playerInput}
-                  value={teamBName}
-                  onChange={e => setTeamBName(e.target.value)}
-                  dir="rtl"
-                  placeholder="الفريق الثاني"
-                />
-                <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
-                  م {[...Array(playerCount)].filter((_, i) => i % 2 === 1).map(i => i).join("،")} اللاعبين
-                </div>
-              </div>
+              {Array.from({ length: effectiveNumTeams }).map((_, t) => {
+                const memberIndices = Array.from({ length: playerCount }, (_, i) => i).filter(i => i % effectiveNumTeams === t);
+                return (
+                  <div key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: TEAM_COLORS[t], flexShrink: 0 }} />
+                    <input
+                      style={s.playerInput}
+                      value={teamNames[t]}
+                      onChange={e => setTeamName(t, e.target.value)}
+                      dir="rtl"
+                      placeholder={`الفريق ${t + 1}`}
+                    />
+                    <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                      {memberIndices.map(i => `ل${i + 1}`).join(" ")}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -171,34 +201,37 @@ export default function SpideSetupPage() {
         <div>
           <div style={s.secLabel}>اللاعبون</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {Array.from({ length: playerCount }).map((_, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ ...s.avatar, background: getAvatarColor(i) }}>
-                  {names[i]?.trim()?.[0] || (i + 1)}
-                </div>
-                <input
-                  style={s.playerInput}
-                  placeholder={`اللاعب ${i + 1}`}
-                  value={names[i]}
-                  onChange={e => {
-                    const next = [...names];
-                    next[i] = e.target.value;
-                    setNames(next);
-                  }}
-                  dir="rtl"
-                />
-                {mode === "teams" && (
-                  <div style={{
-                    fontSize: 10, fontWeight: 700, flexShrink: 0,
-                    color: i % 2 === 0 ? "#3DEB7A" : "#E74C3C",
-                    border: `1px solid ${i % 2 === 0 ? "rgba(61,235,122,0.3)" : "rgba(231,76,60,0.3)"}`,
-                    borderRadius: 6, padding: "2px 6px",
-                  }}>
-                    {i % 2 === 0 ? (teamAName || "أ") : (teamBName || "ب")}
+            {Array.from({ length: playerCount }).map((_, i) => {
+              const teamIdx = i % effectiveNumTeams;
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ ...s.avatar, background: getAvatarColor(i) }}>
+                    {names[i]?.trim()?.[0] || (i + 1)}
                   </div>
-                )}
-              </div>
-            ))}
+                  <input
+                    style={s.playerInput}
+                    placeholder={`اللاعب ${i + 1}`}
+                    value={names[i]}
+                    onChange={e => {
+                      const next = [...names];
+                      next[i] = e.target.value;
+                      setNames(next);
+                    }}
+                    dir="rtl"
+                  />
+                  {mode === "teams" && (
+                    <div style={{
+                      fontSize: 10, fontWeight: 700, flexShrink: 0,
+                      color: TEAM_COLORS[teamIdx],
+                      border: `1px solid ${TEAM_BORDER_COLORS[teamIdx]}`,
+                      borderRadius: 6, padding: "2px 6px",
+                    }}>
+                      {teamNames[teamIdx] || `فريق ${teamIdx + 1}`}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
           {allFilled && (
             <button style={s.saveTeamBtn} onClick={handleSaveTeam}>
