@@ -51,7 +51,12 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
       updatedRounds = [...session!.rounds, round];
     }
     const newTotals = getPlayerTotals({ ...session!, rounds: updatedRounds });
-    const over = isGameOver(newTotals, session!.target);
+    const totalsToCheck = session!.mode === "teams" && session!.teams
+      ? session!.teams.map((_, t) =>
+          newTotals.filter((_, i) => i % session!.teams!.length === t).reduce((a, b) => a + b, 0)
+        )
+      : newTotals;
+    const over = isGameOver(totalsToCheck, session!.target);
     const updated: SpideSession = {
       ...session!,
       rounds: updatedRounds,
