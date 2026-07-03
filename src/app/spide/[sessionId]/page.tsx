@@ -153,13 +153,13 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
         {session.mode === "teams" ? (
           <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 12 }}>
             {[0, 1].map(teamIdx => {
-              const teamPlayers = session.players.filter((_, i) => i % 2 === teamIdx);
               const teamTotal = totals.filter((_, i) => i % 2 === teamIdx).reduce((a, b) => a + b, 0);
-              const teamLabel = teamPlayers.map(p => p.name).join(" & ");
-              const isLead = totals.filter((_, i) => i % 2 === 0).reduce((a, b) => a + b, 0) < totals.filter((_, i) => i % 2 === 1).reduce((a, b) => a + b, 0) ? teamIdx === 0 : teamIdx === 1;
+              const otherTotal = totals.filter((_, i) => i % 2 !== teamIdx).reduce((a, b) => a + b, 0);
+              const isLead = teamTotal <= otherTotal;
+              const teamName = session.teams?.[teamIdx]?.name ?? (teamIdx === 0 ? "الفريق الأول" : "الفريق الثاني");
               return (
                 <div key={teamIdx} style={{ flex: 1, textAlign: "center", background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "8px 4px" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 2, color: isLead ? "#D4A420" : "rgba(248,242,228,0.5)" }}>{teamLabel}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 2, color: isLead ? "#D4A420" : "rgba(248,242,228,0.5)" }}>{teamName}</div>
                   <div style={{ fontSize: 30, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: isLead ? "#fff" : "rgba(248,242,228,0.7)" }}>{teamTotal}</div>
                 </div>
               );
@@ -617,10 +617,129 @@ function GameOver({ session, totals, onRestart, onHome }: {
   onHome: () => void;
 }) {
   const s = styles;
-  const sorted = session.players
-    .map((p, i) => ({ ...p, total: totals[i], originalIndex: i }))
-    .sort((a, b) => a.total - b.total);
 
+  // Per-player stats across all rounds
+  const playerStats = session.players.map((p, i) => {
+    let hearts = 0, queens = 0, diamonds = 0, ateNothing = 0, ateAll = 0;
+    session.rounds.forEach(r => {
+      if (r.type === "eatAll") {
+        if (r.eatAllWinner === i) ateAll++;
+      } else {
+        const e = r.entries[i];
+        if (e) {
+          hearts += e.hearts;
+          if (e.hasQueen) queens++;
+          if (e.hasDiamond) diamonds++;
+          if (e.ateNothing) ateNothing++;
+        }
+      }
+    });
+    return { name: p.name, avatarColor: p.avatarColor, total: totals[i], hearts, queens, diamonds, ateNothing, ateAll };
+  });
+
+  const isTeams = session.mode === "teams";
+
+  if (isTeams) {
+    // Team game over
+    const teamATotal = totals.filter((_, i) => i % 2 === 0).reduce((a, b) => a + b, 0);
+    const teamBTotal = totals.filter((_, i) => i % 2 === 1).reduce((a, b) => a + b, 0);
+    const teamAName = session.teams?.[0]?.name ?? "الفريق الأول";
+    const teamBName = session.teams?.[1]?.name ?? "الفريق الثاني";
+    const winnerName = teamATotal <= teamBTotal ? teamAName : teamBName;
+    const winnerScore = Math.min(teamATotal, teamBTotal);
+    const loserScore = Math.max(teamATotal, teamBTotal);
+
+    return (
+      <main style={s.page}>
+        <div style={s.topbar}>
+          <button style={s.backBtn} onClick={onHome}>←</button>
+          <div style={{ flex: 1 }}>
+            <div style={s.topTitle}>انتهت اللعبة</div>
+            <div style={s.topSub}>سبيد · {session.rounds.length} جولة</div>
+          </div>
+          <div style={s.topBadge}>♥</div>
+        </div>
+        <div style={{ flex: 1, overflowY: "auto", padding: "0 0 40px", direction: "rtl" as const }}>
+          {/* Winner hero */}
+          <div style={{
+            background: "linear-gradient(160deg, #1B5E38 0%, #0A2E1A 100%)",
+            padding: "30px 20px 24px", textAlign: "center",
+            borderBottom: "1px solid rgba(212,164,32,0.3)",
+          }}>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🏆</div>
+            <div style={{ color: "#D4A420", fontSize: 11, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
+            <div style={{ color: "#F8F2E4", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>{winnerName}</div>
+            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13 }}>{winnerScore} — {loserScore}</div>
+          </div>
+
+          {/* Team standings */}
+          <div style={{ padding: "16px 16px 0" }}>
+            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>ترتيب الفرق</div>
+            {[
+              { name: teamAName, total: teamATotal },
+              { name: teamBName, total: teamBTotal },
+            ].sort((a, b) => a.total - b.total).map(({ name, total }, rank) => (
+              <div key={name} style={{
+                display: "flex", alignItems: "center", gap: 12,
+                background: rank === 0 ? "rgba(212,164,32,0.1)" : "rgba(255,255,255,0.04)",
+                borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                border: rank === 0 ? "1px solid rgba(212,164,32,0.25)" : "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: "50%",
+                  background: rank === 0 ? "#D4A420" : "rgba(255,255,255,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: rank === 0 ? "#0F3D24" : "rgba(248,242,228,0.4)",
+                  fontSize: 13, fontWeight: 900,
+                }}>{rank + 1}</div>
+                <div style={{ flex: 1, color: "#F8F2E4", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{name}</div>
+                <div style={{ color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900 }}>{total}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Player stats */}
+          <div style={{ padding: "16px 16px 0" }}>
+            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
+            <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 40px 40px 40px 40px", padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                {["اللاعب", "♥", "♛", "◆", "نقاط"].map((h, i) => (
+                  <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 10, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
+                ))}
+              </div>
+              {playerStats.map((ps, i) => (
+                <div key={i} style={{
+                  display: "grid", gridTemplateColumns: "1fr 40px 40px 40px 40px",
+                  padding: "10px 14px",
+                  borderBottom: i < playerStats.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                  alignItems: "center",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
+                    <div style={{ color: "#F8F2E4", fontSize: 13, fontWeight: 600 }}>{ps.name}</div>
+                    <div style={{ width: 22, height: 22, borderRadius: "50%", background: ps.avatarColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{ps.name[0]}</div>
+                  </div>
+                  <div style={{ color: "#E74C3C", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
+                  <div style={{ color: "#A990F0", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
+                  <div style={{ color: "#D4A420", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
+                  <div style={{ color: "rgba(248,242,228,0.7)", fontSize: 13, fontWeight: 700, textAlign: "center", fontVariantNumeric: "tabular-nums" as const }}>{ps.total}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ padding: "20px 16px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+            <button style={s.btnPrimary} onClick={onRestart}>لعبة جديدة بنفس اللاعبين</button>
+            <button style={s.btnSecondary} onClick={onHome}>الرئيسية</button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Individual game over
+  const sorted = playerStats
+    .map((ps, i) => ({ ...ps, originalIndex: i }))
+    .sort((a, b) => a.total - b.total);
   const winner = sorted[0];
 
   return (
@@ -634,12 +753,12 @@ function GameOver({ session, totals, onRestart, onHome }: {
         <div style={s.topBadge}>♥</div>
       </div>
 
-      <div style={s.body}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "0 0 40px", direction: "rtl" as const }}>
         {/* Winner hero */}
         <div style={{
           background: "linear-gradient(160deg, #1B5E38 0%, #0A2E1A 100%)",
-          borderRadius: 16, padding: 24, textAlign: "center",
-          border: "1px solid rgba(212,164,32,0.2)",
+          padding: "30px 20px 24px", textAlign: "center",
+          borderBottom: "1px solid rgba(212,164,32,0.3)",
         }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>🏆</div>
           <div style={{ color: "#D4A420", fontSize: 11, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
@@ -648,41 +767,70 @@ function GameOver({ session, totals, onRestart, onHome }: {
         </div>
 
         {/* Standings */}
-        <div>
-          <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 11, fontWeight: 700, textAlign: "right", marginBottom: 8 }}>
-            الترتيب النهائي
-          </div>
+        <div style={{ padding: "16px 16px 0" }}>
+          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>الترتيب النهائي</div>
+          {sorted.map((p, rank) => (
+            <div key={p.originalIndex} style={{
+              display: "flex", alignItems: "center", gap: 12,
+              background: rank === 0 ? "rgba(212,164,32,0.1)" : "rgba(255,255,255,0.04)",
+              borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+              border: rank === 0 ? "1px solid rgba(212,164,32,0.25)" : "1px solid rgba(255,255,255,0.06)",
+            }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: "50%",
+                background: rank === 0 ? "#D4A420" : "rgba(255,255,255,0.1)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: rank === 0 ? "#0F3D24" : "rgba(248,242,228,0.4)",
+                fontSize: 13, fontWeight: 900,
+              }}>{rank + 1}</div>
+              <div style={{ flex: 1, color: "#F8F2E4", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{p.name}</div>
+              <div style={{ color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums" as const }}>{p.total}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Player stats */}
+        <div style={{ padding: "16px 16px 0" }}>
+          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
           <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
-            {sorted.map((p, rank) => (
-              <div key={p.originalIndex} style={{
-                display: "flex", alignItems: "center", gap: 12,
-                padding: "12px 14px",
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 36px 36px 36px 36px 42px", padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+              {["اللاعب", "♥", "♛", "◆", "ما أكل", "نقاط"].map((h, i) => (
+                <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 10, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
+              ))}
+            </div>
+            {sorted.map((ps, rank) => (
+              <div key={ps.originalIndex} style={{
+                display: "grid", gridTemplateColumns: "1fr 36px 36px 36px 36px 42px",
+                padding: "10px 14px",
                 borderBottom: rank < sorted.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                alignItems: "center",
               }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
+                  <div style={{ color: "#F8F2E4", fontSize: 13, fontWeight: 600 }}>{ps.name}</div>
+                  <div style={{ width: 22, height: 22, borderRadius: "50%", background: ps.avatarColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{ps.name[0]}</div>
+                </div>
+                <div style={{ color: "#E74C3C", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
+                <div style={{ color: "#A990F0", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
+                <div style={{ color: "#D4A420", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
+                <div style={{ color: "#2ECC71", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.ateNothing}</div>
                 <div style={{
-                  width: 26, height: 26, borderRadius: "50%",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 12, fontWeight: 900, flexShrink: 0,
-                  background: rank === 0 ? "#D4A420" : rank === 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.06)",
-                  color: rank === 0 ? "#0F3D24" : rank === 1 ? "rgba(248,242,228,0.4)" : "rgba(248,242,228,0.3)",
-                }}>
-                  {rank + 1}
-                </div>
-                <div style={{ flex: 1, color: "#F8F2E4", fontSize: 13, fontWeight: 600, textAlign: "right" }}>
-                  {p.name}
-                </div>
-                <div style={{
-                  fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums",
-                  color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)",
-                }}>
-                  {p.total}
-                </div>
+                  color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.7)",
+                  fontSize: 13, fontWeight: 900, textAlign: "center", fontVariantNumeric: "tabular-nums" as const,
+                }}>{ps.total}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 16, justifyContent: "flex-end", marginTop: 8 }}>
+            {[["♥", "حاسة أكلها", "#E74C3C"], ["♛", "ميم السبيت", "#A990F0"], ["◆", "عشر الديمن", "#D4A420"], ["ما أكل", "جولات بدون", "#2ECC71"]].map(([icon, label, color]) => (
+              <div key={icon} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <div style={{ color, fontSize: 11 }}>{icon}</div>
+                <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 9 }}>{label}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ padding: "20px 16px 0", display: "flex", flexDirection: "column", gap: 8 }}>
           <button style={s.btnPrimary} onClick={onRestart}>لعبة جديدة بنفس اللاعبين</button>
           <button style={s.btnSecondary} onClick={onHome}>الرئيسية</button>
         </div>

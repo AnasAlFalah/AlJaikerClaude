@@ -14,6 +14,8 @@ export default function SpideSetupPage() {
   const [playerCount, setPlayerCount] = useState<4 | 5 | 6>(4);
   const [mode, setMode] = useState<SpideMode>("individual");
   const [names, setNames] = useState<string[]>(["", "", "", "", "", ""]);
+  const [teamAName, setTeamAName] = useState("الفريق الأول");
+  const [teamBName, setTeamBName] = useState("الفريق الثاني");
   const [target, setTarget] = useState<SpideTarget>(150);
   const [savedTeams, setSavedTeams] = useState<SavedSpideTeam[]>([]);
 
@@ -40,14 +42,20 @@ export default function SpideSetupPage() {
   }
 
   function handleStart() {
+    const players = activePlayers.map((name, i) => ({
+      name: name.trim(),
+      avatarColor: getAvatarColor(i),
+    }));
+    const teams = mode === "teams" ? [
+      { name: teamAName.trim() || "الفريق الأول", players: players.filter((_, i) => i % 2 === 0).map(p => p.name) },
+      { name: teamBName.trim() || "الفريق الثاني", players: players.filter((_, i) => i % 2 === 1).map(p => p.name) },
+    ] : undefined;
     const session: SpideSession = {
       id: crypto.randomUUID(),
       mode,
       playerCount,
-      players: activePlayers.map((name, i) => ({
-        name: name.trim(),
-        avatarColor: getAvatarColor(i),
-      })),
+      players,
+      teams,
       target,
       rounds: [],
       status: "active",
@@ -88,16 +96,24 @@ export default function SpideSetupPage() {
         <div>
           <div style={s.secLabel}>عدد اللاعبين</div>
           <div style={{ ...s.toggleStrip, gridTemplateColumns: "1fr 1fr 1fr" }}>
-            {([4, 5, 6] as const).map(n => (
-              <button
-                key={n}
-                style={{ ...s.toggleBtn, ...(playerCount === n ? s.toggleActive : {}) }}
-                onClick={() => setPlayerCount(n)}
-              >
-                {n}
-              </button>
-            ))}
+            {([4, 5, 6] as const).map(n => {
+              const disabled = mode === "teams" && n === 5;
+              return (
+                <button
+                  key={n}
+                  style={{
+                    ...s.toggleBtn,
+                    ...(playerCount === n ? s.toggleActive : {}),
+                    ...(disabled ? { opacity: 0.3, cursor: "not-allowed" } : {}),
+                  }}
+                  onClick={() => { if (!disabled) setPlayerCount(n); }}
+                >
+                  {n}
+                </button>
+              );
+            })}
           </div>
+          {mode === "teams" && <div style={{ fontSize: 10, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>الفرق تتطلب عدد زوجي من اللاعبين</div>}
         </div>
 
         <div>
@@ -107,13 +123,50 @@ export default function SpideSetupPage() {
               <button
                 key={m}
                 style={{ ...s.toggleBtn, ...(mode === m ? s.toggleActive : {}) }}
-                onClick={() => setMode(m)}
+                onClick={() => {
+                  setMode(m);
+                  if (m === "teams" && playerCount === 5) setPlayerCount(4);
+                }}
               >
                 {m === "individual" ? "فردي" : "فرق"}
               </button>
             ))}
           </div>
         </div>
+
+        {mode === "teams" && (
+          <div>
+            <div style={s.secLabel}>أسماء الفرق</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#3DEB7A", flexShrink: 0 }} />
+                <input
+                  style={s.playerInput}
+                  value={teamAName}
+                  onChange={e => setTeamAName(e.target.value)}
+                  dir="rtl"
+                  placeholder="الفريق الأول"
+                />
+                <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                  م {[...Array(playerCount)].filter((_, i) => i % 2 === 0).map(i => i).join("،")} اللاعبين
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#E74C3C", flexShrink: 0 }} />
+                <input
+                  style={s.playerInput}
+                  value={teamBName}
+                  onChange={e => setTeamBName(e.target.value)}
+                  dir="rtl"
+                  placeholder="الفريق الثاني"
+                />
+                <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                  م {[...Array(playerCount)].filter((_, i) => i % 2 === 1).map(i => i).join("،")} اللاعبين
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div>
           <div style={s.secLabel}>اللاعبون</div>
@@ -134,6 +187,16 @@ export default function SpideSetupPage() {
                   }}
                   dir="rtl"
                 />
+                {mode === "teams" && (
+                  <div style={{
+                    fontSize: 10, fontWeight: 700, flexShrink: 0,
+                    color: i % 2 === 0 ? "#3DEB7A" : "#E74C3C",
+                    border: `1px solid ${i % 2 === 0 ? "rgba(61,235,122,0.3)" : "rgba(231,76,60,0.3)"}`,
+                    borderRadius: 6, padding: "2px 6px",
+                  }}>
+                    {i % 2 === 0 ? (teamAName || "أ") : (teamBName || "ب")}
+                  </div>
+                )}
               </div>
             ))}
           </div>
