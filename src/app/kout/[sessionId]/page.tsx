@@ -36,13 +36,14 @@ interface RoundEntryProps {
   session: KoutSession;
   onConfirm: (round: Omit<KoutRound, "id" | "number">) => void;
   onCancel: () => void;
+  initialValues?: { hakim: string; hokm: KoutHokm; result: "win" | "lose" };
 }
 
-function RoundEntry({ session, onConfirm, onCancel }: RoundEntryProps) {
+function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryProps) {
   const allPlayers = [...session.teamA.players, ...session.teamB.players];
-  const [hakim, setHakim] = useState<string>(allPlayers[0] || "");
-  const [hokm, setHokm] = useState<KoutHokm | null>(null);
-  const [result, setResult] = useState<"win" | "lose" | null>(null);
+  const [hakim, setHakim] = useState<string>(initialValues?.hakim || allPlayers[0] || "");
+  const [hokm, setHokm] = useState<KoutHokm | null>(initialValues?.hokm || null);
+  const [result, setResult] = useState<"win" | "lose" | null>(initialValues?.result || null);
 
   const hakimTeam = hakim ? getPlayerTeam(hakim, session) : null;
   const canConfirm = hakim && hokm && result;
@@ -201,7 +202,7 @@ function RoundEntry({ session, onConfirm, onCancel }: RoundEntryProps) {
 
 // ── Scoreboard ────────────────────────────────────────────────────────────────
 
-function Scoreboard({ session, onNewRound }: { session: KoutSession; onNewRound: () => void }) {
+function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession; onNewRound: () => void; onEditRound: (round: KoutRound) => void }) {
   const scores = getTeamScores(session.rounds);
   const pctA = Math.min((scores.A / session.target) * 100, 100);
   const pctB = Math.min((scores.B / session.target) * 100, 100);
@@ -278,8 +279,7 @@ function Scoreboard({ session, onNewRound }: { session: KoutSession; onNewRound:
           </div>
         )}
 
-        {[...session.rounds].reverse().map((r, revIdx) => {
-          const idx = session.rounds.length - 1 - revIdx;
+        {session.rounds.map((r, idx) => {
           // running totals up to this round
           const cumA = session.rounds.slice(0, idx + 1).reduce((s, x) => s + x.deltaA, 0);
           const cumB = session.rounds.slice(0, idx + 1).reduce((s, x) => s + x.deltaB, 0);
@@ -301,8 +301,11 @@ function Scoreboard({ session, onNewRound }: { session: KoutSession; onNewRound:
                 alignItems: "center",
               }}
             >
-              {/* Round # */}
-              <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 11, textAlign: "center" }}>{r.number}</div>
+              {/* Round # + edit */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 11 }}>{r.number}</div>
+                <button onClick={() => onEditRound(r)} style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 10, cursor: "pointer", padding: 0, lineHeight: 1 }}>✎</button>
+              </div>
 
               {/* Hakim + Hokm */}
               <div style={{ textAlign: "right" }}>
@@ -520,6 +523,7 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
   const router = useRouter();
   const [session, setSession] = useState<KoutSession | null>(null);
   const [showEntry, setShowEntry] = useState(false);
+  const [editingRound, setEditingRound] = useState<KoutRound | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -537,22 +541,24 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
 
   const handleRound = (roundData: Omit<KoutRound, "id" | "number">) => {
     if (!session) return;
-    const newRound: KoutRound = {
-      ...roundData,
-      id: generateId(),
-      number: session.rounds.length + 1,
-    };
-    const updated = { ...session, rounds: [...session.rounds, newRound] };
-
-    // Check game over
-    const newScores = getTeamScores(updated.rounds);
-    if (newScores.A >= updated.target || newScores.B >= updated.target) {
-      updated.status = "finished";
+    let updatedRounds;
+    if (editingRound) {
+      updatedRounds = session.rounds.map(r =>
+        r.id === editingRound.id
+          ? { ...roundData, id: r.id, number: r.number }
+          : r
+      );
+    } else {
+      const newRound: KoutRound = { ...roundData, id: generateId(), number: session.rounds.length + 1 };
+      updatedRounds = [...session.rounds, newRound];
     }
-
+    const updated = { ...session, rounds: updatedRounds };
+    const newScores = getTeamScores(updated.rounds);
+    updated.status = (newScores.A >= updated.target || newScores.B >= updated.target) ? "finished" : "active";
     saveSession(updated);
     setSession(updated);
     setShowEntry(false);
+    setEditingRound(null);
   };
 
   const handleRestart = () => {
@@ -623,7 +629,7 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
           onHome={() => router.push("/")}
         />
       ) : (
-        <Scoreboard session={session} onNewRound={() => setShowEntry(true)} />
+        <Scoreboard session={session} onNewRound={() => setShowEntry(true)} onEditRound={r => { setEditingRound(r); setShowEntry(true); }} />
       )}
 
       {/* Round entry bottom sheet */}
@@ -631,7 +637,8 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
         <RoundEntry
           session={session}
           onConfirm={handleRound}
-          onCancel={() => setShowEntry(false)}
+          onCancel={() => { setShowEntry(false); setEditingRound(null); }}
+          initialValues={editingRound ? { hakim: editingRound.hakim, hokm: editingRound.hokm, result: editingRound.result } : undefined}
         />
       )}
     </div>

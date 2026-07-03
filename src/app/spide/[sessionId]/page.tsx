@@ -18,6 +18,7 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   const router = useRouter();
   const [session, setSession] = useState<SpideSession | null>(null);
   const [view, setView] = useState<View>("scoreboard");
+  const [editingRound, setEditingRound] = useState<SpideRound | null>(null);
 
   useEffect(() => {
     const s = getSession(sessionId);
@@ -39,16 +40,25 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   const nextPassDir = getPassDirection(nextRoundNum);
 
   function handleRoundSubmit(round: SpideRound) {
-    const over = isGameOver(
-      [...totals.map((t, i) => t + round.scores[i])],
-      session!.target
-    );
+    let updatedRounds: SpideRound[];
+    if (editingRound) {
+      updatedRounds = session!.rounds.map(r =>
+        r.id === editingRound.id
+          ? { ...round, id: r.id, number: r.number, passDirection: r.passDirection }
+          : r
+      );
+    } else {
+      updatedRounds = [...session!.rounds, round];
+    }
+    const newTotals = getPlayerTotals({ ...session!, rounds: updatedRounds });
+    const over = isGameOver(newTotals, session!.target);
     const updated: SpideSession = {
       ...session!,
-      rounds: [...session!.rounds, round],
+      rounds: updatedRounds,
       status: over ? "finished" : "active",
     };
     updateSession(updated);
+    setEditingRound(null);
     setView(over ? "gameOver" : "scoreboard");
   }
 
@@ -57,14 +67,21 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   }
 
   if (view === "roundEntry") {
+    const editRoundNum = editingRound ? editingRound.number : nextRoundNum;
+    const editPassDir = editingRound ? editingRound.passDirection : nextPassDir;
     return (
       <RoundEntry
         session={session}
-        roundNumber={nextRoundNum}
-        passDirection={nextPassDir}
+        roundNumber={editRoundNum}
+        passDirection={editPassDir}
         totals={totals}
+        initialValues={editingRound ? {
+          roundType: editingRound.type,
+          eatAllWinner: editingRound.eatAllWinner ?? null,
+          entries: editingRound.entries,
+        } : undefined}
         onSubmit={handleRoundSubmit}
-        onBack={() => setView("scoreboard")}
+        onBack={() => { setView("scoreboard"); setEditingRound(null); }}
       />
     );
   }
@@ -76,18 +93,20 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
       leaderIdx={leaderIdx}
       nextPassDir={nextPassDir}
       onAddRound={() => setView("roundEntry")}
+      onEditRound={(round) => { setEditingRound(round); setView("roundEntry"); }}
       onBack={() => router.push("/")}
     />
   );
 }
 
 // ─── Scoreboard ───────────────────────────────────────────────────────────────
-function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBack }: {
+function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEditRound, onBack }: {
   session: SpideSession;
   totals: number[];
   leaderIdx: number;
   nextPassDir: ReturnType<typeof getPassDirection>;
   onAddRound: () => void;
+  onEditRound: (round: SpideRound) => void;
   onBack: () => void;
 }) {
   const s = styles;
@@ -130,22 +149,39 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBac
           </div>
         </div>
 
-        {/* Player scores */}
-        <div style={{ display: "flex", alignItems: "center", gap: 4, paddingBottom: 12 }}>
-          {session.players.map((p, i) => (
-            <div key={i} style={{ flex: 1, textAlign: "center" }}>
-              <div style={{
-                fontSize: 11, fontWeight: 700, marginBottom: 2,
-                color: i === leaderIdx ? "#D4A420" : "rgba(248,242,228,0.6)",
-              }}>{p.name}</div>
-              <div style={{
-                fontSize: 28, fontWeight: 900, lineHeight: 1,
-                fontVariantNumeric: "tabular-nums",
-                color: i === leaderIdx ? "#fff" : "rgba(248,242,228,0.7)",
-              }}>{totals[i]}</div>
-            </div>
-          ))}
-        </div>
+        {/* Player scores — individual or team */}
+        {session.mode === "teams" ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 12 }}>
+            {[0, 1].map(teamIdx => {
+              const teamPlayers = session.players.filter((_, i) => i % 2 === teamIdx);
+              const teamTotal = totals.filter((_, i) => i % 2 === teamIdx).reduce((a, b) => a + b, 0);
+              const teamLabel = teamPlayers.map(p => p.name).join(" & ");
+              const isLead = totals.filter((_, i) => i % 2 === 0).reduce((a, b) => a + b, 0) < totals.filter((_, i) => i % 2 === 1).reduce((a, b) => a + b, 0) ? teamIdx === 0 : teamIdx === 1;
+              return (
+                <div key={teamIdx} style={{ flex: 1, textAlign: "center", background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "8px 4px" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 2, color: isLead ? "#D4A420" : "rgba(248,242,228,0.5)" }}>{teamLabel}</div>
+                  <div style={{ fontSize: 30, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: isLead ? "#fff" : "rgba(248,242,228,0.7)" }}>{teamTotal}</div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: 4, paddingBottom: 12 }}>
+            {session.players.map((p, i) => (
+              <div key={i} style={{ flex: 1, textAlign: "center" }}>
+                <div style={{
+                  fontSize: 11, fontWeight: 700, marginBottom: 2,
+                  color: i === leaderIdx ? "#D4A420" : "rgba(248,242,228,0.6)",
+                }}>{p.name}</div>
+                <div style={{
+                  fontSize: 28, fontWeight: 900, lineHeight: 1,
+                  fontVariantNumeric: "tabular-nums",
+                  color: i === leaderIdx ? "#fff" : "rgba(248,242,228,0.7)",
+                }}>{totals[i]}</div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Progress bars */}
         <div style={{ height: 4, display: "flex", background: "rgba(255,255,255,0.06)" }}>
@@ -165,7 +201,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBac
         {/* Table header */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")}`,
+          gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
           padding: "8px 10px",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}>
@@ -175,12 +211,13 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBac
           {session.players.map((p, i) => (
             <div key={i} style={s.th}>{p.name}</div>
           ))}
+          <div style={s.th} />
         </div>
 
         {session.rounds.map((round, ri) => (
           <div key={round.id} style={{
             display: "grid",
-            gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")}`,
+            gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
             padding: "9px 10px",
             borderBottom: "1px solid rgba(255,255,255,0.05)",
             alignItems: "center",
@@ -209,6 +246,14 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBac
                 {score > 0 ? `+${score}` : score}
               </div>
             ))}
+            <button
+              onClick={() => onEditRound(round)}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                color: "rgba(248,242,228,0.25)", fontSize: 13, padding: 2,
+                fontFamily: "inherit",
+              }}
+            >✎</button>
           </div>
         ))}
 
@@ -227,18 +272,19 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onBac
 }
 
 // ─── Round Entry ──────────────────────────────────────────────────────────────
-function RoundEntry({ session, roundNumber, passDirection, totals, onSubmit, onBack }: {
+function RoundEntry({ session, roundNumber, passDirection, totals, initialValues, onSubmit, onBack }: {
   session: SpideSession;
   roundNumber: number;
   passDirection: ReturnType<typeof getPassDirection>;
   totals: number[];
+  initialValues?: { roundType: "normal" | "eatAll"; eatAllWinner: number | null; entries: SpideRoundEntry[] };
   onSubmit: (round: SpideRound) => void;
   onBack: () => void;
 }) {
-  const [roundType, setRoundType] = useState<"normal" | "eatAll">("normal");
-  const [eatAllWinner, setEatAllWinner] = useState<number | null>(null);
+  const [roundType, setRoundType] = useState<"normal" | "eatAll">(initialValues?.roundType ?? "normal");
+  const [eatAllWinner, setEatAllWinner] = useState<number | null>(initialValues?.eatAllWinner ?? null);
   const [entries, setEntries] = useState<SpideRoundEntry[]>(
-    session.players.map((_, i) => ({
+    initialValues?.entries ?? session.players.map((_, i) => ({
       playerId: i,
       hearts: 0,
       hasQueen: false, queenAnnounced: false,
@@ -257,10 +303,13 @@ function RoundEntry({ session, roundNumber, passDirection, totals, onSubmit, onB
   const totalHearts = entries.reduce((sum, e) => sum + (e.ateNothing ? 0 : e.hearts), 0);
   const heartsOk = totalHearts === 13;
 
+  const queenCount = entries.filter(e => e.hasQueen).length;
+  const diamondCount = entries.filter(e => e.hasDiamond).length;
+
   // Validate: can submit?
   const canSubmit = roundType === "eatAll"
     ? eatAllWinner !== null
-    : heartsOk;
+    : heartsOk && queenCount <= 1 && diamondCount <= 1;
 
   function handleSubmit() {
     let scores: number[];
@@ -294,33 +343,6 @@ function RoundEntry({ session, roundNumber, passDirection, totals, onSubmit, onB
       </div>
 
       <div style={s.body}>
-
-        {/* Round type */}
-        <div>
-          <div style={s.secLabel}>نوع الجولة</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <button
-              style={{
-                ...s.roundTypeBtn,
-                ...(roundType === "normal" ? s.roundTypeNormal : {}),
-              }}
-              onClick={() => setRoundType("normal")}
-            >
-              <span style={{ fontSize: 24 }}>🃏</span>
-              جولة عادية
-            </button>
-            <button
-              style={{
-                ...s.roundTypeBtn,
-                ...(roundType === "eatAll" ? s.roundTypeEat : {}),
-              }}
-              onClick={() => setRoundType("eatAll")}
-            >
-              <span style={{ fontSize: 24 }}>⚡</span>
-              أكل الكل
-            </button>
-          </div>
-        </div>
 
         {/* Eat all — pick winner */}
         {roundType === "eatAll" && (
@@ -406,6 +428,19 @@ function RoundEntry({ session, roundNumber, passDirection, totals, onSubmit, onB
       </div>
 
       <div style={s.stickyBtn}>
+        <button
+          style={{
+            width: "100%", padding: "11px 0", marginBottom: 8,
+            borderRadius: 12,
+            border: roundType === "eatAll" ? "2px solid #D4A420" : "1px solid rgba(212,164,32,0.3)",
+            background: roundType === "eatAll" ? "rgba(212,164,32,0.15)" : "transparent",
+            color: roundType === "eatAll" ? "#D4A420" : "rgba(212,164,32,0.5)",
+            fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+          }}
+          onClick={() => setRoundType(roundType === "eatAll" ? "normal" : "eatAll")}
+        >
+          ⚡ {roundType === "eatAll" ? "إلغاء أكل الكل" : "أكل الكل"}
+        </button>
         <button
           style={{ ...s.btnPrimary, ...(!canSubmit ? s.btnDisabled : {}) }}
           onClick={handleSubmit}
@@ -550,6 +585,7 @@ function PlayerCard({ player, total, entry, onChange }: {
           </div>
           <input
             type="range"
+            dir="ltr"
             min={0}
             max={13}
             value={entry.hearts}
@@ -558,14 +594,14 @@ function PlayerCard({ player, total, entry, onChange }: {
               WebkitAppearance: "none" as const,
               width: "100%", height: 6,
               borderRadius: 4,
-              background: `linear-gradient(to left, rgba(255,255,255,0.1) ${((13 - entry.hearts) / 13) * 100}%, #E74C3C ${((13 - entry.hearts) / 13) * 100}%)`,
+              background: `linear-gradient(to right, #E74C3C ${(entry.hearts / 13) * 100}%, rgba(255,255,255,0.1) ${(entry.hearts / 13) * 100}%)`,
               outline: "none", cursor: "pointer",
               accentColor: "#E74C3C",
             }}
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 10 }}>13</div>
+          <div style={{ display: "flex", justifyContent: "space-between", direction: "ltr" }}>
             <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 10 }}>0</div>
+            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 10 }}>13</div>
           </div>
         </div>
       )}
