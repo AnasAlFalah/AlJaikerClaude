@@ -46,5 +46,6 @@ jobs:
           username: admin
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            rm -rf /home/admin/app/.next/standalone/.next/static
             cp -r /home/admin/app/.next/static /home/admin/app/.next/standalone/.next/static
             pm2 restart aljaiker
