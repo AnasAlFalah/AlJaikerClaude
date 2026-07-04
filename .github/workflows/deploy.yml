@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: admin
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: ".next/standalone/,.next/static/"
+          source: ".next/standalone/,.next/static/,public/"
           target: "/home/admin/app/.next/"
           strip_components: 1
 
@@ -48,4 +48,6 @@ jobs:
           script: |
             rm -rf /home/admin/app/.next/standalone/.next/static
             cp -r /home/admin/app/.next/static /home/admin/app/.next/standalone/.next/static
+            rm -rf /home/admin/app/.next/standalone/public
+            cp -r /home/admin/app/.next/public /home/admin/app/.next/standalone/public
             pm2 restart aljaiker
