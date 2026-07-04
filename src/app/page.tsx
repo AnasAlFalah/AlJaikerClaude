@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const games = [
-  { id: "kout",  name: "كوت",    icon: "♠", color: "#C8102E", players: "4-6 لاعبين" },
-  { id: "trix",  name: "تريكس",  icon: "♛", color: "#5B3FA6", players: "4-5 لاعبين" },
-  { id: "spide", name: "سبيد",   icon: "♥", color: "#E74C3C", players: "4-6 لاعبين" },
-  { id: "hand",  name: "هند",    icon: "♦", color: "#D4A420", players: "4 لاعبين"   },
+  { id: "kout",  img: "/images/Kout.png"  },
+  { id: "trix",  img: "/images/Trix.png"  },
+  { id: "spide", img: "/images/Spide.png" },
+  { id: "hand",  img: "/images/Hand.png"  },
 ];
 
 export default function HomePage() {
@@ -36,14 +36,11 @@ export default function HomePage() {
             ديوانية الجمعة
           </div>
         </div>
-        <div style={{
-          width: 48, height: 48, borderRadius: 12,
-          background: "#0F3D24",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: "#D4A420", fontSize: 18, fontWeight: 900,
-        }}>
-          J♦
-        </div>
+        <img
+          src="/images/AlJaiker.png"
+          alt="AlJaiker"
+          style={{ width: 52, height: 52, borderRadius: 12, objectFit: "cover" }}
+        />
       </header>
 
       {/* Body */}
@@ -77,63 +74,36 @@ export default function HomePage() {
             لعبة جديدة
           </div>
 
-          {/* 2×2 grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
+          {/* 2×2 grid — card images */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
             {games.map((game) => (
-              <Link key={game.id} href={`/${game.id}/setup`} style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: "white",
-                  borderRadius: 16,
-                  padding: 16,
-                  border: "1.5px solid #EEE",
-                  minHeight: 110,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 12,
-                  cursor: "pointer",
-                }}>
-                  <div style={{
-                    width: 40, height: 40, borderRadius: 10,
-                    background: `${game.color}18`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 22, color: game.color,
-                  }}>
-                    {game.icon}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{game.name}</div>
-                    <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{game.players}</div>
-                  </div>
-                </div>
+              <Link key={game.id} href={`/${game.id}/setup`} style={{ textDecoration: "none", display: "block" }}>
+                <img
+                  src={game.img}
+                  alt={game.id}
+                  style={{
+                    width: "100%",
+                    borderRadius: 14,
+                    display: "block",
+                    boxShadow: "0 3px 12px rgba(0,0,0,0.18)",
+                  }}
+                />
               </Link>
             ))}
           </div>
 
-          {/* General scoring full width */}
-          <Link href="/general/setup" style={{ textDecoration: "none" }}>
-            <div style={{
-              background: "#4A7C5A",
-              borderRadius: 16,
-              padding: "18px 20px",
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              cursor: "pointer",
-            }}>
-              <div style={{
-                width: 52, height: 52, borderRadius: 12,
-                background: "rgba(0,0,0,0.15)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 28, flexShrink: 0,
-              }}>
-                ★
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 18, fontWeight: 900, color: "white" }}>تسجيل عام</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 2 }}>2+ لاعبين</div>
-              </div>
-              <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 20 }}>←</div>
-            </div>
+          {/* General scoring — QaidAam image full width */}
+          <Link href="/general/setup" style={{ textDecoration: "none", display: "block" }}>
+            <img
+              src="/images/QaidAam.png"
+              alt="تسجيل عام"
+              style={{
+                width: "100%",
+                borderRadius: 14,
+                display: "block",
+                boxShadow: "0 3px 12px rgba(0,0,0,0.18)",
+              }}
+            />
           </Link>
         </section>
 
