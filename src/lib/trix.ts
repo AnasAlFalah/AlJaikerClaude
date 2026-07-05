@@ -18,13 +18,14 @@ export function getTrixScores(n: number): number[] {
 
 export interface TrixTrixResult {
   type: "trix";
-  rankings: number[]; // playerIdx at rank 0,1,2,3 (0 = fewest tricks = best)
+  rankings: number[];
   scores: number[];
 }
 
 export interface TrixHeartsResult {
   type: "hearts";
-  loserIdx: number; // who took the bash (pays +75)
+  loserIdx: number;
+  kingDoubled: boolean; // king of hearts taken → penalty ×2
   scores: number[];
 }
 
@@ -43,7 +44,7 @@ export interface TrixQueensResult {
 
 export interface TrixDistResult {
   type: "diamonds" | "eat";
-  counts: number[]; // per player, must sum to 13
+  counts: number[];
   scores: number[];
 }
 
@@ -69,7 +70,7 @@ export interface TrixSession {
   playerCount: 4 | 5;
   players: string[];
   mode: TrixMode;
-  teamA: number[]; // player indices
+  teamA: number[];
   teamB: number[];
   kingdoms: TrixKingdom[];
   currentKingdomIdx: number;
@@ -86,9 +87,9 @@ export function calcTrixScores(rankings: number[], playerCount: number): number[
   return scores;
 }
 
-export function calcHeartsScores(loserIdx: number, playerCount: number): number[] {
+export function calcHeartsScores(loserIdx: number, playerCount: number, kingDoubled: boolean): number[] {
   const scores = Array(playerCount).fill(0);
-  scores[loserIdx] = HEARTS_PENALTY;
+  scores[loserIdx] = kingDoubled ? HEARTS_PENALTY * 2 : HEARTS_PENALTY;
   return scores;
 }
 
@@ -130,6 +131,24 @@ export function getKingdomTotals(k: TrixKingdom, n: number): number[] {
     }
   }
   return totals;
+}
+
+export function getPlayerStatsByDecl(session: TrixSession): Record<TrixDeclType, number[]> {
+  const out: Record<TrixDeclType, number[]> = {
+    trix: Array(session.playerCount).fill(0),
+    hearts: Array(session.playerCount).fill(0),
+    queens: Array(session.playerCount).fill(0),
+    diamonds: Array(session.playerCount).fill(0),
+    eat: Array(session.playerCount).fill(0),
+  };
+  for (const k of session.kingdoms) {
+    for (const r of k.rounds) {
+      for (const res of r.results) {
+        res.scores.forEach((s, i) => { out[res.type][i] += s; });
+      }
+    }
+  }
+  return out;
 }
 
 // ── localStorage ──────────────────────────────────────────────────────────────

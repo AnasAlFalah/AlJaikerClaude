@@ -15,9 +15,9 @@ export default function TrixSetupPage() {
   const [playerCount, setPlayerCount] = useState<4 | 5>(4);
   const [mode, setMode] = useState<TrixMode>("individual");
   const [players, setPlayers] = useState(["", "", "", "", ""]);
-  // teamA/B stored as player indices; default alternating
   const [teamA, setTeamA] = useState([0, 2]);
   const [teamB, setTeamB] = useState([1, 3]);
+  const [kingOrder, setKingOrder] = useState([0, 1, 2, 3, 4]);
 
   const setPlayer = (i: number, v: string) => {
     const next = [...players]; next[i] = v; setPlayers(next);
@@ -30,15 +30,22 @@ export default function TrixSetupPage() {
     setTeamA(a); setTeamB(b);
   };
 
+  const moveKing = (pos: number, dir: -1 | 1) => {
+    const next = [...kingOrder];
+    const target = pos + dir;
+    if (target < 0 || target >= playerCount) return;
+    [next[pos], next[target]] = [next[target], next[pos]];
+    setKingOrder(next);
+  };
+
   const activePlayers = players.slice(0, playerCount);
   const canStart = activePlayers.every(p => p.trim().length > 0);
-
-  // 2v2 only for 4 players
   const effectiveMode = playerCount === 5 ? "individual" : mode;
 
   const handleStart = () => {
-    const kingdoms = Array.from({ length: playerCount }, (_, i) => ({
-      kingIdx: i,
+    const order = kingOrder.slice(0, playerCount);
+    const kingdoms = order.map(kingIdx => ({
+      kingIdx,
       rounds: [],
       done: [] as import("@/lib/trix").TrixDeclType[],
     }));
@@ -64,6 +71,8 @@ export default function TrixSetupPage() {
   const ivory = "#F8F2E4";
   const ivoryDk = "#EDE3D0";
   const jet = "#1A1210";
+  const gold = "#D4A420";
+  const purple = "#5B3FA6";
 
   return (
     <div style={{
@@ -83,22 +92,21 @@ export default function TrixSetupPage() {
           <div style={{ color: ivory, fontSize: 15, fontWeight: 700, textAlign: "right" }}>تريكس</div>
           <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" }}>لعبة جديدة</div>
         </div>
-        <div style={{
-          background: "#5B3FA6", borderRadius: 8, padding: "4px 10px",
-          color: "#fff", fontSize: 13, fontWeight: 800,
-        }}>♛</div>
+        <div style={{ background: purple, borderRadius: 8, padding: "4px 10px", color: "#fff", fontSize: 13, fontWeight: 800 }}>♛</div>
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "16px 16px 100px" }}>
 
         {/* Player count */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
-            عدد اللاعبين
-          </div>
+          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>عدد اللاعبين</div>
           <div style={{ display: "flex", gap: 8 }}>
             {([4, 5] as const).map(n => (
-              <button key={n} onClick={() => { setPlayerCount(n); if (n === 5) setMode("individual"); }} style={{
+              <button key={n} onClick={() => {
+                setPlayerCount(n);
+                if (n === 5) setMode("individual");
+                setKingOrder([0, 1, 2, 3, 4].slice(0, n));
+              }} style={{
                 flex: 1, background: playerCount === n ? ivory : "rgba(255,255,255,0.07)",
                 border: `2.5px solid ${playerCount === n ? felt : "transparent"}`,
                 borderRadius: 10, padding: "12px 0", cursor: "pointer",
@@ -113,9 +121,7 @@ export default function TrixSetupPage() {
 
         {/* Mode */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
-            طريقة اللعب
-          </div>
+          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>طريقة اللعب</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {([
               { val: "individual" as TrixMode, icon: "👤", label: "فردي", desc: "كل لاعب يسجل لحاله" },
@@ -128,8 +134,8 @@ export default function TrixSetupPage() {
                   background: sel ? ivory : "rgba(255,255,255,0.06)",
                   border: `2.5px solid ${sel ? felt : "rgba(255,255,255,0.08)"}`,
                   borderRadius: 10, padding: "12px 14px",
-                  display: "flex", alignItems: "center", gap: 12, cursor: disabled ? "not-allowed" : "pointer",
-                  opacity: disabled ? 0.35 : 1,
+                  display: "flex", alignItems: "center", gap: 12,
+                  cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.35 : 1,
                 }}>
                   <span style={{ fontSize: 18 }}>{opt.icon}</span>
                   <div style={{ flex: 1, textAlign: "right" }}>
@@ -150,10 +156,8 @@ export default function TrixSetupPage() {
         </div>
 
         {/* Players */}
-        <div style={{ marginBottom: effectiveMode === "teams" ? 20 : 0 }}>
-          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
-            اللاعبون
-          </div>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>اللاعبون</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
             {Array.from({ length: playerCount }).map((_, i) => (
               <div key={i} style={{
@@ -184,65 +188,95 @@ export default function TrixSetupPage() {
           </div>
         </div>
 
-        {/* Team assignment (2v2 only) */}
+        {/* Kingdom order */}
+        <div style={{ marginBottom: effectiveMode === "teams" ? 20 : 0 }}>
+          <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 4 }}>ترتيب الممالك 👑</div>
+          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 10, textAlign: "right", marginBottom: 10 }}>من يبدأ أولاً؟ اضغط ↑↓ لتغيير الترتيب</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {kingOrder.slice(0, playerCount).map((pIdx, pos) => {
+              const name = players[pIdx]?.trim() || `لاعب ${pIdx + 1}`;
+              const rankBg = pos === 0 ? gold : pos === 1 ? "#C0C0C0" : pos === 2 ? "#CD7F32" : "rgba(0,0,0,0.1)";
+              return (
+                <div key={pos} style={{
+                  background: ivory, borderRadius: 10,
+                  display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
+                }}>
+                  <div style={{
+                    width: 26, height: 26, borderRadius: "50%", flexShrink: 0,
+                    background: rankBg,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 11, fontWeight: 900, color: pos < 3 ? jet : "#888",
+                  }}>{pos + 1}</div>
+                  <div style={{
+                    width: 30, height: 30, borderRadius: "50%", flexShrink: 0,
+                    background: AVATAR_COLORS[pIdx % AVATAR_COLORS.length],
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "#fff", fontSize: 12, fontWeight: 800,
+                  }}>
+                    {players[pIdx]?.trim().charAt(0).toUpperCase() || (pIdx + 1)}
+                  </div>
+                  <span style={{ flex: 1, fontSize: 14, fontWeight: 700, color: jet, textAlign: "right" }}>{name}</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <button onClick={() => moveKing(pos, -1)} disabled={pos === 0} style={{
+                      width: 26, height: 22, background: pos === 0 ? "transparent" : "rgba(27,94,56,0.12)",
+                      border: "none", borderRadius: 5, cursor: pos === 0 ? "default" : "pointer",
+                      color: pos === 0 ? "#CCC" : felt, fontSize: 12, fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>↑</button>
+                    <button onClick={() => moveKing(pos, 1)} disabled={pos === playerCount - 1} style={{
+                      width: 26, height: 22, background: pos === playerCount - 1 ? "transparent" : "rgba(27,94,56,0.12)",
+                      border: "none", borderRadius: 5, cursor: pos === playerCount - 1 ? "default" : "pointer",
+                      color: pos === playerCount - 1 ? "#CCC" : felt, fontSize: 12, fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>↓</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Team assignment */}
         {effectiveMode === "teams" && (
           <div>
-            <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
-              تعيين الفرق
-            </div>
+            <div style={{ color: "rgba(248,242,228,0.6)", fontSize: 12, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>تعيين الفرق</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 8 }}>
-              {/* Team A */}
               <div style={{ background: "rgba(200,16,46,0.08)", border: "2px solid rgba(200,16,46,0.25)", borderRadius: 10, padding: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 800, color: "#C8102E", marginBottom: 8, letterSpacing: 0.5 }}>الفريق الأول</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: "#C8102E", marginBottom: 8 }}>الفريق الأول</div>
                 {teamA.map((pIdx, pos) => (
-                  <div key={pos} style={{
+                  <div key={pos} onClick={() => swapPlayer("A", pos)} style={{
                     display: "flex", alignItems: "center", gap: 7,
-                    background: "#fff", borderRadius: 7, padding: "7px 8px", marginBottom: 5,
-                    cursor: "pointer",
-                  }} onClick={() => swapPlayer("A", pos)}>
+                    background: "#fff", borderRadius: 7, padding: "7px 8px", marginBottom: 5, cursor: "pointer",
+                  }}>
                     <div style={{
-                      width: 26, height: 26, borderRadius: "50%",
-                      background: AVATAR_COLORS[pIdx],
+                      width: 26, height: 26, borderRadius: "50%", background: AVATAR_COLORS[pIdx],
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 11, fontWeight: 800, color: "#fff", flexShrink: 0,
-                    }}>
-                      {players[pIdx]?.charAt(0).toUpperCase() || (pIdx + 1)}
-                    </div>
-                    <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: jet }}>
-                      {players[pIdx] || `لاعب ${pIdx + 1}`}
-                    </span>
+                    }}>{players[pIdx]?.charAt(0).toUpperCase() || (pIdx + 1)}</div>
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: jet }}>{players[pIdx] || `لاعب ${pIdx + 1}`}</span>
                     <span style={{ fontSize: 13, color: "#CCC" }}>⇄</span>
                   </div>
                 ))}
               </div>
-              {/* Team B */}
               <div style={{ background: "rgba(91,63,166,0.08)", border: "2px solid rgba(91,63,166,0.25)", borderRadius: 10, padding: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 800, color: "#5B3FA6", marginBottom: 8, letterSpacing: 0.5 }}>الفريق الثاني</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: "#5B3FA6", marginBottom: 8 }}>الفريق الثاني</div>
                 {teamB.map((pIdx, pos) => (
-                  <div key={pos} style={{
+                  <div key={pos} onClick={() => swapPlayer("B", pos)} style={{
                     display: "flex", alignItems: "center", gap: 7,
-                    background: "#fff", borderRadius: 7, padding: "7px 8px", marginBottom: 5,
-                    cursor: "pointer",
-                  }} onClick={() => swapPlayer("B", pos)}>
+                    background: "#fff", borderRadius: 7, padding: "7px 8px", marginBottom: 5, cursor: "pointer",
+                  }}>
                     <div style={{
-                      width: 26, height: 26, borderRadius: "50%",
-                      background: AVATAR_COLORS[pIdx],
+                      width: 26, height: 26, borderRadius: "50%", background: AVATAR_COLORS[pIdx],
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 11, fontWeight: 800, color: "#fff", flexShrink: 0,
-                    }}>
-                      {players[pIdx]?.charAt(0).toUpperCase() || (pIdx + 1)}
-                    </div>
-                    <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: jet }}>
-                      {players[pIdx] || `لاعب ${pIdx + 1}`}
-                    </span>
+                    }}>{players[pIdx]?.charAt(0).toUpperCase() || (pIdx + 1)}</div>
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: jet }}>{players[pIdx] || `لاعب ${pIdx + 1}`}</span>
                     <span style={{ fontSize: 13, color: "#CCC" }}>⇄</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div style={{ textAlign: "center", color: "rgba(248,242,228,0.4)", fontSize: 11 }}>
-              اضغط على ⇄ لتبديل اللاعب بين الفريقين
-            </div>
+            <div style={{ textAlign: "center", color: "rgba(248,242,228,0.4)", fontSize: 11 }}>اضغط على ⇄ لتبديل اللاعب بين الفريقين</div>
           </div>
         )}
       </div>
