@@ -59,7 +59,7 @@ export default function DiwanyaListPage() {
 
       {/* Topbar */}
       <div style={{ background: FELT, padding: "44px 16px 18px", display: "flex", alignItems: "center", gap: 12, direction: dir }}>
-        <button onClick={() => router.push("/")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button onClick={() => router.push("/app")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           {locale === "ar" ? "←" : "→"}
         </button>
         <div style={{ flex: 1, color: IVORY, fontSize: 16, fontWeight: 700 }}>{t("myDiwanyas")}</div>

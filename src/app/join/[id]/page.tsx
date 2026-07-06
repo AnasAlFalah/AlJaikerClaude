@@ -72,7 +72,7 @@ export default function JoinPage() {
       <div style={{ minHeight: "100vh", background: FELT_DK, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, padding: 24 }}>
         <div style={{ fontSize: 48 }}>🚫</div>
         <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 15, textAlign: "center" }}>الديوانية غير موجودة</div>
-        <button onClick={() => router.push("/")} style={{ padding: "11px 28px", background: FELT, border: "none", borderRadius: 12, color: IVORY, fontSize: 14, cursor: "pointer" }}>{tc("back")}</button>
+        <button onClick={() => router.push("/app")} style={{ padding: "11px 28px", background: FELT, border: "none", borderRadius: 12, color: IVORY, fontSize: 14, cursor: "pointer" }}>{tc("back")}</button>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function JoinPage() {
                 {t("loginToJoin")}
               </div>
             )}
-            <button onClick={() => router.push("/")} style={{ background: "transparent", border: "none", color: "rgba(248,242,228,0.3)", fontSize: 13, cursor: "pointer" }}>
+            <button onClick={() => router.push("/app")} style={{ background: "transparent", border: "none", color: "rgba(248,242,228,0.3)", fontSize: 13, cursor: "pointer" }}>
               {locale === "ar" ? "متابعة كضيف" : "Continue as Guest"}
             </button>
           </div>

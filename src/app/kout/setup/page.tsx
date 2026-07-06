@@ -214,7 +214,7 @@ export default function KoutSetupPage() {
         gap: 12,
       }}>
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/app")}
           style={{
             width: 30, height: 30, borderRadius: "50%",
             background: "rgba(255,255,255,0.1)",

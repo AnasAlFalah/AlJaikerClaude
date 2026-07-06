@@ -22,7 +22,7 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
 
   useEffect(() => {
     const s = getSession(sessionId);
-    if (!s) { router.push("/"); return; }
+    if (!s) { router.push("/app"); return; }
     setSession(s);
     if (s.status === "finished") setView("gameOver");
   }, [sessionId, router]);
@@ -68,7 +68,7 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   }
 
   if (view === "gameOver") {
-    return <GameOver session={session} totals={totals} onRestart={() => router.push(`/spide/setup`)} onHome={() => router.push("/")} />;
+    return <GameOver session={session} totals={totals} onRestart={() => router.push(`/spide/setup`)} onHome={() => router.push("/app")} />;
   }
 
   if (view === "roundEntry") {
@@ -99,7 +99,7 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
       nextPassDir={nextPassDir}
       onAddRound={() => setView("roundEntry")}
       onEditRound={(round) => { setEditingRound(round); setView("roundEntry"); }}
-      onBack={() => router.push("/")}
+      onBack={() => router.push("/app")}
     />
   );
 }

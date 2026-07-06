@@ -51,7 +51,7 @@ export default function AuthPage() {
       else await registerWithEmail(email, password, name.trim());
       const joinId = sessionStorage.getItem("joinAfterAuth");
       if (joinId) { sessionStorage.removeItem("joinAfterAuth"); router.push(`/join/${joinId}`); }
-      else router.push("/");
+      else router.push("/app");
     } catch (e: unknown) {
       const code = (e as { code?: string }).code ?? "";
       setError(firebaseErrorMap[code] ?? tc("error"));
@@ -67,7 +67,7 @@ export default function AuthPage() {
       await loginWithGoogle();
       const joinId = sessionStorage.getItem("joinAfterAuth");
       if (joinId) { sessionStorage.removeItem("joinAfterAuth"); router.push(`/join/${joinId}`); }
-      else router.push("/");
+      else router.push("/app");
     } catch (e: unknown) {
       const code = (e as { code?: string }).code ?? "";
       setError(firebaseErrorMap[code] ?? tc("error"));
@@ -94,7 +94,7 @@ export default function AuthPage() {
     }}>
       {/* Topbar */}
       <div style={{ background: FELT, padding: "44px 16px 18px", display: "flex", alignItems: "center", gap: 12, direction: "rtl" }}>
-        <button onClick={() => router.push("/")} style={{
+        <button onClick={() => router.push("/app")} style={{
           width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)",
           border: "none", color: IVORY, fontSize: 16, cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -194,7 +194,7 @@ export default function AuthPage() {
 
         {/* Guest mode */}
         <div style={{ textAlign: "center", paddingTop: 4 }}>
-          <button onClick={() => router.push("/")} style={{
+          <button onClick={() => router.push("/app")} style={{
             background: "transparent", border: "none", cursor: "pointer",
             color: "rgba(248,242,228,0.4)", fontSize: 13,
             textDecoration: "underline", textUnderlineOffset: 3,

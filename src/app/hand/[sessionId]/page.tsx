@@ -666,7 +666,7 @@ export default function HandGamePage({ params }: { params: Promise<{ sessionId: 
 
   useEffect(() => {
     const s = getSession(sessionId);
-    if (!s) { router.push("/"); return; }
+    if (!s) { router.push("/app"); return; }
     setSession(s);
     setLoading(false);
   }, [sessionId]);
@@ -745,7 +745,7 @@ export default function HandGamePage({ params }: { params: Promise<{ sessionId: 
         flexShrink: 0,
       }}>
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/app")}
           style={{
             width: 30, height: 30, borderRadius: "50%",
             background: "rgba(255,255,255,0.1)",
@@ -766,7 +766,7 @@ export default function HandGamePage({ params }: { params: Promise<{ sessionId: 
       </div>
 
       {gameOver ? (
-        <GameOver session={session} onRestart={handleRestart} onHome={() => router.push("/")} />
+        <GameOver session={session} onRestart={handleRestart} onHome={() => router.push("/app")} />
       ) : (
         <Scoreboard
           session={session}

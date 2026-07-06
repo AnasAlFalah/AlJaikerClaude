@@ -951,7 +951,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
 
   useEffect(() => {
     const s = getSession(sessionId);
-    if (!s) { router.push("/"); return; }
+    if (!s) { router.push("/app"); return; }
     setSession(s);
     setLoading(false);
     if (s.status === "finished") setView({ type: "gameover" });
@@ -1040,7 +1040,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
     : view.type === "gameover" ? `${session.playerCount} ممالك` : "";
 
   const backAction = view.type === "kingdoms" || view.type === "gameover"
-    ? () => router.push("/")
+    ? () => router.push("/app")
     : view.type === "summary"
     ? handleSummaryContinue
     : handleCancel;
@@ -1079,7 +1079,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
       )}
       {view.type === "summary" && <RoundSummary results={view.results} players={session.players} onContinue={handleSummaryContinue} />}
       {view.type === "scores" && <ScoreTable session={session} onBack={() => setView({ type: "kingdoms" })} />}
-      {view.type === "gameover" && <GameOver session={session} onRestart={handleRestart} onHome={() => router.push("/")} />}
+      {view.type === "gameover" && <GameOver session={session} onRestart={handleRestart} onHome={() => router.push("/app")} />}
       {session.status === "active" && (
         <LiveShareButton sessionId={sessionId} game="trix" getData={getTrixData} />
       )}

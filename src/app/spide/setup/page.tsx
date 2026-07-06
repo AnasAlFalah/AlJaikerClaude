@@ -82,7 +82,7 @@ export default function SpideSetupPage() {
   return (
     <main style={s.page}>
       <div style={s.topbar}>
-        <button style={s.backBtn} onClick={() => router.push("/")}>←</button>
+        <button style={s.backBtn} onClick={() => router.push("/app")}>←</button>
         <div style={{ flex: 1 }}>
           <div style={s.topTitle}>لعبة جديدة</div>
           <div style={s.topSub}>سبيد</div>

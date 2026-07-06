@@ -83,7 +83,7 @@ export default function TrixSetupPage() {
     }}>
       {/* Topbar */}
       <div style={{ background: felt, padding: "44px 16px 14px", display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={() => router.push("/")} style={{
+        <button onClick={() => router.push("/app")} style={{
           width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)",
           border: "none", color: ivory, fontSize: 16, cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,

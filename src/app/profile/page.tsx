@@ -36,7 +36,7 @@ export default function ProfilePage() {
     return (
       <div style={{ minHeight: "100vh", background: FELT_DK, display: "flex", flexDirection: "column", maxWidth: 390, margin: "0 auto", fontFamily: "system-ui,-apple-system,sans-serif" }}>
         <div style={{ background: FELT, padding: "44px 16px 18px", display: "flex", alignItems: "center", gap: 12, direction: dir }}>
-          <button onClick={() => router.push("/")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <button onClick={() => router.push("/app")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {locale === "ar" ? "←" : "→"}
           </button>
           <div style={{ color: IVORY, fontSize: 16, fontWeight: 700 }}>{t("title")}</div>
@@ -82,7 +82,7 @@ export default function ProfilePage() {
   const handleLogout = async () => {
     setLoggingOut(true);
     await logout();
-    router.push("/");
+    router.push("/app");
   };
 
   const initials = (profile?.name ?? user.email ?? "؟")[0].toUpperCase();
@@ -99,7 +99,7 @@ export default function ProfilePage() {
 
       {/* Topbar */}
       <div style={{ background: FELT, padding: "44px 16px 18px", display: "flex", alignItems: "center", gap: 12, direction: dir }}>
-        <button onClick={() => router.push("/")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button onClick={() => router.push("/app")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           {locale === "ar" ? "←" : "→"}
         </button>
         <div style={{ flex: 1, color: IVORY, fontSize: 16, fontWeight: 700 }}>{t("title")}</div>

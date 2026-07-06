@@ -157,7 +157,7 @@ export default function HistoryPage() {
 
       {/* Topbar */}
       <div style={{ background: FELT, padding: "44px 16px 16px", display: "flex", alignItems: "center", gap: 12, direction: dir }}>
-        <button onClick={() => router.push("/")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button onClick={() => router.push("/app")} style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: IVORY, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           {locale === "ar" ? "←" : "→"}
         </button>
         <div style={{ flex: 1 }}>
@@ -209,7 +209,7 @@ export default function HistoryPage() {
             <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 13 }}>
               {locale === "ar" ? "ابدأ لعبة من الصفحة الرئيسية" : "Start a game from the home screen"}
             </div>
-            <button onClick={() => router.push("/")} style={{ marginTop: 8, padding: "12px 28px", background: GOLD, border: "none", borderRadius: 12, color: JET, fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
+            <button onClick={() => router.push("/app")} style={{ marginTop: 8, padding: "12px 28px", background: GOLD, border: "none", borderRadius: 12, color: JET, fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
               {locale === "ar" ? "الصفحة الرئيسية" : "Home"}
             </button>
           </div>
