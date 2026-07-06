@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import HomeClient from "@/components/HomeClient";
+import OngoingGames from "@/components/OngoingGames";
 
 const games = [
   { id: "kout",  img: "/images/Kout.png"  },
@@ -60,16 +61,7 @@ export default async function HomePage() {
           <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             {t("ongoing")}
           </div>
-          <div style={{
-            background: "white", borderRadius: 16, padding: "16px",
-            border: "1.5px dashed #DDD", display: "flex", alignItems: "center", gap: 12,
-          }}>
-            <div style={{ fontSize: 24 }}>🃏</div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#AAA" }}>{t("noOngoing")}</div>
-              <div style={{ fontSize: 11, color: "#CCC", marginTop: 2 }}>{t("noOngoingSub")}</div>
-            </div>
-          </div>
+          <OngoingGames locale={locale} />
         </section>
 
         {/* New game */}
