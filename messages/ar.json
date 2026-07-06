@@ -24,7 +24,10 @@
     "history": "السجل والترتيب",
     "historySub": "الإحصائيات والانتصارات",
     "login": "دخول",
-    "profile": "الملف الشخصي"
+    "profile": "الملف الشخصي",
+    "diwanya": "الديوانية",
+    "diwanyaTitle": "ديوانياتي",
+    "diwanyaSub": "مجموعاتي وأصدقائي"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -88,16 +91,36 @@
   "diwanya": {
     "diwanya": "الديوانية",
     "myDiwanyas": "ديوانياتي",
-    "createDiwanya": "إنشاء ديوانية",
+    "createDiwanya": "إنشاء ديوانية جديدة",
     "joinDiwanya": "الانضمام لديوانية",
     "diwanyaName": "اسم الديوانية",
+    "namePlaceholder": "مثلاً: ديوانية الجمعة",
     "members": "الأعضاء",
+    "membersCount": "عضو",
     "admin": "مدير",
     "founder": "المؤسس",
-    "invite": "دعوة",
+    "member": "عضو",
+    "invite": "دعوة عضو",
+    "inviteDesc": "شارك الرابط أو المسح بالكاميرا للانضمام",
     "scanQR": "مسح رمز QR",
-    "showQR": "عرض رمز QR",
+    "showQR": "رمز الدعوة",
     "leave": "مغادرة الديوانية",
-    "noMembers": "لا يوجد أعضاء بعد"
+    "leaveConfirm": "هل تريد مغادرة هذه الديوانية؟",
+    "noMembers": "لا يوجد أعضاء بعد",
+    "noDiwanyas": "لم تنضم لأي ديوانية بعد",
+    "noDiwanyasSub": "أنشئ ديوانية أو انضم لواحدة عبر رابط دعوة",
+    "create": "إنشاء",
+    "creating": "جاري الإنشاء...",
+    "joinedOn": "انضم",
+    "promoteAdmin": "ترقية لمدير",
+    "copyLink": "نسخ الرابط",
+    "linkCopied": "تم نسخ الرابط",
+    "joinTitle": "دعوة للانضمام",
+    "joinDesc": "تمت دعوتك للانضمام إلى",
+    "joinBtn": "انضم الآن",
+    "alreadyMember": "أنت بالفعل عضو في هذه الديوانية",
+    "loginToJoin": "سجّل الدخول للانضمام",
+    "joined": "انضممت بنجاح!",
+    "requiresLogin": "تحتاج إلى تسجيل الدخول لإنشاء ديوانية"
   }
 }

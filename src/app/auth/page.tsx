@@ -49,7 +49,9 @@ export default function AuthPage() {
     try {
       if (mode === "login") await loginWithEmail(email, password);
       else await registerWithEmail(email, password, name.trim());
-      router.push("/");
+      const joinId = sessionStorage.getItem("joinAfterAuth");
+      if (joinId) { sessionStorage.removeItem("joinAfterAuth"); router.push(`/join/${joinId}`); }
+      else router.push("/");
     } catch (e: unknown) {
       const code = (e as { code?: string }).code ?? "";
       setError(firebaseErrorMap[code] ?? tc("error"));
@@ -63,7 +65,9 @@ export default function AuthPage() {
     setLoading(true);
     try {
       await loginWithGoogle();
-      router.push("/");
+      const joinId = sessionStorage.getItem("joinAfterAuth");
+      if (joinId) { sessionStorage.removeItem("joinAfterAuth"); router.push(`/join/${joinId}`); }
+      else router.push("/");
     } catch (e: unknown) {
       const code = (e as { code?: string }).code ?? "";
       setError(firebaseErrorMap[code] ?? tc("error"));

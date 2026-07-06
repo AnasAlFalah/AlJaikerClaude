@@ -24,7 +24,10 @@
     "history": "History & Leaderboard",
     "historySub": "Stats and wins",
     "login": "Login",
-    "profile": "Profile"
+    "profile": "Profile",
+    "diwanya": "Diwanya",
+    "diwanyaTitle": "My Diwanyas",
+    "diwanyaSub": "My groups and friends"
   },
   "auth": {
     "login": "Sign In",
@@ -88,16 +91,36 @@
   "diwanya": {
     "diwanya": "Diwanya",
     "myDiwanyas": "My Diwanyas",
-    "createDiwanya": "Create Diwanya",
+    "createDiwanya": "Create New Diwanya",
     "joinDiwanya": "Join a Diwanya",
     "diwanyaName": "Diwanya Name",
+    "namePlaceholder": "e.g. Friday Diwanya",
     "members": "Members",
+    "membersCount": "members",
     "admin": "Admin",
     "founder": "Founder",
-    "invite": "Invite",
+    "member": "Member",
+    "invite": "Invite Member",
+    "inviteDesc": "Share the link or scan to join",
     "scanQR": "Scan QR Code",
-    "showQR": "Show QR Code",
+    "showQR": "Invite QR",
     "leave": "Leave Diwanya",
-    "noMembers": "No members yet"
+    "leaveConfirm": "Leave this Diwanya?",
+    "noMembers": "No members yet",
+    "noDiwanyas": "You haven't joined any Diwanya yet",
+    "noDiwanyasSub": "Create one or join via an invite link",
+    "create": "Create",
+    "creating": "Creating...",
+    "joinedOn": "Joined",
+    "promoteAdmin": "Promote to Admin",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied!",
+    "joinTitle": "You're Invited",
+    "joinDesc": "You've been invited to join",
+    "joinBtn": "Join Now",
+    "alreadyMember": "You're already a member",
+    "loginToJoin": "Sign in to join",
+    "joined": "Joined successfully!",
+    "requiresLogin": "You need to sign in to create a Diwanya"
   }
 }

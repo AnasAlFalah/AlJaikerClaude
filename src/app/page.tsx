@@ -95,6 +95,26 @@ export default async function HomePage() {
           </Link>
         </section>
 
+        {/* Diwanya */}
+        <section>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
+            {t("diwanya")}
+          </div>
+          <Link href="/diwanya" style={{ textDecoration: "none" }}>
+            <div style={{
+              background: "white", borderRadius: 16, padding: 16,
+              border: "1.5px solid #EEE", display: "flex", alignItems: "center", gap: 12, cursor: "pointer",
+            }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(27,94,56,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🏡</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{t("diwanyaTitle")}</div>
+                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{t("diwanyaSub")}</div>
+              </div>
+              <div style={{ color: "#CCC", fontSize: 20 }}>{locale === "ar" ? "←" : "→"}</div>
+            </div>
+          </Link>
+        </section>
+
         {/* History */}
         <section>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
