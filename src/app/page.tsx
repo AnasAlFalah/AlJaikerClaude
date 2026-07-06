@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getTranslations, getLocale } from "next-intl/server";
+import HomeClient from "@/components/HomeClient";
 
 const games = [
   { id: "kout",  img: "/images/Kout.png"  },
@@ -7,7 +9,11 @@ const games = [
   { id: "hand",  img: "/images/Hand.png"  },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await getTranslations("home");
+  const tc = await getTranslations("common");
+  const locale = await getLocale();
+
   return (
     <main style={{
       minHeight: "100vh",
@@ -26,44 +32,42 @@ export default function HomePage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        direction: "rtl",
+        direction: locale === "ar" ? "rtl" : "ltr",
       }}>
         <div>
           <div style={{ color: "#F2D060", fontSize: 28, fontWeight: 900, letterSpacing: -1 }}>
-            الجيكر
+            {tc("appName")}
           </div>
           <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 12, marginTop: 2 }}>
-            ديوانية الجمعة
+            {tc("appSubtitle")}
           </div>
         </div>
-        <img
-          src="/images/AlJaiker.png"
-          alt="AlJaiker"
-          style={{ width: 52, height: 52, borderRadius: 12, objectFit: "cover" }}
-        />
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <HomeClient locale={locale} />
+          <img
+            src="/images/AlJaiker.png"
+            alt="AlJaiker"
+            style={{ width: 52, height: 52, borderRadius: 12, objectFit: "cover" }}
+          />
+        </div>
       </header>
 
       {/* Body */}
-      <div style={{ flex: 1, padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 24, direction: "rtl" }}>
+      <div style={{ flex: 1, padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 24, direction: locale === "ar" ? "rtl" : "ltr" }}>
 
         {/* Ongoing games */}
         <section>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
-            الجلسات الجارية
+            {t("ongoing")}
           </div>
           <div style={{
-            background: "white",
-            borderRadius: 16,
-            padding: "16px",
-            border: "1.5px dashed #DDD",
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
+            background: "white", borderRadius: 16, padding: "16px",
+            border: "1.5px dashed #DDD", display: "flex", alignItems: "center", gap: 12,
           }}>
             <div style={{ fontSize: 24 }}>🃏</div>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#AAA" }}>لا توجد جلسات جارية</div>
-              <div style={{ fontSize: 11, color: "#CCC", marginTop: 2 }}>ابدأ لعبة جديدة من الأسفل</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#AAA" }}>{t("noOngoing")}</div>
+              <div style={{ fontSize: 11, color: "#CCC", marginTop: 2 }}>{t("noOngoingSub")}</div>
             </div>
           </div>
         </section>
@@ -71,38 +75,22 @@ export default function HomePage() {
         {/* New game */}
         <section>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
-            لعبة جديدة
+            {t("newGame")}
           </div>
-
-          {/* 2×2 grid — card images */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
             {games.map((game) => (
               <Link key={game.id} href={`/${game.id}/setup`} style={{ textDecoration: "none", display: "block" }}>
                 <img
-                  src={game.img}
-                  alt={game.id}
-                  style={{
-                    width: "100%",
-                    borderRadius: 14,
-                    display: "block",
-                    boxShadow: "0 3px 12px rgba(0,0,0,0.18)",
-                  }}
+                  src={game.img} alt={game.id}
+                  style={{ width: "100%", borderRadius: 14, display: "block", boxShadow: "0 3px 12px rgba(0,0,0,0.18)" }}
                 />
               </Link>
             ))}
           </div>
-
-          {/* General scoring — QaidAam image full width */}
           <Link href="/general/setup" style={{ textDecoration: "none", display: "block" }}>
             <img
-              src="/images/QaidAam.png"
-              alt="تسجيل عام"
-              style={{
-                width: "100%",
-                borderRadius: 14,
-                display: "block",
-                boxShadow: "0 3px 12px rgba(0,0,0,0.18)",
-              }}
+              src="/images/QaidAam.png" alt="تسجيل عام"
+              style={{ width: "100%", borderRadius: 14, display: "block", boxShadow: "0 3px 12px rgba(0,0,0,0.18)" }}
             />
           </Link>
         </section>
@@ -110,32 +98,19 @@ export default function HomePage() {
         {/* History */}
         <section>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
-            السجل
+            {t("history")}
           </div>
           <Link href="/history" style={{ textDecoration: "none" }}>
             <div style={{
-              background: "white",
-              borderRadius: 16,
-              padding: 16,
-              border: "1.5px solid #EEE",
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              cursor: "pointer",
+              background: "white", borderRadius: 16, padding: 16,
+              border: "1.5px solid #EEE", display: "flex", alignItems: "center", gap: 12, cursor: "pointer",
             }}>
-              <div style={{
-                width: 40, height: 40, borderRadius: 10,
-                background: "rgba(212,164,32,0.12)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 20, flexShrink: 0,
-              }}>
-                🏆
-              </div>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(212,164,32,0.12)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🏆</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>السجل والترتيب</div>
-                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>الإحصائيات والانتصارات</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{t("history")}</div>
+                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{t("historySub")}</div>
               </div>
-              <div style={{ color: "#CCC", fontSize: 20 }}>←</div>
+              <div style={{ color: "#CCC", fontSize: 20 }}>{locale === "ar" ? "←" : "→"}</div>
             </div>
           </Link>
         </section>
