@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import LiveShareButton from "@/components/LiveShareButton";
 import {
   KoutSession,
   KoutRound,
@@ -574,6 +575,8 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
     router.push(`/kout/${newSession.id}`);
   };
 
+  const getKoutData = useCallback(() => getSession(sessionId), [sessionId]);
+
   if (loading || !session) {
     return (
       <div style={{ minHeight: "100vh", background: "#0F3D24", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -639,6 +642,14 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
           onConfirm={handleRound}
           onCancel={() => { setShowEntry(false); setEditingRound(null); }}
           initialValues={editingRound ? { hakim: editingRound.hakim, hokm: editingRound.hokm, result: editingRound.result } : undefined}
+        />
+      )}
+
+      {session.status === "active" && (
+        <LiveShareButton
+          sessionId={sessionId}
+          game="kout"
+          getData={getKoutData}
         />
       )}
     </div>

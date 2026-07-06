@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import LiveShareButton from "@/components/LiveShareButton";
 import {
   TrixSession, TrixKingdom, TrixRound, TrixResult, TrixDeclType, TrixQueenEntry,
   ALL_DECL, TRIX_SCORES_4, TRIX_SCORES_5, DIAMONDS_PER, EAT_PER, HEARTS_PENALTY, QUEEN_PTS,
@@ -1044,6 +1045,8 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
     ? handleSummaryContinue
     : handleCancel;
 
+  const getTrixData = useCallback(() => getSession(sessionId), [sessionId]);
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -1077,6 +1080,9 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
       {view.type === "summary" && <RoundSummary results={view.results} players={session.players} onContinue={handleSummaryContinue} />}
       {view.type === "scores" && <ScoreTable session={session} onBack={() => setView({ type: "kingdoms" })} />}
       {view.type === "gameover" && <GameOver session={session} onRestart={handleRestart} onHome={() => router.push("/")} />}
+      {session.status === "active" && (
+        <LiveShareButton sessionId={sessionId} game="trix" getData={getTrixData} />
+      )}
     </div>
   );
 }
