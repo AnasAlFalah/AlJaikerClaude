@@ -948,6 +948,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
   const [session, setSession] = useState<TrixSession | null>(null);
   const [view, setView] = useState<ViewState>({ type: "kingdoms" });
   const [loading, setLoading] = useState(true);
+  const getTrixData = useCallback(() => getSession(sessionId), [sessionId]);
 
   useEffect(() => {
     const s = getSession(sessionId);
@@ -1044,8 +1045,6 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
     : view.type === "summary"
     ? handleSummaryContinue
     : handleCancel;
-
-  const getTrixData = useCallback(() => getSession(sessionId), [sessionId]);
 
   return (
     <div style={{

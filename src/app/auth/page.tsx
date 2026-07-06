@@ -8,8 +8,6 @@ import { useAuth } from "@/lib/auth-context";
 const FELT = "#1B5E38";
 const FELT_DK = "#0F3D24";
 const IVORY = "#F8F2E4";
-const IVORY_DK = "#EDE3D0";
-const IVORY_MID = "#E0D4BC";
 const JET = "#1A1210";
 const CRIMSON = "#C8102E";
 const GOLD = "#D4A420";

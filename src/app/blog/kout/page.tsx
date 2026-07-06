@@ -48,7 +48,7 @@ export default function KoutGuidePage() {
 
           <section>
             <h2 style={{ color: IVORY, fontSize: 22, fontWeight: 800, marginBottom: 12 }}>أساسيات اللعب</h2>
-            <p>في كل جولة، يختار أحد اللاعبين دور "الحكم". الحكم يعلن نوع الهوكم ويقرر إذا كان فريقه يريد الفوز (win) أو أنه سيخسر (lose). نتيجة الجولة تحدد النقاط.</p>
+            <p>في كل جولة، يختار أحد اللاعبين دور &quot;الحكم&quot;. الحكم يعلن نوع الهوكم ويقرر إذا كان فريقه يريد الفوز (win) أو أنه سيخسر (lose). نتيجة الجولة تحدد النقاط.</p>
           </section>
 
           <section>
@@ -73,7 +73,7 @@ export default function KoutGuidePage() {
                 </tbody>
               </table>
             </div>
-            <p style={{ fontSize: 13, color: "rgba(248,242,228,0.4)", marginTop: 10 }}>* النقاط تذهب للفريق الآخر (الخاصم). "باون" = 36 للخصم إذا فاز الحكم، 18 للخصم إذا خسر الحكم.</p>
+            <p style={{ fontSize: 13, color: "rgba(248,242,228,0.4)", marginTop: 10 }}>* النقاط تذهب للفريق الآخر (الخاصم). &quot;باون&quot; = 36 للخصم إذا فاز الحكم، 18 للخصم إذا خسر الحكم.</p>
           </section>
 
           <section>
