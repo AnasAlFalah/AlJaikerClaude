@@ -68,6 +68,23 @@
     "total": "Total",
     "score": "Score"
   },
+  "profile": {
+    "title": "Profile",
+    "editName": "Edit Name",
+    "namePlaceholder": "Your name",
+    "language": "Language",
+    "arabic": "Arabic",
+    "english": "English",
+    "account": "Account",
+    "logout": "Sign Out",
+    "logoutConfirm": "Sign out of your account?",
+    "memberSince": "Member since",
+    "guestBanner": "You're using the app as a guest",
+    "guestBannerSub": "Register to save your history and join Diwanyas",
+    "registerNow": "Register Now",
+    "nameSaved": "Name saved",
+    "deleteAccount": "Delete Account"
+  },
   "diwanya": {
     "diwanya": "Diwanya",
     "myDiwanyas": "My Diwanyas",

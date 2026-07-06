@@ -68,6 +68,23 @@
     "total": "المجموع",
     "score": "النقاط"
   },
+  "profile": {
+    "title": "الملف الشخصي",
+    "editName": "تعديل الاسم",
+    "namePlaceholder": "اسمك",
+    "language": "اللغة",
+    "arabic": "العربية",
+    "english": "الإنجليزية",
+    "account": "الحساب",
+    "logout": "تسجيل الخروج",
+    "logoutConfirm": "هل تريد تسجيل الخروج؟",
+    "memberSince": "عضو منذ",
+    "guestBanner": "أنت تستخدم التطبيق كضيف",
+    "guestBannerSub": "سجّل لحفظ سجلك والانضمام للديوانيات",
+    "registerNow": "تسجيل الآن",
+    "nameSaved": "تم حفظ الاسم",
+    "deleteAccount": "حذف الحساب"
+  },
   "diwanya": {
     "diwanya": "الديوانية",
     "myDiwanyas": "ديوانياتي",
