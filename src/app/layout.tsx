@@ -7,6 +7,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "الجيكر",
   description: "تطبيق تسجيل نقاط ألعاب الورق الكويتية",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "الجيكر",
+  },
 };
 
 export const viewport: Viewport = {
