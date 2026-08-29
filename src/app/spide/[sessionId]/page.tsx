@@ -8,6 +8,7 @@ import {
   getPassDirection, passDirectionLabel,
   calcRoundScores, calcEatAllScores, calcEatAllScoresTeam,
 } from "@/lib/spide";
+import LiveShareButton from "@/components/LiveShareButton";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type View = "scoreboard" | "roundEntry" | "gameOver";
@@ -147,6 +148,9 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
           </div>
         </div>
       )}
+      {session.status === "active" && (
+        <LiveShareButton sessionId={sessionId} game="spide" getData={() => getSession(sessionId)} />
+      )}
     </>
   );
 }
@@ -164,6 +168,8 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
 }) {
   const s = styles;
   const roundNum = session.rounds.length + 1;
+  const [roundView, setRoundView] = useState<"team" | "individual">("team");
+  const isTeams = session.mode === "teams" && !!session.teams;
 
   // Pass dot state: position in the 3-step cycle
   const cyclePos = ((roundNum - 1) % 3); // 0=right, 1=left, 2=none
@@ -260,69 +266,154 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
 
       {/* Round history — oldest first */}
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 80, background: "#FFFFFF" }}>
-        {/* Table header */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
-          padding: "8px 10px",
-          borderBottom: "1px solid #E4E0DD",
-          background: "#FFFFFF",
-        }}>
-          <div style={s.th}>#</div>
-          <div style={s.th}>↔</div>
-          <div style={{ ...s.th, textAlign: "right" }}>تفاصيل</div>
-          {session.players.map((p, i) => (
-            <div key={i} style={{ ...s.th, background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0", padding: "4px 0" }}>{p.name}</div>
-          ))}
-          <div style={s.th} />
-        </div>
-
-        {session.rounds.map((round, ri) => (
-          <div key={round.id} style={{
-            display: "grid",
-            gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
-            padding: "9px 10px",
-            borderBottom: "1px solid #F0EDE9",
-            alignItems: "center",
-            background: "#FFFFFF",
-          }}>
-            <div style={s.tdNum}>{round.number}</div>
-            <div style={{ ...s.td, fontSize: 14, color: passArrowColor(round.passDirection) }}>
-              {passArrow(round.passDirection)}
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 13, color: "#6B6460" }}>
-                {round.type === "eatAll"
-                  ? `أكل الكل — ${session.players[round.eatAllWinner!]?.name}`
-                  : "جولة عادية"}
-              </div>
-              {round.type === "normal" && (
-                <div style={{ fontSize: 13, color: "#9E9895" }}>
-                  {roundSummaryLine(round, session)}
-                </div>
-              )}
-            </div>
-            {round.scores.map((score, i) => (
-              <div key={i} style={{
-                ...s.td,
-                background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
-                color: score < 0 ? "#1C9245" : "#14110F",
-                fontSize: 18,
-                padding: "4px 0",
+        {/* Toggle for team/individual view (teams mode only) */}
+        {isTeams && (
+          <div style={{ display: "flex", justifyContent: "center", padding: "8px 10px 4px", gap: 8 }}>
+            {(["team", "individual"] as const).map(v => (
+              <button key={v} onClick={() => setRoundView(v)} style={{
+                padding: "4px 14px", borderRadius: 20, border: "1.5px solid",
+                borderColor: roundView === v ? "#1C9245" : "#E4E0DD",
+                background: roundView === v ? "#F1FAF4" : "#FFFFFF",
+                color: roundView === v ? "#1C9245" : "#7A736E",
+                fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
               }}>
-                {score > 0 ? `+${score}` : score}
+                {v === "team" ? "فرق" : "أفراد"}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Table header */}
+        {isTeams && roundView === "team" ? (() => {
+          const numTeams = session.teams!.length;
+          const teamCols = session.teams!.map(() => "60px").join(" ");
+          return (
+            <>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: `22px 28px 1fr ${teamCols} 28px`,
+                padding: "8px 10px",
+                borderBottom: "1px solid #E4E0DD",
+                background: "#FFFFFF",
+              }}>
+                <div style={s.th}>#</div>
+                <div style={s.th}>↔</div>
+                <div style={{ ...s.th, textAlign: "right" }}>تفاصيل</div>
+                {session.teams!.map((team, ti) => (
+                  <div key={ti} style={{ ...s.th, background: ti % 2 === 0 ? "#F1FAF4" : "#FEF6E0", padding: "4px 0" }}>{team.name}</div>
+                ))}
+                <div style={s.th} />
+              </div>
+              {session.rounds.map((round) => {
+                const teamScores = session.teams!.map((_, ti) =>
+                  round.scores.filter((_, i) => i % numTeams === ti).reduce((a, b) => a + b, 0)
+                );
+                return (
+                  <div key={round.id} style={{
+                    display: "grid",
+                    gridTemplateColumns: `22px 28px 1fr ${teamCols} 28px`,
+                    padding: "9px 10px",
+                    borderBottom: "1px solid #F0EDE9",
+                    alignItems: "center",
+                    background: "#FFFFFF",
+                  }}>
+                    <div style={s.tdNum}>{round.number}</div>
+                    <div style={{ ...s.td, fontSize: 14, color: passArrowColor(round.passDirection) }}>
+                      {passArrow(round.passDirection)}
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 13, color: "#6B6460" }}>
+                        {round.type === "eatAll"
+                          ? `أكل الكل — ${session.players[round.eatAllWinner!]?.name}`
+                          : "جولة عادية"}
+                      </div>
+                      {round.type === "normal" && (
+                        <div style={{ fontSize: 13, color: "#9E9895" }}>
+                          {roundSummaryLine(round, session)}
+                        </div>
+                      )}
+                    </div>
+                    {teamScores.map((score, ti) => (
+                      <div key={ti} style={{
+                        ...s.td,
+                        background: ti % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
+                        color: score < 0 ? "#1C9245" : "#14110F",
+                        fontSize: 18,
+                        padding: "4px 0",
+                      }}>
+                        {score > 0 ? `+${score}` : score}
+                      </div>
+                    ))}
+                    <button onClick={() => onEditRound(round)} style={{
+                      background: "none", border: "none", cursor: "pointer",
+                      color: "#BDBAB7", fontSize: 15, padding: 2, fontFamily: "inherit",
+                    }}>✎</button>
+                  </div>
+                );
+              })}
+            </>
+          );
+        })() : (
+          <>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
+              padding: "8px 10px",
+              borderBottom: "1px solid #E4E0DD",
+              background: "#FFFFFF",
+            }}>
+              <div style={s.th}>#</div>
+              <div style={s.th}>↔</div>
+              <div style={{ ...s.th, textAlign: "right" }}>تفاصيل</div>
+              {session.players.map((p, i) => (
+                <div key={i} style={{ ...s.th, background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0", padding: "4px 0" }}>{p.name}</div>
+              ))}
+              <div style={s.th} />
+            </div>
+            {session.rounds.map((round) => (
+              <div key={round.id} style={{
+                display: "grid",
+                gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
+                padding: "9px 10px",
+                borderBottom: "1px solid #F0EDE9",
+                alignItems: "center",
+                background: "#FFFFFF",
+              }}>
+                <div style={s.tdNum}>{round.number}</div>
+                <div style={{ ...s.td, fontSize: 14, color: passArrowColor(round.passDirection) }}>
+                  {passArrow(round.passDirection)}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 13, color: "#6B6460" }}>
+                    {round.type === "eatAll"
+                      ? `أكل الكل — ${session.players[round.eatAllWinner!]?.name}`
+                      : "جولة عادية"}
+                  </div>
+                  {round.type === "normal" && (
+                    <div style={{ fontSize: 13, color: "#9E9895" }}>
+                      {roundSummaryLine(round, session)}
+                    </div>
+                  )}
+                </div>
+                {round.scores.map((score, i) => (
+                  <div key={i} style={{
+                    ...s.td,
+                    background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
+                    color: score < 0 ? "#1C9245" : "#14110F",
+                    fontSize: 18,
+                    padding: "4px 0",
+                  }}>
+                    {score > 0 ? `+${score}` : score}
+                  </div>
+                ))}
+                <button onClick={() => onEditRound(round)} style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  color: "#BDBAB7", fontSize: 15, padding: 2, fontFamily: "inherit",
+                }}>✎</button>
               </div>
             ))}
-            <button
-              onClick={() => onEditRound(round)}
-              style={{
-                background: "none", border: "none", cursor: "pointer",
-                color: "#BDBAB7", fontSize: 15, padding: 2,
-                fontFamily: "inherit",
-              }}
-            >✎</button>
-          </div>
-        ))}
+          </>
+        )}
 
         {session.rounds.length === 0 && (
           <div style={{ padding: "32px 16px", textAlign: "center", color: "#BDBAB7", fontSize: 15 }}>
