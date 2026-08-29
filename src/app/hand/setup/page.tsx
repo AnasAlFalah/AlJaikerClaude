@@ -1,10 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HandSession, HandRoundCount, saveSession } from "@/lib/hand";
 
-const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#F5BC22", "#5B3FA6", "#0077B6", "#E07B39"];
+const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#3B8BEB", "#5B3FA6", "#E07B39", "#F5BC22"];
 
 function generateId() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -42,7 +42,7 @@ export default function HandSetupPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F5F2C",
+      background: "#FFFFFF",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -51,7 +51,7 @@ export default function HandSetupPage() {
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1C9245",
+        background: "#0F5F2C",
         padding: "44px 16px 14px",
         display: "flex",
         alignItems: "center",
@@ -61,8 +61,8 @@ export default function HandSetupPage() {
         <button
           onClick={() => router.push("/app")}
           style={{
-            width: 30, height: 30, borderRadius: "50%",
-            background: "rgba(255,255,255,0.1)",
+            width: 34, height: 34, borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
             border: "none", color: "#FFFFFF", fontSize: 16,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
@@ -70,24 +70,24 @@ export default function HandSetupPage() {
         >
           ←
         </button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>لعبة جديدة</div>
-          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>هند</div>
+          <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" }}>لعبة جديدة</div>
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, textAlign: "right" }}>هند</div>
         </div>
-        <div style={{ fontSize: 20 }}>♣</div>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px 100px", direction: "rtl" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px 100px", direction: "rtl", background: "#FFFFFF" }}>
 
         {/* Player count */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, textAlign: "right", marginBottom: 8, fontWeight: 700 }}>
+          <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 8, fontWeight: 700 }}>
             عدد اللاعبين
           </div>
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr",
-            background: "rgba(0,0,0,0.25)", borderRadius: 10, padding: 4, gap: 4,
+            background: "#F2F0EE", borderRadius: 10, padding: 4, gap: 4,
           }}>
             {([2, 3, 4, 5] as const).map(n => (
               <button
@@ -97,10 +97,10 @@ export default function HandSetupPage() {
                   padding: "10px 0",
                   borderRadius: 8, border: "none",
                   background: playerCount === n ? "#1C9245" : "transparent",
-                  color: playerCount === n ? "#FFFFFF" : "rgba(248,242,228,0.45)",
+                  color: playerCount === n ? "#FFFFFF" : "#7A736E",
                   fontSize: 15, fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: playerCount === n ? "0 1px 4px rgba(0,0,0,0.4)" : "none",
+                  boxShadow: playerCount === n ? "0 2px 8px rgba(28,146,69,0.3)" : "none",
                 }}
               >
                 {n}
@@ -111,12 +111,12 @@ export default function HandSetupPage() {
 
         {/* Round count */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, textAlign: "right", marginBottom: 8, fontWeight: 700 }}>
+          <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 8, fontWeight: 700 }}>
             عدد الجولات
           </div>
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 1fr",
-            background: "rgba(0,0,0,0.25)", borderRadius: 10, padding: 4, gap: 4,
+            background: "#F2F0EE", borderRadius: 10, padding: 4, gap: 4,
           }}>
             {([7, 9] as HandRoundCount[]).map(n => (
               <button
@@ -126,10 +126,10 @@ export default function HandSetupPage() {
                   padding: "10px 0",
                   borderRadius: 8, border: "none",
                   background: roundCount === n ? "#1C9245" : "transparent",
-                  color: roundCount === n ? "#FFFFFF" : "rgba(248,242,228,0.45)",
+                  color: roundCount === n ? "#FFFFFF" : "#7A736E",
                   fontSize: 14, fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: roundCount === n ? "0 1px 4px rgba(0,0,0,0.4)" : "none",
+                  boxShadow: roundCount === n ? "0 2px 8px rgba(28,146,69,0.3)" : "none",
                 }}
               >
                 {n} جولات
@@ -140,7 +140,7 @@ export default function HandSetupPage() {
 
         {/* Players */}
         <div>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
+          <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
             اللاعبون
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -161,11 +161,11 @@ export default function HandSetupPage() {
                   dir="rtl"
                   style={{
                     flex: 1,
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "#FFFFFF",
+                    border: "1.5px solid #E4E0DD",
                     borderRadius: 10,
                     padding: "10px 12px",
-                    color: "#FFFFFF",
+                    color: "#14110F",
                     fontSize: 14,
                     outline: "none",
                     textAlign: "right",
@@ -182,18 +182,20 @@ export default function HandSetupPage() {
       <div style={{
         padding: "12px 16px 32px",
         position: "sticky", bottom: 0,
-        background: "linear-gradient(to top, #0F3D24 70%, transparent)",
+        background: "linear-gradient(to top, #FFFFFF 70%, transparent)",
+        borderTop: "1px solid #F2F0EE",
       }}>
         <button
           onClick={handleStart}
           disabled={!canStart}
           style={{
             width: "100%", padding: "15px 0",
-            background: canStart ? "#1C9245" : "rgba(27,94,56,0.3)",
-            border: "none", borderRadius: 12,
-            color: canStart ? "#FFFFFF" : "rgba(248,242,228,0.3)",
-            fontSize: 16, fontWeight: 700,
+            background: canStart ? "#1C9245" : "#E4E0DD",
+            border: "none", borderRadius: 28,
+            color: canStart ? "#FFFFFF" : "#A59F9A",
+            fontSize: 17, fontWeight: 800,
             cursor: canStart ? "pointer" : "not-allowed",
+            boxShadow: canStart ? "0 4px 16px rgba(28,146,69,0.3)" : "none",
           }}
         >
           ابدأ اللعبة

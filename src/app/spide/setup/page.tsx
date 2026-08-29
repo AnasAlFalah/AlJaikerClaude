@@ -7,10 +7,8 @@ import {
   getAvatarColor, getSavedSpideTeams, saveSpideTeam, saveSession,
 } from "@/lib/spide";
 
-const TARGETS: SpideTarget[] = [100, 150, 200, 250];
-
-const TEAM_COLORS = ["#3DEB7A", "#E74C3C", "#3B8BEB"];
-const TEAM_BORDER_COLORS = ["rgba(61,235,122,0.3)", "rgba(231,76,60,0.3)", "rgba(59,139,235,0.3)"];
+const TEAM_COLORS = ["#1C9245", "#CE1F26", "#3B8BEB"];
+const TEAM_BORDER_COLORS = ["#D4EDDA", "#FADADD", "#D6EAF8"];
 
 export default function SpideSetupPage() {
   const router = useRouter();
@@ -19,7 +17,6 @@ export default function SpideSetupPage() {
   const [numTeams, setNumTeams] = useState<2 | 3>(2);
   const [names, setNames] = useState<string[]>(["", "", "", "", "", ""]);
   const [teamNames, setTeamNames] = useState(["الفريق الأول", "الفريق الثاني", "الفريق الثالث"]);
-  const [target, setTarget] = useState<SpideTarget>(150);
   const [savedTeams, setSavedTeams] = useState<SavedSpideTeam[]>([]);
 
   useEffect(() => {
@@ -68,7 +65,7 @@ export default function SpideSetupPage() {
       playerCount,
       players,
       teams,
-      target,
+      target: 9999 as SpideTarget,
       rounds: [],
       status: "active",
       createdAt: new Date().toISOString(),
@@ -83,6 +80,7 @@ export default function SpideSetupPage() {
     <main style={s.page}>
       <div style={s.topbar}>
         <button style={s.backBtn} onClick={() => router.push("/app")}>←</button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={s.topTitle}>لعبة جديدة</div>
           <div style={s.topSub}>سبيد</div>
@@ -126,7 +124,7 @@ export default function SpideSetupPage() {
             })}
           </div>
           {mode === "teams" && (
-            <div style={{ fontSize: 13, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>
+            <div style={{ fontSize: 13, color: "#A59F9A", textAlign: "right", marginTop: 4 }}>
               الفرق تتطلب عدد زوجي من اللاعبين (4 أو 6)
             </div>
           )}
@@ -188,7 +186,7 @@ export default function SpideSetupPage() {
                       dir="rtl"
                       placeholder={`الفريق ${t + 1}`}
                     />
-                    <div style={{ fontSize: 13, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                    <div style={{ fontSize: 13, color: "#A59F9A", flexShrink: 0, whiteSpace: "nowrap" }}>
                       {memberIndices.map(i => `ل${i + 1}`).join(" ")}
                     </div>
                   </div>
@@ -240,19 +238,9 @@ export default function SpideSetupPage() {
           )}
         </div>
 
-        <div>
-          <div style={s.secLabel}>هدف النقاط (الخسارة)</div>
-          <div style={{ ...s.toggleStrip, gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
-            {TARGETS.map(t => (
-              <button
-                key={t}
-                style={{ ...s.toggleBtn, ...(target === t ? s.toggleActive : {}) }}
-                onClick={() => setTarget(t)}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+        <div style={{ background: "#F1FAF4", border: "1px solid #E2F4E8", borderRadius: 10, padding: "10px 14px", textAlign: "right" }}>
+          <div style={{ fontSize: 13, color: "#1C9245", fontWeight: 700, marginBottom: 2 }}>اللعبة مفتوحة النهاية</div>
+          <div style={{ fontSize: 12, color: "#7A736E" }}>تنتهي اللعبة فقط عند الضغط على زر &quot;إنهاء اللعبة&quot;</div>
         </div>
       </div>
 
@@ -272,7 +260,7 @@ export default function SpideSetupPage() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "#0F5F2C",
+    background: "#FFFFFF",
     display: "flex",
     flexDirection: "column" as const,
     maxWidth: 390,
@@ -281,7 +269,7 @@ const styles = {
     position: "relative" as const,
   },
   topbar: {
-    background: "#1C9245",
+    background: "#0F5F2C",
     padding: "48px 16px 14px",
     display: "flex",
     alignItems: "center",
@@ -290,40 +278,43 @@ const styles = {
     flexShrink: 0,
   },
   backBtn: {
-    width: 30, height: 30, borderRadius: "50%",
-    background: "rgba(255,255,255,0.1)",
-    border: "none", color: "#FFFFFF", fontSize: 16,
+    width: 34, height: 34, borderRadius: "50%",
+    background: "rgba(255,255,255,0.15)",
+    border: "none", color: "#FFFFFF", fontSize: 18,
     display: "flex", alignItems: "center", justifyContent: "center",
     cursor: "pointer", flexShrink: 0,
   } as React.CSSProperties,
-  topTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" as const },
-  topSub: { color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" as const },
-  topBadge: { fontSize: 20 },
+  topTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" as const },
+  topSub: { color: "rgba(255,255,255,0.6)", fontSize: 13, textAlign: "right" as const },
+  topBadge: { fontSize: 26, lineHeight: 1 },
   body: {
     flex: 1,
     overflowY: "auto" as const,
-    padding: "16px 16px 120px",
+    padding: "20px 16px 120px",
     display: "flex",
     flexDirection: "column" as const,
-    gap: 14,
+    gap: 16,
     direction: "rtl" as const,
+    background: "#FFFFFF",
   },
   secLabel: {
-    color: "rgba(248,242,228,0.45)",
+    color: "#7A736E",
     fontSize: 13, fontWeight: 700,
     textAlign: "right" as const,
     marginBottom: 8,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.5px",
   },
   toggleStrip: {
     display: "grid",
-    background: "rgba(0,0,0,0.3)",
+    background: "#F2F0EE",
     borderRadius: 10, padding: 4, gap: 4,
   },
   toggleBtn: {
-    padding: "9px 4px",
+    padding: "10px 4px",
     borderRadius: 8, border: "none",
     background: "transparent",
-    color: "rgba(248,242,228,0.4)",
+    color: "#7A736E",
     fontSize: 14, fontWeight: 600,
     cursor: "pointer", textAlign: "center" as const,
     fontFamily: "inherit",
@@ -331,50 +322,53 @@ const styles = {
   toggleActive: {
     background: "#1C9245",
     color: "#FFFFFF",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
+    boxShadow: "0 2px 8px rgba(28,146,69,0.3)",
   },
   avatar: {
-    width: 28, height: 28, borderRadius: "50%",
+    width: 32, height: 32, borderRadius: "50%",
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#fff", fontSize: 13, fontWeight: 700, flexShrink: 0,
+    color: "#fff", fontSize: 14, fontWeight: 700, flexShrink: 0,
   } as React.CSSProperties,
   playerInput: {
     flex: 1,
-    background: "rgba(255,255,255,0.06)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 8, padding: "7px 10px",
-    color: "#FFFFFF", fontSize: 15,
+    background: "#FFFFFF",
+    border: "1.5px solid #E4E0DD",
+    borderRadius: 10, padding: "10px 12px",
+    color: "#14110F", fontSize: 15,
     outline: "none", textAlign: "right" as const,
     fontFamily: "inherit", width: "100%",
   },
   savedChip: {
     padding: "7px 14px", borderRadius: 20,
-    background: "rgba(212,164,32,0.1)",
-    border: "1px solid rgba(212,164,32,0.25)",
-    color: "#F5BC22", fontSize: 14, fontWeight: 600,
+    background: "#FFFBF0",
+    border: "1px solid #F5BC22",
+    color: "#3A3330", fontSize: 14, fontWeight: 600,
     cursor: "pointer", fontFamily: "inherit",
   },
   saveTeamBtn: {
-    marginTop: 8, width: "100%", padding: 8,
+    marginTop: 8, width: "100%", padding: 10,
     background: "transparent",
-    border: "1px dashed rgba(212,164,32,0.3)",
-    borderRadius: 8, color: "rgba(212,164,32,0.6)",
+    border: "1.5px dashed #E4E0DD",
+    borderRadius: 10, color: "#7A736E",
     fontSize: 14, cursor: "pointer", fontFamily: "inherit",
   },
   stickyBtn: {
     position: "absolute" as const, bottom: 0, left: 0, right: 0,
     padding: "12px 16px 28px",
-    background: "linear-gradient(to top, #0F3D24 70%, transparent)",
+    background: "linear-gradient(to top, #FFFFFF 70%, transparent)",
+    borderTop: "1px solid #F2F0EE",
   },
   btnPrimary: {
-    width: "100%", padding: "15px 0",
-    background: "#1C9245", border: "none", borderRadius: 12,
-    color: "#FFFFFF", fontSize: 16, fontWeight: 700,
+    width: "100%", padding: "16px 0",
+    background: "#1C9245", border: "none", borderRadius: 28,
+    color: "#FFFFFF", fontSize: 17, fontWeight: 800,
     cursor: "pointer", fontFamily: "inherit",
+    boxShadow: "0 4px 16px rgba(28,146,69,0.3)",
   },
   btnDisabled: {
-    background: "rgba(27,94,56,0.3)",
-    color: "rgba(248,242,228,0.3)",
+    background: "#E4E0DD",
+    color: "#A59F9A",
     cursor: "not-allowed",
+    boxShadow: "none",
   },
 };

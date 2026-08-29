@@ -19,6 +19,7 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   const [session, setSession] = useState<SpideSession | null>(null);
   const [view, setView] = useState<View>("scoreboard");
   const [editingRound, setEditingRound] = useState<SpideRound | null>(null);
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
 
   useEffect(() => {
     const s = getSession(sessionId);
@@ -50,21 +51,14 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
     } else {
       updatedRounds = [...session!.rounds, round];
     }
-    const newTotals = getPlayerTotals({ ...session!, rounds: updatedRounds });
-    const totalsToCheck = session!.mode === "teams" && session!.teams
-      ? session!.teams.map((_, t) =>
-          newTotals.filter((_, i) => i % session!.teams!.length === t).reduce((a, b) => a + b, 0)
-        )
-      : newTotals;
-    const over = isGameOver(totalsToCheck, session!.target);
     const updated: SpideSession = {
       ...session!,
       rounds: updatedRounds,
-      status: over ? "finished" : "active",
+      status: "active",
     };
     updateSession(updated);
     setEditingRound(null);
-    setView(over ? "gameOver" : "scoreboard");
+    setView("scoreboard");
   }
 
   if (view === "gameOver") {
@@ -92,22 +86,68 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
   }
 
   function handleEndGame() {
+    setShowEndConfirm(true);
+  }
+
+  function confirmEndGame() {
     const updated: SpideSession = { ...session!, status: "finished" };
     updateSession(updated);
+    setShowEndConfirm(false);
     setView("gameOver");
   }
 
   return (
-    <Scoreboard
-      session={session}
-      totals={totals}
-      leaderIdx={leaderIdx}
-      nextPassDir={nextPassDir}
-      onAddRound={() => setView("roundEntry")}
-      onEditRound={(round) => { setEditingRound(round); setView("roundEntry"); }}
-      onBack={() => router.push("/app")}
-      onEndGame={handleEndGame}
-    />
+    <>
+      <Scoreboard
+        session={session}
+        totals={totals}
+        leaderIdx={leaderIdx}
+        nextPassDir={nextPassDir}
+        onAddRound={() => setView("roundEntry")}
+        onEditRound={(round) => { setEditingRound(round); setView("roundEntry"); }}
+        onBack={() => router.push("/app")}
+        onEndGame={handleEndGame}
+      />
+      {showEndConfirm && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 9999, padding: "0 24px",
+        }}>
+          <div style={{
+            background: "#FFFFFF", borderRadius: 20, padding: "28px 24px",
+            maxWidth: 340, width: "100%", textAlign: "center",
+            boxShadow: "0 16px 60px rgba(0,0,0,0.3)",
+          }}>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>🏁</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#14110F", marginBottom: 8 }}>إنهاء اللعبة؟</div>
+            <div style={{ fontSize: 14, color: "#7A736E", marginBottom: 24, lineHeight: 1.6 }}>
+              سيتم حفظ النتائج الحالية وعرض الترتيب النهائي
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                onClick={() => setShowEndConfirm(false)}
+                style={{
+                  flex: 1, padding: "13px 0", borderRadius: 28,
+                  background: "#F2F0EE", border: "none",
+                  color: "#3A3330", fontSize: 15, fontWeight: 700,
+                  cursor: "pointer", fontFamily: "inherit",
+                }}
+              >إلغاء</button>
+              <button
+                onClick={confirmEndGame}
+                style={{
+                  flex: 1, padding: "13px 0", borderRadius: 28,
+                  background: "#CE1F26", border: "none",
+                  color: "#FFFFFF", fontSize: 15, fontWeight: 700,
+                  cursor: "pointer", fontFamily: "inherit",
+                }}
+              >إنهاء</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -133,9 +173,10 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
       {/* Topbar */}
       <div style={s.topbar}>
         <button style={s.backBtn} onClick={onBack}>←</button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={s.topTitle}>سبيد</div>
-          <div style={s.topSub}>جولة {roundNum} من {session.target}</div>
+          <div style={s.topSub}>جولة {roundNum}</div>
         </div>
         <div style={s.topBadge}>♥</div>
       </div>
@@ -752,7 +793,7 @@ function GameOver({ session, totals, onRestart, onHome }: {
             </div>
           </div>
 
-          <div style={{ padding: "20px 16px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 8 }}>
             <button style={s.btnPrimary} onClick={onRestart}>لعبة جديدة بنفس اللاعبين</button>
             <button style={s.btnSecondary} onClick={onHome}>الرئيسية</button>
           </div>
@@ -775,7 +816,7 @@ function GameOver({ session, totals, onRestart, onHome }: {
           <div style={s.topTitle}>انتهت اللعبة</div>
           <div style={s.topSub}>سبيد · {session.rounds.length} جولة</div>
         </div>
-        <div style={s.topBadge}>♥</div>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "0 0 40px", direction: "rtl" as const }}>
@@ -855,7 +896,7 @@ function GameOver({ session, totals, onRestart, onHome }: {
           </div>
         </div>
 
-        <div style={{ padding: "20px 16px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 8 }}>
           <button style={s.btnPrimary} onClick={onRestart}>لعبة جديدة بنفس اللاعبين</button>
           <button style={s.btnSecondary} onClick={onHome}>الرئيسية</button>
         </div>

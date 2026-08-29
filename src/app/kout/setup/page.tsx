@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ import {
 } from "@/lib/kout";
 
 const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#F5BC22", "#5B3FA6", "#0077B6", "#E07B39"];
+const TEAM_COLORS = ["#1C9245", "#CE1F26", "#3B8BEB"];
+const TEAM_BORDER_COLORS = ["#D4EDDA", "#FADADD", "#D6EAF8"];
 
 function generateId() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -48,7 +50,8 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
 
   return (
     <div style={{
-      background: "rgba(255,255,255,0.06)",
+      background: "#FFFFFF",
+      border: "1.5px solid #E4E0DD",
       borderRadius: 14,
       padding: "14px 14px 10px",
       marginBottom: 12,
@@ -57,10 +60,10 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <div style={{
           width: 8, height: 8, borderRadius: "50%",
-          background: AVATAR_COLORS[avatarOffset % AVATAR_COLORS.length],
+          background: TEAM_COLORS[avatarOffset === 0 ? 0 : 1],
           flexShrink: 0,
         }} />
-        <span style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, whiteSpace: "nowrap" }}>{label}</span>
+        <span style={{ color: "#7A736E", fontSize: 13, whiteSpace: "nowrap" }}>{label}</span>
         <input
           value={team.name}
           onChange={e => setName(e.target.value)}
@@ -68,11 +71,11 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
           dir="rtl"
           style={{
             flex: 1,
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 8,
+            background: "#FFFFFF",
+            border: "1.5px solid #E4E0DD",
+            borderRadius: 10,
             padding: "6px 10px",
-            color: "#FFFFFF",
+            color: "#14110F",
             fontSize: 15,
             fontWeight: 600,
             outline: "none",
@@ -89,11 +92,11 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
               key={st.id}
               onClick={() => applyTeam(st)}
               style={{
-                background: "rgba(212,164,32,0.15)",
-                border: "1px solid rgba(212,164,32,0.3)",
+                background: "#FFFBF0",
+                border: "1px solid #F5BC22",
                 borderRadius: 20,
                 padding: "4px 10px",
-                color: "#F5BC22",
+                color: "#3A3330",
                 fontSize: 13,
                 cursor: "pointer",
               }}
@@ -122,11 +125,11 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
             dir="rtl"
             style={{
               flex: 1,
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 8,
+              background: "#FFFFFF",
+              border: "1.5px solid #E4E0DD",
+              borderRadius: 10,
               padding: "7px 10px",
-              color: "#FFFFFF",
+              color: "#14110F",
               fontSize: 15,
               outline: "none",
               textAlign: "right",
@@ -142,10 +145,10 @@ function TeamEditor({ label, team, playerCount, savedTeams, avatarOffset, onChan
           width: "100%",
           marginTop: 8,
           background: "transparent",
-          border: "1px solid rgba(212,164,32,0.3)",
+          border: "1.5px dashed #E4E0DD",
           borderRadius: 8,
           padding: "7px 0",
-          color: "#F5BC22",
+          color: "#7A736E",
           fontSize: 14,
           cursor: "pointer",
         }}
@@ -198,7 +201,7 @@ export default function KoutSetupPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F5F2C",
+      background: "#FFFFFF",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -207,7 +210,7 @@ export default function KoutSetupPage() {
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1C9245",
+        background: "#0F5F2C",
         padding: "14px 16px",
         display: "flex",
         alignItems: "center",
@@ -216,30 +219,31 @@ export default function KoutSetupPage() {
         <button
           onClick={() => router.push("/app")}
           style={{
-            width: 30, height: 30, borderRadius: "50%",
-            background: "rgba(255,255,255,0.1)",
+            width: 34, height: 34, borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
             border: "none", color: "#FFFFFF", fontSize: 16,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
           }}
         >
           ←
         </button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>لعبة جديدة</div>
-          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>كوت</div>
+          <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" }}>لعبة جديدة</div>
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, textAlign: "right" }}>كوت</div>
         </div>
         <div style={{ fontSize: 20 }}>♛</div>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 16px 100px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 16px 100px", background: "#FFFFFF" }}>
 
         {/* Mode toggle */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, textAlign: "right", marginBottom: 8 }}>نظام اللعب</div>
+          <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 8 }}>نظام اللعب</div>
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 1fr",
-            background: "rgba(0,0,0,0.25)", borderRadius: 10, padding: 4, gap: 4,
+            background: "#F2F0EE", borderRadius: 10, padding: 4, gap: 4,
           }}>
             {(["2v2", "3v3"] as KoutMode[]).map(m => (
               <button
@@ -249,10 +253,10 @@ export default function KoutSetupPage() {
                   padding: "10px 0",
                   borderRadius: 8, border: "none",
                   background: mode === m ? "#1C9245" : "transparent",
-                  color: mode === m ? "#FFFFFF" : "rgba(248,242,228,0.45)",
+                  color: mode === m ? "#FFFFFF" : "#7A736E",
                   fontSize: 14, fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: mode === m ? "0 1px 4px rgba(0,0,0,0.4)" : "none",
+                  boxShadow: mode === m ? "0 2px 8px rgba(28,146,69,0.3)" : "none",
                 }}
               >
                 {m === "2v2" ? "2 ضد 2" : "3 ضد 3"}
@@ -272,7 +276,7 @@ export default function KoutSetupPage() {
         />
 
         {/* vs divider */}
-        <div style={{ textAlign: "center", color: "rgba(212,164,32,0.6)", fontSize: 15, fontWeight: 700, margin: "4px 0 12px" }}>
+        <div style={{ textAlign: "center", color: "#A59F9A", fontSize: 15, fontWeight: 700, margin: "4px 0 12px" }}>
           ضد
         </div>
 
@@ -288,10 +292,10 @@ export default function KoutSetupPage() {
 
         {/* Target score */}
         <div style={{ marginTop: 16 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, textAlign: "right", marginBottom: 8 }}>هدف النقاط</div>
+          <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 8 }}>هدف النقاط</div>
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 1fr",
-            background: "rgba(0,0,0,0.25)", borderRadius: 10, padding: 4, gap: 4,
+            background: "#F2F0EE", borderRadius: 10, padding: 4, gap: 4,
           }}>
             {([51, 101] as const).map(t => (
               <button
@@ -301,10 +305,10 @@ export default function KoutSetupPage() {
                   padding: "10px 0",
                   borderRadius: 8, border: "none",
                   background: target === t ? "#1C9245" : "transparent",
-                  color: target === t ? "#FFFFFF" : "rgba(248,242,228,0.45)",
+                  color: target === t ? "#FFFFFF" : "#7A736E",
                   fontSize: 14, fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: target === t ? "0 1px 4px rgba(0,0,0,0.4)" : "none",
+                  boxShadow: target === t ? "0 2px 8px rgba(28,146,69,0.3)" : "none",
                 }}
               >
                 {t}
@@ -315,21 +319,28 @@ export default function KoutSetupPage() {
       </div>
 
       {/* Start button */}
-      <div style={{ padding: "12px 16px 24px", position: "sticky", bottom: 0, background: "#0F5F2C" }}>
+      <div style={{
+        padding: "12px 16px 24px",
+        position: "sticky",
+        bottom: 0,
+        background: "linear-gradient(to top, #FFFFFF 70%, transparent)",
+        borderTop: "1px solid #F2F0EE",
+      }}>
         <button
           onClick={handleStart}
           disabled={!canStart}
           style={{
             width: "100%",
             padding: "15px 0",
-            background: canStart ? "#1C9245" : "rgba(27,94,56,0.3)",
+            background: canStart ? "#1C9245" : "#E4E0DD",
             border: "none",
-            borderRadius: 12,
-            color: canStart ? "#FFFFFF" : "rgba(248,242,228,0.3)",
-            fontSize: 16,
-            fontWeight: 700,
+            borderRadius: 28,
+            color: canStart ? "#FFFFFF" : "#A59F9A",
+            fontSize: 17,
+            fontWeight: 800,
             cursor: canStart ? "pointer" : "not-allowed",
             transition: "all 0.2s",
+            boxShadow: canStart ? "0 4px 16px rgba(28,146,69,0.3)" : "none",
           }}
         >
           ابدأ اللعبة
