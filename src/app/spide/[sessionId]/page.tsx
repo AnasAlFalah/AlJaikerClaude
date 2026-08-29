@@ -382,8 +382,8 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
                   style={{
                     display: "flex", alignItems: "center", gap: 12,
                     padding: "14px 16px", borderRadius: 12,
-                    border: eatAllWinner === i ? "2px solid #D4A420" : "1px solid rgba(255,255,255,0.1)",
-                    background: eatAllWinner === i ? "rgba(212,164,32,0.15)" : "rgba(255,255,255,0.04)",
+                    border: eatAllWinner === i ? "2px solid #D4A420" : "1px solid #E4E0DD",
+                    background: eatAllWinner === i ? "rgba(212,164,32,0.15)" : "#F2F0EE",
                     cursor: "pointer", fontFamily: "inherit",
                   }}
                   onClick={() => setEatAllWinner(i)}
@@ -391,10 +391,10 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
                   <div style={{ ...s.avatar32, background: p.avatarColor }}>
                     {p.name[0]}
                   </div>
-                  <div style={{ flex: 1, textAlign: "right", color: eatAllWinner === i ? "#F5BC22" : "rgba(248,242,228,0.6)", fontSize: 14, fontWeight: 700 }}>
+                  <div style={{ flex: 1, textAlign: "right", color: eatAllWinner === i ? "#F5BC22" : "#3A3330", fontSize: 14, fontWeight: 700 }}>
                     {p.name}
                   </div>
-                  <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 14 }}>
+                  <div style={{ color: "#7A736E", fontSize: 14 }}>
                     {totals[i]} نقطة
                   </div>
                   {eatAllWinner === i && <div style={{ color: "#F5BC22", fontSize: 18 }}>✓</div>}
@@ -408,12 +408,12 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
                 <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
                   <div style={{ textAlign: "center" }}>
                     <div style={{ color: "#2ECC71", fontSize: 22, fontWeight: 900 }}>0</div>
-                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13 }}>{session.players[eatAllWinner].name}</div>
+                    <div style={{ color: "#7A736E", fontSize: 13 }}>{session.players[eatAllWinner].name}</div>
                   </div>
-                  <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 20 }}>|</div>
+                  <div style={{ color: "#C8C4C0", fontSize: 20 }}>|</div>
                   <div style={{ textAlign: "center" }}>
                     <div style={{ color: "#E74C3C", fontSize: 22, fontWeight: 900 }}>+26</div>
-                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13 }}>الباقين</div>
+                    <div style={{ color: "#7A736E", fontSize: 13 }}>الباقين</div>
                   </div>
                 </div>
               </div>
@@ -519,10 +519,10 @@ function PlayerCard({ player, total, entry, onChange }: {
         <div style={{ ...s.avatar, background: player.avatarColor, width: 32, height: 32, fontSize: 14 }}>
           {player.name[0]}
         </div>
-        <div style={{ flex: 1, textAlign: "right", color: "#FFFFFF", fontSize: 14, fontWeight: 700 }}>
+        <div style={{ flex: 1, textAlign: "right", color: "#14110F", fontSize: 14, fontWeight: 700 }}>
           {player.name}
         </div>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 14 }}>{total} نقطة</div>
+        <div style={{ color: "#7A736E", fontSize: 14 }}>{total} نقطة</div>
       </div>
 
       {/* Card pills */}
@@ -601,11 +601,11 @@ function PlayerCard({ player, total, entry, onChange }: {
       {!entry.ateNothing && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 14 }}>الحاس ♥</div>
+            <div style={{ color: "#7A736E", fontSize: 14 }}>الحاس ♥</div>
             <div style={{
               fontSize: 22, fontWeight: 900,
               fontVariantNumeric: "tabular-nums",
-              color: entry.hearts === 0 ? "rgba(248,242,228,0.3)" : "#E74C3C",
+              color: entry.hearts === 0 ? "#C8C4C0" : "#E74C3C",
             }}>
               {entry.hearts}
             </div>
@@ -621,14 +621,14 @@ function PlayerCard({ player, total, entry, onChange }: {
               WebkitAppearance: "none" as const,
               width: "100%", height: 6,
               borderRadius: 4,
-              background: `linear-gradient(to right, #E74C3C ${(entry.hearts / 13) * 100}%, rgba(255,255,255,0.1) ${(entry.hearts / 13) * 100}%)`,
+              background: `linear-gradient(to right, #E74C3C ${(entry.hearts / 13) * 100}%, #E4E0DD ${(entry.hearts / 13) * 100}%)`,
               outline: "none", cursor: "pointer",
               accentColor: "#E74C3C",
             }}
           />
           <div style={{ display: "flex", justifyContent: "space-between", direction: "ltr" }}>
-            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 13 }}>0</div>
-            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 13 }}>13</div>
+            <div style={{ color: "#C8C4C0", fontSize: 13 }}>0</div>
+            <div style={{ color: "#C8C4C0", fontSize: 13 }}>13</div>
           </div>
         </div>
       )}
@@ -903,7 +903,7 @@ const styles = {
     position: "relative" as const,
   },
   topbar: {
-    background: "#1C9245",
+    background: "#0F5F2C",
     padding: "48px 16px 14px",
     display: "flex",
     alignItems: "center",
@@ -957,27 +957,28 @@ const styles = {
     direction: "rtl" as const,
   },
   secLabel: {
-    color: "rgba(248,242,228,0.45)",
+    color: "#7A736E",
     fontSize: 13, fontWeight: 700,
     textAlign: "right" as const,
     marginBottom: 8,
   },
   roundTypeBtn: {
     padding: "18px 12px",
-    borderRadius: 14, border: "2px solid rgba(255,255,255,0.1)",
-    background: "rgba(255,255,255,0.05)",
-    color: "rgba(248,242,228,0.5)", fontSize: 14, fontWeight: 700,
+    borderRadius: 14, border: "2px solid #E4E0DD",
+    background: "#F2F0EE",
+    color: "#7A736E", fontSize: 14, fontWeight: 700,
     cursor: "pointer", textAlign: "center" as const, fontFamily: "inherit",
     display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6,
   },
   roundTypeNormal: {
-    borderColor: "#1C9245", background: "rgba(27,94,56,0.3)", color: "#FFFFFF",
+    borderColor: "#1C9245", background: "rgba(28,146,69,0.08)", color: "#1C9245",
   },
   roundTypeEat: {
     borderColor: "#F5BC22", background: "rgba(212,164,32,0.12)", color: "#F5BC22",
   },
   playerCard: {
-    background: "rgba(255,255,255,0.06)",
+    background: "#FFFFFF",
+    border: "1.5px solid #E4E0DD",
     borderRadius: 14, padding: "12px 14px",
     display: "flex", flexDirection: "column" as const, gap: 10,
   },
@@ -993,9 +994,9 @@ const styles = {
   } as React.CSSProperties,
   pill: {
     padding: "6px 12px", borderRadius: 20,
-    border: "1px solid rgba(255,255,255,0.12)",
-    background: "rgba(255,255,255,0.05)",
-    color: "rgba(248,242,228,0.5)", fontSize: 14, fontWeight: 600,
+    border: "1px solid #E4E0DD",
+    background: "#F2F0EE",
+    color: "#7A736E", fontSize: 14, fontWeight: 600,
     cursor: "pointer", fontFamily: "inherit",
   },
   pillQueen: { borderColor: "#5B3FA6", background: "rgba(91,63,166,0.2)", color: "#A990F0" },
@@ -1004,30 +1005,30 @@ const styles = {
   announceRow: {
     display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8,
   },
-  announceLabel: { color: "rgba(248,242,228,0.4)", fontSize: 13 },
+  announceLabel: { color: "#7A736E", fontSize: 13 },
   announceToggle: {
-    display: "flex", background: "rgba(0,0,0,0.3)", borderRadius: 20, padding: 3, gap: 3,
+    display: "flex", background: "#F2F0EE", borderRadius: 20, padding: 3, gap: 3,
   },
   annBtn: {
     padding: "4px 12px", borderRadius: 16, border: "none",
     fontSize: 13, fontWeight: 700,
     cursor: "pointer", fontFamily: "inherit",
-    background: "transparent", color: "rgba(248,242,228,0.35)",
+    background: "transparent", color: "#A59F9A",
   },
-  annBtnActiveNo: { background: "rgba(255,255,255,0.08)", color: "rgba(248,242,228,0.7)" },
+  annBtnActiveNo: { background: "#FFFFFF", color: "#3A3330" },
   annBtnActiveYes: { background: "#5B3FA6", color: "#fff" },
   countBar: {
-    background: "rgba(0,0,0,0.25)",
+    background: "#F2F0EE",
     borderRadius: 12, padding: "12px 16px",
     display: "flex", alignItems: "center", justifyContent: "space-between",
-    border: "1px solid rgba(255,255,255,0.06)",
+    border: "1px solid #E4E0DD",
   },
   countBarOk: { borderColor: "rgba(46,204,113,0.3)", background: "rgba(46,204,113,0.06)" },
   countBarWarn: { borderColor: "rgba(231,76,60,0.3)", background: "rgba(231,76,60,0.06)" },
-  countLabel: { color: "rgba(248,242,228,0.45)", fontSize: 14 },
+  countLabel: { color: "#7A736E", fontSize: 14 },
   resultPreview: {
     marginTop: 8,
-    background: "rgba(212,164,32,0.08)", border: "1px solid rgba(212,164,32,0.2)",
+    background: "#FEF6E0", border: "1px solid rgba(212,164,32,0.2)",
     borderRadius: 12, padding: 14,
   },
   stickyBtn: {

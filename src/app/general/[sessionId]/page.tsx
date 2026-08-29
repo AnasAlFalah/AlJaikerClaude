@@ -57,13 +57,13 @@ function RoundEntry({
     }}>
       <div style={{
         width: "100%", maxWidth: 390, margin: "0 auto",
-        background: "#0F5F2C",
+        background: "#FFFFFF",
         borderRadius: "20px 20px 0 0",
         padding: "16px 16px 36px",
         direction: "rtl",
       }}>
-        <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.2)", borderRadius: 2, margin: "0 auto 18px" }} />
-        <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
+        <div style={{ width: 40, height: 4, background: "#E4E0DD", borderRadius: 2, margin: "0 auto 18px" }} />
+        <div style={{ color: "#14110F", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
           تسجيل جولة {roundNumber}
         </div>
 
@@ -78,7 +78,7 @@ function RoundEntry({
               }}>
                 {name.charAt(0)}
               </div>
-              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{name}</div>
+              <div style={{ flex: 1, color: "#14110F", fontSize: 15, fontWeight: 600 }}>{name}</div>
               <input
                 type="number"
                 value={inputs[i]}
@@ -87,11 +87,11 @@ function RoundEntry({
                 dir="ltr"
                 style={{
                   width: 84,
-                  background: "rgba(255,255,255,0.08)",
-                  border: `1px solid ${inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "rgba(212,164,32,0.4)" : "rgba(255,255,255,0.15)"}`,
+                  background: "#FFFFFF",
+                  border: `1px solid ${inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "#F5BC22" : "#E4E0DD"}`,
                   borderRadius: 8,
                   padding: "9px 10px",
-                  color: inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "#F5BC22" : "#FFFFFF",
+                  color: inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "#F5BC22" : "#14110F",
                   fontSize: 16, fontWeight: 700,
                   textAlign: "center",
                   outline: "none",
@@ -106,7 +106,7 @@ function RoundEntry({
             onClick={onCancel}
             style={{
               flex: 1, padding: "13px 0", borderRadius: 12, border: "none",
-              background: "rgba(255,255,255,0.08)", color: "rgba(248,242,228,0.6)",
+              background: "#F2F0EE", color: "#3A3330",
               fontSize: 14, cursor: "pointer",
             }}
           >
@@ -117,8 +117,8 @@ function RoundEntry({
             disabled={!canConfirm}
             style={{
               flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
-              background: canConfirm ? "#1C9245" : "rgba(27,94,56,0.3)",
-              color: canConfirm ? "#FFFFFF" : "rgba(248,242,228,0.3)",
+              background: canConfirm ? "#1C9245" : "#E4E0DD",
+              color: canConfirm ? "#FFFFFF" : "#9E9B99",
               fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
             }}
           >
@@ -359,13 +359,13 @@ function GameOver({
 
       {/* Standings */}
       <div style={{ padding: "16px 16px 0", direction: "rtl" }}>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
+        <div style={{ color: "#7A736E", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
           الترتيب النهائي
         </div>
         <div style={{
-          background: "rgba(255,255,255,0.04)",
+          background: "#F2F0EE",
           borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "1px solid #E4E0DD",
           overflow: "hidden",
         }}>
           {standings.map((pIdx, rank) => (
@@ -374,15 +374,15 @@ function GameOver({
               style={{
                 display: "flex", alignItems: "center", gap: 12,
                 padding: "12px 14px",
-                borderBottom: rank < standings.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                borderBottom: rank < standings.length - 1 ? "1px solid #E4E0DD" : "none",
                 background: rank === 0 ? "rgba(212,164,32,0.08)" : "transparent",
               }}
             >
               <div style={{
                 width: 26, height: 26, borderRadius: "50%",
-                background: rank === 0 ? "#F5BC22" : "rgba(255,255,255,0.08)",
+                background: rank === 0 ? "#F5BC22" : "#E4E0DD",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: rank === 0 ? "#0F5F2C" : "rgba(248,242,228,0.35)",
+                color: rank === 0 ? "#0F5F2C" : "#7A736E",
                 fontSize: 14, fontWeight: 900, flexShrink: 0,
               }}>
                 {rank + 1}
@@ -395,11 +395,11 @@ function GameOver({
               }}>
                 {session.players[pIdx].charAt(0)}
               </div>
-              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
+              <div style={{ flex: 1, color: "#14110F", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
                 {session.players[pIdx]}
               </div>
               <div style={{
-                color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.5)",
+                color: rank === 0 ? "#F5BC22" : "#7A736E",
                 fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums",
               }}>
                 {totals[pIdx]}
@@ -423,8 +423,8 @@ function GameOver({
           onClick={onHome}
           style={{
             width: "100%", padding: "13px 0", borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.15)",
-            background: "transparent", color: "rgba(248,242,228,0.7)",
+            border: "1px solid #E4E0DD",
+            background: "#F2F0EE", color: "#3A3330",
             fontSize: 14, cursor: "pointer",
           }}
         >

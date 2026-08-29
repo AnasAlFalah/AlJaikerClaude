@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
@@ -80,8 +80,8 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
   const winBtnStyle = (val: HandWinValue) => ({
     padding: "14px 4px",
     borderRadius: 12,
-    border: `2px solid ${winValue === val ? "#F5BC22" : "rgba(255,255,255,0.1)"}`,
-    background: winValue === val ? "rgba(212,164,32,0.12)" : "rgba(255,255,255,0.04)",
+    border: `2px solid ${winValue === val ? "#F5BC22" : "#E4E0DD"}`,
+    background: winValue === val ? "#FFFBF0" : "#F2F0EE",
     cursor: "pointer",
     display: "flex",
     flexDirection: "column" as const,
@@ -97,7 +97,7 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
     }}>
       <div style={{
         width: "100%", maxWidth: 390, margin: "0 auto",
-        background: "#0F5F2C",
+        background: "#FFFFFF",
         borderRadius: "20px 20px 0 0",
         padding: "16px 16px 36px",
         maxHeight: "90vh",
@@ -105,15 +105,15 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
         direction: "rtl",
       }}>
         {/* Handle */}
-        <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.2)", borderRadius: 2, margin: "0 auto 18px" }} />
+        <div style={{ width: 40, height: 4, background: "#D6D2CE", borderRadius: 2, margin: "0 auto 18px" }} />
 
-        <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
+        <div style={{ color: "#14110F", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
           تسجيل جولة
         </div>
 
         {/* Who won */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13, textAlign: "right", marginBottom: 8 }}>من فاز بالجولة؟</div>
+          <div style={{ color: "#3A3330", fontSize: 13, textAlign: "right", marginBottom: 8 }}>من فاز بالجولة؟</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {session.players.map((name, idx) => {
               const selected = winnerIdx === idx;
@@ -125,8 +125,8 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                     display: "flex", alignItems: "center", gap: 10,
                     padding: "10px 12px",
                     borderRadius: 12,
-                    border: `1px solid ${selected ? "rgba(212,164,32,0.4)" : "rgba(255,255,255,0.08)"}`,
-                    background: selected ? "rgba(212,164,32,0.1)" : "rgba(255,255,255,0.04)",
+                    border: `1px solid ${selected ? "#1C9245" : "#E4E0DD"}`,
+                    background: selected ? "#F1FAF4" : "#F2F0EE",
                     cursor: "pointer",
                     textAlign: "right",
                   }}
@@ -139,10 +139,10 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                   }}>
                     {name.charAt(0)}
                   </div>
-                  <div style={{ flex: 1, color: selected ? "#F5BC22" : "#FFFFFF", fontSize: 14, fontWeight: selected ? 700 : 400 }}>
+                  <div style={{ flex: 1, color: "#14110F", fontSize: 14, fontWeight: selected ? 700 : 400 }}>
                     {name}
                   </div>
-                  {selected && <div style={{ color: "#F5BC22", fontSize: 16 }}>✓</div>}
+                  {selected && <div style={{ color: "#1C9245", fontSize: 16 }}>✓</div>}
                 </button>
               );
             })}
@@ -151,18 +151,18 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
 
         {/* Win value */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13, textAlign: "right", marginBottom: 8 }}>قيمة الفوز</div>
+          <div style={{ color: "#3A3330", fontSize: 13, textAlign: "right", marginBottom: 8 }}>قيمة الفوز</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {WIN_VALUES.map(val => (
               <button key={val} onClick={() => setWinValue(val)} style={winBtnStyle(val)}>
                 <div style={{
                   fontSize: 22, fontWeight: 900,
-                  color: winValue === val ? "#F5BC22" : "rgba(248,242,228,0.4)",
+                  color: winValue === val ? "#F5BC22" : "#3A3330",
                   fontVariantNumeric: "tabular-nums",
                 }}>
                   {val}
                 </div>
-                <div style={{ fontSize: 13, color: winValue === val ? "rgba(212,164,32,0.6)" : "rgba(248,242,228,0.2)" }}>
+                <div style={{ fontSize: 13, color: winValue === val ? "#8B6914" : "#7A736E" }}>
                   الخاسر +{LOSER_PENALTY[val]}
                 </div>
               </button>
@@ -173,7 +173,7 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
         {/* Loser overrides — only shown when winner & value are selected */}
         {winnerIdx !== null && winValue !== null && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13, textAlign: "right", marginBottom: 8 }}>نقاط الخاسرين</div>
+            <div style={{ color: "#3A3330", fontSize: 13, textAlign: "right", marginBottom: 8 }}>نقاط الخاسرين</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {session.players.map((name, idx) => {
                 if (idx === winnerIdx) return null;
@@ -183,8 +183,8 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                     key={idx}
                     style={{
                       borderRadius: 12,
-                      border: `1px solid ${hasOverride ? "rgba(255,165,0,0.3)" : "rgba(255,255,255,0.08)"}`,
-                      background: hasOverride ? "rgba(255,165,0,0.06)" : "rgba(255,255,255,0.04)",
+                      border: `1px solid ${hasOverride ? "rgba(255,165,0,0.3)" : "#E4E0DD"}`,
+                      background: hasOverride ? "#FFFBF0" : "#F2F0EE",
                       padding: "10px 12px",
                       display: "flex",
                       flexDirection: "column",
@@ -200,9 +200,9 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                       }}>
                         {name.charAt(0)}
                       </div>
-                      <div style={{ flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{name}</div>
+                      <div style={{ flex: 1, color: "#14110F", fontSize: 15, fontWeight: 600 }}>{name}</div>
                       <div style={{
-                        color: hasOverride ? "rgba(255,165,0,0.9)" : "#E74C3C",
+                        color: hasOverride ? "#B35900" : "#CE1F26",
                         fontSize: 17, fontWeight: 900,
                         fontVariantNumeric: "tabular-nums",
                       }}>
@@ -211,12 +211,12 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                       <button
                         onClick={() => toggleOverride(idx)}
                         style={{
-                          background: hasOverride ? "rgba(255,165,0,0.15)" : "rgba(255,255,255,0.08)",
+                          background: hasOverride ? "#FFF5E6" : "#F2F0EE",
                           border: "none",
                           borderRadius: 14,
                           padding: "4px 10px",
                           fontSize: 13,
-                          color: hasOverride ? "rgba(255,165,0,0.8)" : "rgba(248,242,228,0.4)",
+                          color: hasOverride ? "#B35900" : "#3A3330",
                           cursor: "pointer",
                           whiteSpace: "nowrap",
                         }}
@@ -234,17 +234,17 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
                           dir="ltr"
                           style={{
                             flex: 1,
-                            background: "rgba(0,0,0,0.3)",
-                            border: "1px solid rgba(255,165,0,0.3)",
+                            background: "#FFFFFF",
+                            border: "1px solid #E4E0DD",
                             borderRadius: 8,
                             padding: "7px 10px",
-                            color: "rgba(255,165,0,0.9)",
+                            color: "#14110F",
                             fontSize: 16, fontWeight: 700,
                             textAlign: "center",
                             outline: "none",
                           }}
                         />
-                        <div style={{ fontSize: 13, color: "rgba(248,242,228,0.3)", whiteSpace: "nowrap" }}>
+                        <div style={{ fontSize: 13, color: "#7A736E", whiteSpace: "nowrap" }}>
                           بدل +{LOSER_PENALTY[winValue]}
                         </div>
                       </div>
@@ -262,7 +262,7 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
             onClick={onCancel}
             style={{
               flex: 1, padding: "13px 0", borderRadius: 12, border: "none",
-              background: "rgba(255,255,255,0.08)", color: "rgba(248,242,228,0.6)",
+              background: "#F2F0EE", color: "#3A3330",
               fontSize: 14, cursor: "pointer",
             }}
           >
@@ -273,8 +273,8 @@ function RoundEntry({ session, onConfirm, onCancel, initialValues }: RoundEntryP
             disabled={!canConfirm}
             style={{
               flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
-              background: canConfirm ? "#1C9245" : "rgba(27,94,56,0.3)",
-              color: canConfirm ? "#FFFFFF" : "rgba(248,242,228,0.3)",
+              background: canConfirm ? "#1C9245" : "#D8EDE0",
+              color: canConfirm ? "#FFFFFF" : "#9E9893",
               fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
             }}
           >
@@ -520,7 +520,7 @@ function GameOver({
   return (
     <div style={{ flex: 1, overflowY: "auto", paddingBottom: 40 }}>
 
-      {/* Winner hero */}
+      {/* Winner hero — intentional dark gradient */}
       <div style={{
         background: "linear-gradient(160deg, #1B5E38 0%, #0A2E1A 100%)",
         padding: "30px 20px 24px",
@@ -541,13 +541,13 @@ function GameOver({
 
       {/* Standings */}
       <div style={{ padding: "16px 16px 0", direction: "rtl" }}>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
+        <div style={{ color: "#3A3330", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
           الترتيب النهائي
         </div>
         <div style={{
-          background: "rgba(255,255,255,0.04)",
+          background: "#F2F0EE",
           borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "1px solid #E4E0DD",
           overflow: "hidden",
         }}>
           {standings.map((pIdx, rank) => (
@@ -556,24 +556,24 @@ function GameOver({
               style={{
                 display: "flex", alignItems: "center", gap: 12,
                 padding: "12px 14px",
-                borderBottom: rank < standings.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                borderBottom: rank < standings.length - 1 ? "1px solid #E4E0DD" : "none",
                 background: rank === 0 ? "rgba(212,164,32,0.08)" : "transparent",
               }}
             >
               <div style={{
                 width: 26, height: 26, borderRadius: "50%",
-                background: rank === 0 ? "#F5BC22" : "rgba(255,255,255,0.08)",
+                background: rank === 0 ? "#F5BC22" : "#F2F0EE",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: rank === 0 ? "#0F5F2C" : "rgba(248,242,228,0.35)",
+                color: rank === 0 ? "#0F5F2C" : "#7A736E",
                 fontSize: 14, fontWeight: 900, flexShrink: 0,
               }}>
                 {rank + 1}
               </div>
-              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
+              <div style={{ flex: 1, color: "#14110F", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
                 {session.players[pIdx]}
               </div>
               <div style={{
-                color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.5)",
+                color: rank === 0 ? "#F5BC22" : "#3A3330",
                 fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums",
               }}>
                 {totals[pIdx]}
@@ -585,24 +585,24 @@ function GameOver({
 
       {/* Stats */}
       <div style={{ padding: "16px 16px 0", direction: "rtl" }}>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
+        <div style={{ color: "#3A3330", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
           إحصائيات اللاعبين
         </div>
         <div style={{
-          background: "rgba(255,255,255,0.04)",
+          background: "#F2F0EE",
           borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "1px solid #E4E0DD",
           overflow: "hidden",
         }}>
           {/* Header */}
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 52px 64px 52px",
             padding: "8px 14px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            borderBottom: "1px solid #E4E0DD",
           }}>
             {["اللاعب", "فاز بـ", "أعلى فوز", "نقاط"].map((h, i) => (
               <div key={i} style={{
-                color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 600,
+                color: "#3A3330", fontSize: 13, fontWeight: 600,
                 textAlign: i === 0 ? "right" : "center",
               }}>{h}</div>
             ))}
@@ -614,12 +614,12 @@ function GameOver({
               style={{
                 display: "grid", gridTemplateColumns: "1fr 52px 64px 52px",
                 padding: "10px 14px",
-                borderBottom: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                borderBottom: i < stats.length - 1 ? "1px solid #E4E0DD" : "none",
                 alignItems: "center",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
-                <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{s.name}</div>
+                <div style={{ color: "#14110F", fontSize: 15, fontWeight: 600 }}>{s.name}</div>
                 <div style={{
                   width: 22, height: 22, borderRadius: "50%",
                   background: AVATAR_COLORS[s.idx % AVATAR_COLORS.length],
@@ -629,14 +629,14 @@ function GameOver({
                   {s.name.charAt(0)}
                 </div>
               </div>
-              <div style={{ color: "#2ECC71", fontSize: 15, fontWeight: 700, textAlign: "center" }}>
+              <div style={{ color: "#1C9245", fontSize: 15, fontWeight: 700, textAlign: "center" }}>
                 {s.wins}
               </div>
               <div style={{ color: "#F5BC22", fontSize: 15, fontWeight: 700, textAlign: "center", fontVariantNumeric: "tabular-nums" }}>
                 {s.highestWin ?? "—"}
               </div>
               <div style={{
-                color: s.total <= totals[winnerIdx] ? "#F5BC22" : "rgba(248,242,228,0.5)",
+                color: s.total <= totals[winnerIdx] ? "#F5BC22" : "#3A3330",
                 fontSize: 15, fontWeight: 900, textAlign: "center", fontVariantNumeric: "tabular-nums",
               }}>
                 {s.total}
@@ -661,8 +661,8 @@ function GameOver({
           onClick={onHome}
           style={{
             width: "100%", padding: "13px 0", borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.15)",
-            background: "transparent", color: "rgba(248,242,228,0.7)",
+            border: "1px solid #E4E0DD",
+            background: "#F2F0EE", color: "#3A3330",
             fontSize: 14, cursor: "pointer",
           }}
         >

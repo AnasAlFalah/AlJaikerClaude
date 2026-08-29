@@ -174,7 +174,7 @@ function TrixEntry({ session, onConfirm, onCancel }: {
     setSelected(null);
   };
 
-  const RANK_BG = ["#F5BC22", "#C0C0C0", "#CD7F32", "rgba(0,0,0,0.12)", "rgba(0,0,0,0.08)"];
+  const RANK_BG = ["#F5BC22", "#C0C0C0", "#CD7F32", "#F2F0EE", "#F2F0EE"];
 
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
@@ -244,7 +244,7 @@ function TrixEntry({ session, onConfirm, onCancel }: {
         }} disabled={!canConfirm} style={{
           flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
           background: canConfirm ? FELT : "rgba(27,94,56,0.3)",
-          color: canConfirm ? IVORY : "rgba(248,242,228,0.3)",
+          color: canConfirm ? IVORY : "#7A736E",
           fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
         }}>✓ تأكيد تريكس</button>
       </div>
@@ -317,7 +317,7 @@ function HeartsEntry({ session, onConfirm, onCancel }: {
         }} disabled={loserIdx === null} style={{
           flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
           background: loserIdx !== null ? FELT : "rgba(27,94,56,0.3)",
-          color: loserIdx !== null ? IVORY : "rgba(248,242,228,0.3)",
+          color: loserIdx !== null ? IVORY : "#7A736E",
           fontSize: 15, fontWeight: 700, cursor: loserIdx !== null ? "pointer" : "not-allowed",
         }}>✓ تأكيد باش الحاس</button>
       </div>
@@ -436,7 +436,7 @@ function QueensEntry({ session, onConfirm, onCancel }: {
         }} disabled={!canConfirm} style={{
           flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
           background: canConfirm ? FELT : "rgba(27,94,56,0.3)",
-          color: canConfirm ? IVORY : "rgba(248,242,228,0.3)",
+          color: canConfirm ? IVORY : "#7A736E",
           fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
         }}>✓ تأكيد الميمات</button>
       </div>
@@ -526,7 +526,7 @@ function DistEntry({ session, declType, onConfirm, onCancel }: {
         }} disabled={!ok} style={{
           flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
           background: ok ? FELT : "rgba(27,94,56,0.3)",
-          color: ok ? IVORY : "rgba(248,242,228,0.3)",
+          color: ok ? IVORY : "#7A736E",
           fontSize: 15, fontWeight: 700, cursor: ok ? "pointer" : "not-allowed",
         }}>✓ تأكيد {label}</button>
       </div>
@@ -603,7 +603,7 @@ function DeclarationPicker({ session, kingdom, onConfirm, onCancel }: {
         <button onClick={() => canConfirm && onConfirm(selected)} disabled={!canConfirm} style={{
           flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
           background: canConfirm ? FELT : "rgba(27,94,56,0.3)",
-          color: canConfirm ? IVORY : "rgba(248,242,228,0.3)",
+          color: canConfirm ? IVORY : "#7A736E",
           fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
         }}>▶ ابدأ الجولة {selected.length > 0 ? `— ${selected.map(d => DECL_LABELS[d]).join(" + ")}` : ""}</button>
       </div>
