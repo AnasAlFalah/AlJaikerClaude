@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -126,7 +126,7 @@ export default function SpideSetupPage() {
             })}
           </div>
           {mode === "teams" && (
-            <div style={{ fontSize: 10, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>
+            <div style={{ fontSize: 13, color: "rgba(248,242,228,0.3)", textAlign: "right", marginTop: 4 }}>
               الفرق تتطلب عدد زوجي من اللاعبين (4 أو 6)
             </div>
           )}
@@ -188,7 +188,7 @@ export default function SpideSetupPage() {
                       dir="rtl"
                       placeholder={`الفريق ${t + 1}`}
                     />
-                    <div style={{ fontSize: 10, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                    <div style={{ fontSize: 13, color: "rgba(248,242,228,0.35)", flexShrink: 0, whiteSpace: "nowrap" }}>
                       {memberIndices.map(i => `ل${i + 1}`).join(" ")}
                     </div>
                   </div>
@@ -221,7 +221,7 @@ export default function SpideSetupPage() {
                   />
                   {mode === "teams" && (
                     <div style={{
-                      fontSize: 10, fontWeight: 700, flexShrink: 0,
+                      fontSize: 13, fontWeight: 700, flexShrink: 0,
                       color: TEAM_COLORS[teamIdx],
                       border: `1px solid ${TEAM_BORDER_COLORS[teamIdx]}`,
                       borderRadius: 6, padding: "2px 6px",
@@ -272,7 +272,7 @@ export default function SpideSetupPage() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "#0F3D24",
+    background: "#0F5F2C",
     display: "flex",
     flexDirection: "column" as const,
     maxWidth: 390,
@@ -281,7 +281,7 @@ const styles = {
     position: "relative" as const,
   },
   topbar: {
-    background: "#1B5E38",
+    background: "#1C9245",
     padding: "48px 16px 14px",
     display: "flex",
     alignItems: "center",
@@ -292,12 +292,12 @@ const styles = {
   backBtn: {
     width: 30, height: 30, borderRadius: "50%",
     background: "rgba(255,255,255,0.1)",
-    border: "none", color: "#F8F2E4", fontSize: 16,
+    border: "none", color: "#FFFFFF", fontSize: 16,
     display: "flex", alignItems: "center", justifyContent: "center",
     cursor: "pointer", flexShrink: 0,
   } as React.CSSProperties,
-  topTitle: { color: "#F8F2E4", fontSize: 15, fontWeight: 700, textAlign: "right" as const },
-  topSub: { color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" as const },
+  topTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" as const },
+  topSub: { color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" as const },
   topBadge: { fontSize: 20 },
   body: {
     flex: 1,
@@ -310,7 +310,7 @@ const styles = {
   },
   secLabel: {
     color: "rgba(248,242,228,0.45)",
-    fontSize: 11, fontWeight: 700,
+    fontSize: 13, fontWeight: 700,
     textAlign: "right" as const,
     marginBottom: 8,
   },
@@ -324,26 +324,26 @@ const styles = {
     borderRadius: 8, border: "none",
     background: "transparent",
     color: "rgba(248,242,228,0.4)",
-    fontSize: 12, fontWeight: 600,
+    fontSize: 14, fontWeight: 600,
     cursor: "pointer", textAlign: "center" as const,
     fontFamily: "inherit",
   },
   toggleActive: {
-    background: "#1B5E38",
-    color: "#F8F2E4",
+    background: "#1C9245",
+    color: "#FFFFFF",
     boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
   },
   avatar: {
     width: 28, height: 28, borderRadius: "50%",
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#fff", fontSize: 11, fontWeight: 700, flexShrink: 0,
+    color: "#fff", fontSize: 13, fontWeight: 700, flexShrink: 0,
   } as React.CSSProperties,
   playerInput: {
     flex: 1,
     background: "rgba(255,255,255,0.06)",
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: 8, padding: "7px 10px",
-    color: "#F8F2E4", fontSize: 13,
+    color: "#FFFFFF", fontSize: 15,
     outline: "none", textAlign: "right" as const,
     fontFamily: "inherit", width: "100%",
   },
@@ -351,7 +351,7 @@ const styles = {
     padding: "7px 14px", borderRadius: 20,
     background: "rgba(212,164,32,0.1)",
     border: "1px solid rgba(212,164,32,0.25)",
-    color: "#D4A420", fontSize: 12, fontWeight: 600,
+    color: "#F5BC22", fontSize: 14, fontWeight: 600,
     cursor: "pointer", fontFamily: "inherit",
   },
   saveTeamBtn: {
@@ -359,7 +359,7 @@ const styles = {
     background: "transparent",
     border: "1px dashed rgba(212,164,32,0.3)",
     borderRadius: 8, color: "rgba(212,164,32,0.6)",
-    fontSize: 12, cursor: "pointer", fontFamily: "inherit",
+    fontSize: 14, cursor: "pointer", fontFamily: "inherit",
   },
   stickyBtn: {
     position: "absolute" as const, bottom: 0, left: 0, right: 0,
@@ -368,8 +368,8 @@ const styles = {
   },
   btnPrimary: {
     width: "100%", padding: "15px 0",
-    background: "#1B5E38", border: "none", borderRadius: 12,
-    color: "#F8F2E4", fontSize: 16, fontWeight: 700,
+    background: "#1C9245", border: "none", borderRadius: 12,
+    color: "#FFFFFF", fontSize: 16, fontWeight: 700,
     cursor: "pointer", fontFamily: "inherit",
   },
   btnDisabled: {

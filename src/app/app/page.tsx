@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import HomeClient from "@/components/HomeClient";
 import OngoingGames from "@/components/OngoingGames";
@@ -28,7 +28,7 @@ export default async function HomePage() {
 
       {/* Header */}
       <header style={{
-        background: "#1B5E38",
+        background: "#1C9245",
         padding: "48px 20px 20px",
         display: "flex",
         alignItems: "center",
@@ -36,10 +36,10 @@ export default async function HomePage() {
         direction: locale === "ar" ? "rtl" : "ltr",
       }}>
         <div>
-          <div style={{ color: "#F2D060", fontSize: 28, fontWeight: 900, letterSpacing: -1 }}>
+          <div style={{ color: "#F5BC22", fontSize: 28, fontWeight: 900, letterSpacing: -1 }}>
             {tc("appName")}
           </div>
-          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 12, marginTop: 2 }}>
+          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 14, marginTop: 2 }}>
             {tc("appSubtitle")}
           </div>
         </div>
@@ -58,7 +58,7 @@ export default async function HomePage() {
 
         {/* Ongoing games */}
         <section>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             {t("ongoing")}
           </div>
           <OngoingGames locale={locale} />
@@ -66,7 +66,7 @@ export default async function HomePage() {
 
         {/* New game */}
         <section>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             {t("newGame")}
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
@@ -89,7 +89,7 @@ export default async function HomePage() {
 
         {/* Diwanya */}
         <section>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             {t("diwanya")}
           </div>
           <Link href="/diwanya" style={{ textDecoration: "none" }}>
@@ -99,8 +99,8 @@ export default async function HomePage() {
             }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(27,94,56,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🏡</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{t("diwanyaTitle")}</div>
-                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{t("diwanyaSub")}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#14110F" }}>{t("diwanyaTitle")}</div>
+                <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>{t("diwanyaSub")}</div>
               </div>
               <div style={{ color: "#CCC", fontSize: 20 }}>{locale === "ar" ? "←" : "→"}</div>
             </div>
@@ -109,7 +109,7 @@ export default async function HomePage() {
 
         {/* History */}
         <section>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#999", marginBottom: 10, letterSpacing: 1 }}>
             {t("history")}
           </div>
           <Link href="/history" style={{ textDecoration: "none" }}>
@@ -119,8 +119,8 @@ export default async function HomePage() {
             }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(212,164,32,0.12)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🏆</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1210" }}>{t("history")}</div>
-                <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>{t("historySub")}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#14110F" }}>{t("history")}</div>
+                <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>{t("historySub")}</div>
               </div>
               <div style={{ color: "#CCC", fontSize: 20 }}>{locale === "ar" ? "←" : "→"}</div>
             </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, use, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -11,15 +11,15 @@ import {
   getSession, saveSession,
 } from "@/lib/trix";
 
-const AVATAR_COLORS = ["#C8102E", "#1B5E38", "#D4A420", "#5B3FA6", "#0077B6"];
-const FELT = "#1B5E38";
-const FELT_DK = "#0F3D24";
-const IVORY = "#F8F2E4";
-const IVORY_DK = "#EDE3D0";
-const IVORY_MID = "#E0D4BC";
-const JET = "#1A1210";
-const CRIMSON = "#C8102E";
-const GOLD = "#D4A420";
+const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#F5BC22", "#5B3FA6", "#0077B6"];
+const FELT = "#0F5F2C";
+const FELT_DK = "#0F5F2C";
+const IVORY = "#FFFFFF";
+const IVORY_DK = "#F2F0EE";
+const IVORY_MID = "#E4E0DD";
+const JET = "#14110F";
+const CRIMSON = "#CE1F26";
+const GOLD = "#F5BC22";
 const PURPLE = "#5B3FA6";
 const BLUE = "#0077B6";
 const SAGE = "#4A7C5A";
@@ -65,7 +65,7 @@ function PlayerSelector({
         background: value !== null ? "rgba(212,164,32,0.08)" : IVORY_DK,
         border: `1px solid ${value !== null ? "rgba(212,164,32,0.4)" : IVORY_MID}`,
         borderRadius: 8, padding: "8px 12px",
-        fontSize: 13, fontWeight: 600, color: value !== null ? JET : "#AAA",
+        fontSize: 15, fontWeight: 600, color: value !== null ? JET : "#AAA",
         fontFamily: "inherit", cursor: "pointer", outline: "none",
       }}
     >
@@ -99,7 +99,7 @@ function RoundSummary({ results, players, onContinue }: {
             <div key={ri} style={{ background: "#fff", borderRadius: 10, padding: "10px 12px", border: `1.5px solid ${DECL_COLORS[res.type]}30` }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                 <span style={{ fontSize: 18 }}>{DECL_ICONS[res.type]}</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: DECL_COLORS[res.type] }}>{DECL_LABELS[res.type]}</span>
+                <span style={{ fontSize: 15, fontWeight: 800, color: DECL_COLORS[res.type] }}>{DECL_LABELS[res.type]}</span>
               </div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {players.map((name, i) => {
@@ -112,7 +112,7 @@ function RoundSummary({ results, players, onContinue }: {
                       borderRadius: 20, padding: "4px 10px 4px 5px",
                     }}>
                       <Av idx={i} size={20} players={players} />
-                      <span style={{ fontSize: 12, fontWeight: 700, color: s < 0 ? FELT : CRIMSON, direction: "ltr" }}>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: s < 0 ? FELT : CRIMSON, direction: "ltr" }}>
                         {s > 0 ? `+${s}` : s}
                       </span>
                     </div>
@@ -125,7 +125,7 @@ function RoundSummary({ results, players, onContinue }: {
 
         {/* Round totals */}
         <div style={{ background: "#fff", borderRadius: 10, border: `2px solid ${FELT}30`, overflow: "hidden" }}>
-          <div style={{ background: "rgba(27,94,56,0.06)", padding: "8px 12px", fontSize: 11, fontWeight: 800, color: FELT }}>مجموع هذه الجولة</div>
+          <div style={{ background: "rgba(27,94,56,0.06)", padding: "8px 12px", fontSize: 13, fontWeight: 800, color: FELT }}>مجموع هذه الجولة</div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {players.map((name, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderTop: i > 0 ? `1px solid ${IVORY_DK}` : "none" }}>
@@ -174,13 +174,13 @@ function TrixEntry({ session, onConfirm, onCancel }: {
     setSelected(null);
   };
 
-  const RANK_BG = ["#D4A420", "#C0C0C0", "#CD7F32", "rgba(0,0,0,0.12)", "rgba(0,0,0,0.08)"];
+  const RANK_BG = ["#F5BC22", "#C0C0C0", "#CD7F32", "rgba(0,0,0,0.12)", "rgba(0,0,0,0.08)"];
 
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
       <div style={{ background: "rgba(91,63,166,0.15)", border: "1px solid rgba(91,63,166,0.3)", borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px" }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: PURPLE, marginBottom: 3 }}>تريكس — ترتيب الحيل</div>
-        <div style={{ fontSize: 10, color: "rgba(91,63,166,0.6)" }}>① اضغط اللاعب ② ثم اضغط المركز</div>
+        <div style={{ fontSize: 15, fontWeight: 800, color: PURPLE, marginBottom: 3 }}>تريكس — ترتيب الحيل</div>
+        <div style={{ fontSize: 13, color: "rgba(91,63,166,0.6)" }}>① اضغط اللاعب ② ثم اضغط المركز</div>
       </div>
       <div style={{ display: "flex", gap: 7, padding: "12px 14px", flexWrap: "wrap" }}>
         {session.players.map((name, i) => {
@@ -196,7 +196,7 @@ function TrixEntry({ session, onConfirm, onCancel }: {
               cursor: isAssigned ? "default" : "pointer",
             }}>
               <Av idx={i} size={24} players={session.players} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: JET }}>{name}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: JET }}>{name}</span>
             </button>
           );
         })}
@@ -215,7 +215,7 @@ function TrixEntry({ session, onConfirm, onCancel }: {
                 width: 32, height: 32, borderRadius: "50%",
                 background: RANK_BG[rank] ?? IVORY_DK,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 13, fontWeight: 900, color: rank < 3 ? JET : "#888", flexShrink: 0,
+                fontSize: 15, fontWeight: 900, color: rank < 3 ? JET : "#888", flexShrink: 0,
               }}>{rank + 1}</div>
               <div style={{ fontSize: 20, fontWeight: 900, color: FELT, fontVariantNumeric: "tabular-nums", flexShrink: 0, direction: "ltr" }}>{score}</div>
               <div style={{ width: 1, height: 28, background: IVORY_MID, flexShrink: 0 }} />
@@ -227,7 +227,7 @@ function TrixEntry({ session, onConfirm, onCancel }: {
                 </div>
               ) : (
                 <div style={{ flex: 1, border: isTarget ? `1.5px dashed ${GOLD}` : "1.5px dashed " + IVORY_MID, borderRadius: 8, padding: "5px 10px" }}>
-                  <span style={{ fontSize: 12, color: isTarget ? GOLD : "#CCC", fontWeight: 600 }}>
+                  <span style={{ fontSize: 14, color: isTarget ? GOLD : "#CCC", fontWeight: 600 }}>
                     {isTarget ? `اضغط لوضع ${session.players[selected!]}` : "فارغ"}
                   </span>
                 </div>
@@ -263,8 +263,8 @@ function HeartsEntry({ session, onConfirm, onCancel }: {
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
       <div style={{ background: "rgba(200,16,46,0.1)", border: "1px solid rgba(200,16,46,0.25)", borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px" }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: CRIMSON, marginBottom: 3 }}>باش الحاس</div>
-        <div style={{ fontSize: 10, color: "rgba(200,16,46,0.6)" }}>من أخذ الباش؟ — يدفع {penalty} نقطة</div>
+        <div style={{ fontSize: 15, fontWeight: 800, color: CRIMSON, marginBottom: 3 }}>باش الحاس</div>
+        <div style={{ fontSize: 13, color: "rgba(200,16,46,0.6)" }}>من أخذ الباش؟ — يدفع {penalty} نقطة</div>
       </div>
 
       <div style={{ padding: "16px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -276,8 +276,8 @@ function HeartsEntry({ session, onConfirm, onCancel }: {
           display: "flex", alignItems: "center", gap: 10,
         }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: kingDoubled ? CRIMSON : JET }}>ملك الحاس 🫀</div>
-            <div style={{ fontSize: 10, color: "#AAA", marginTop: 2 }}>إذا أخذ الباش مع ملك الحاس تضاعف النقاط ({HEARTS_PENALTY * 2})</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: kingDoubled ? CRIMSON : JET }}>ملك الحاس 🫀</div>
+            <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>إذا أخذ الباش مع ملك الحاس تضاعف النقاط ({HEARTS_PENALTY * 2})</div>
           </div>
           <div onClick={() => setKingDoubled(d => !d)} style={{
             width: 44, height: 26, background: kingDoubled ? CRIMSON : IVORY_MID,
@@ -291,7 +291,7 @@ function HeartsEntry({ session, onConfirm, onCancel }: {
           </div>
         </div>
 
-        <div style={{ fontSize: 12, fontWeight: 700, color: "#888", textAlign: "right" }}>من أخذ الباش؟</div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: "#888", textAlign: "right" }}>من أخذ الباش؟</div>
         {session.players.map((name, i) => {
           const sel = loserIdx === i;
           return (
@@ -350,8 +350,8 @@ function QueensEntry({ session, onConfirm, onCancel }: {
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
       <div style={{ background: "rgba(212,164,32,0.12)", border: "1px solid rgba(212,164,32,0.3)", borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px" }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: "#B8900A", marginBottom: 3 }}>الميمات — 4 × {QUEEN_PTS} نقطة</div>
-        <div style={{ fontSize: 10, color: "rgba(180,140,0,0.6)" }}>من أخذ كل ميم؟ · الإعلان يضاعف — المُعلِن −{QUEEN_PTS}</div>
+        <div style={{ fontSize: 15, fontWeight: 800, color: "#B8900A", marginBottom: 3 }}>الميمات — 4 × {QUEEN_PTS} نقطة</div>
+        <div style={{ fontSize: 13, color: "rgba(180,140,0,0.6)" }}>من أخذ كل ميم؟ · الإعلان يضاعف — المُعلِن −{QUEEN_PTS}</div>
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "12px 14px" }}>
@@ -371,20 +371,20 @@ function QueensEntry({ session, onConfirm, onCancel }: {
                     <span style={{ fontSize: 8, fontWeight: 700, color: "#888" }}>Q</span>
                   </div>
                   <div style={{ flex: 1, textAlign: "right" }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: JET }}>{info.label}</div>
-                    <div style={{ fontSize: 10, color: "#AAA", marginTop: 2 }}>{hasAnn ? `معلنة · ${pts} نقطة` : `${QUEEN_PTS} نقطة`}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: JET }}>{info.label}</div>
+                    <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>{hasAnn ? `معلنة · ${pts} نقطة` : `${QUEEN_PTS} نقطة`}</div>
                   </div>
                 </div>
                 <div style={{ marginBottom: 8 }}>
                   <PlayerSelector players={session.players} value={q.takerIdx ?? null} onChange={v => updateQueen(qi, { takerIdx: v })} placeholder="من أخذها؟" />
                   {q.takerIdx !== undefined && (
-                    <div style={{ textAlign: "left", marginTop: 4, fontSize: 11, color: CRIMSON, fontWeight: 700, direction: "ltr" }}>
+                    <div style={{ textAlign: "left", marginTop: 4, fontSize: 13, color: CRIMSON, fontWeight: 700, direction: "ltr" }}>
                       {session.players[q.takerIdx]} +{pts}
                     </div>
                   )}
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ flex: 1, fontSize: 11, color: hasAnn ? GOLD : "#AAA", fontWeight: hasAnn ? 700 : 400 }}>{hasAnn ? "★ إعلان" : "إعلان"}</span>
+                  <span style={{ flex: 1, fontSize: 13, color: hasAnn ? GOLD : "#AAA", fontWeight: hasAnn ? 700 : 400 }}>{hasAnn ? "★ إعلان" : "إعلان"}</span>
                   <div onClick={() => updateQueen(qi, { announced: !hasAnn, announcerIdx: null })} style={{
                     width: 38, height: 22, background: hasAnn ? GOLD : IVORY_MID,
                     borderRadius: 11, position: "relative", cursor: "pointer", flexShrink: 0,
@@ -394,10 +394,10 @@ function QueensEntry({ session, onConfirm, onCancel }: {
                 </div>
                 {hasAnn && (
                   <div style={{ marginTop: 8 }}>
-                    <div style={{ fontSize: 11, color: GOLD, fontWeight: 600, marginBottom: 4, textAlign: "right" }}>من أعلن؟</div>
+                    <div style={{ fontSize: 13, color: GOLD, fontWeight: 600, marginBottom: 4, textAlign: "right" }}>من أعلن؟</div>
                     <PlayerSelector players={session.players} value={q.announcerIdx ?? null} onChange={v => updateQueen(qi, { announcerIdx: v })} placeholder="اختر المُعلِن" />
                     {q.announcerIdx != null && (
-                      <div style={{ textAlign: "left", marginTop: 4, fontSize: 11, color: FELT, fontWeight: 700, direction: "ltr" }}>
+                      <div style={{ textAlign: "left", marginTop: 4, fontSize: 13, color: FELT, fontWeight: 700, direction: "ltr" }}>
                         {session.players[q.announcerIdx!]} −{QUEEN_PTS}
                       </div>
                     )}
@@ -417,8 +417,8 @@ function QueensEntry({ session, onConfirm, onCancel }: {
           <span style={{ fontSize: 16 }}>{canConfirm ? "✅" : "⚠️"}</span>
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: JET }}>الميمات المُسجَّلة</span>
-              <span style={{ fontSize: 13, fontWeight: 900, color: canConfirm ? FELT : CRIMSON, direction: "ltr" }}>{doneCount} من 4</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: JET }}>الميمات المُسجَّلة</span>
+              <span style={{ fontSize: 15, fontWeight: 900, color: canConfirm ? FELT : CRIMSON, direction: "ltr" }}>{doneCount} من 4</span>
             </div>
             <div style={{ height: 5, background: IVORY_MID, borderRadius: 3, overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${(doneCount / 4) * 100}%`, background: canConfirm ? FELT : CRIMSON, borderRadius: 3 }} />
@@ -467,8 +467,8 @@ function DistEntry({ session, declType, onConfirm, onCancel }: {
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
       <div style={{ background: `${color}18`, border: `1px solid ${color}40`, borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px" }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color, marginBottom: 3 }}>{label} — 13 × {ptsEach} نقطة</div>
-        <div style={{ fontSize: 10, color: `${color}99` }}>المجموع يجب أن يساوي 13 {unit} · متبقي: {13 - total}</div>
+        <div style={{ fontSize: 15, fontWeight: 800, color, marginBottom: 3 }}>{label} — 13 × {ptsEach} نقطة</div>
+        <div style={{ fontSize: 13, color: `${color}99` }}>المجموع يجب أن يساوي 13 {unit} · متبقي: {13 - total}</div>
       </div>
 
       <div style={{ flex: 1, padding: "12px 14px" }}>
@@ -479,7 +479,7 @@ function DistEntry({ session, declType, onConfirm, onCancel }: {
                 <Av idx={i} size={30} players={session.players} />
                 <span style={{ flex: 1, fontSize: 14, fontWeight: 600, color: JET }}>{name}</span>
                 <span style={{ fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums", color, direction: "ltr", minWidth: 28, textAlign: "center" }}>{counts[i]}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: CRIMSON, direction: "ltr", minWidth: 40, textAlign: "right" }}>+{counts[i] * ptsEach}</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: CRIMSON, direction: "ltr", minWidth: 40, textAlign: "right" }}>+{counts[i] * ptsEach}</span>
               </div>
               {/* Slider */}
               <input
@@ -508,8 +508,8 @@ function DistEntry({ session, declType, onConfirm, onCancel }: {
           <span style={{ fontSize: 16 }}>{ok ? "✅" : total > 13 ? "❌" : "⚠️"}</span>
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: JET }}>{ok ? "مكتمل" : total > 13 ? "تجاوز الحد!" : "غير مكتمل"}</span>
-              <span style={{ fontSize: 13, fontWeight: 900, color: ok ? FELT : total > 13 ? CRIMSON : "#B8900A", direction: "ltr" }}>{total} من 13</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: JET }}>{ok ? "مكتمل" : total > 13 ? "تجاوز الحد!" : "غير مكتمل"}</span>
+              <span style={{ fontSize: 15, fontWeight: 900, color: ok ? FELT : total > 13 ? CRIMSON : "#B8900A", direction: "ltr" }}>{total} من 13</span>
             </div>
             <div style={{ height: 5, background: IVORY_MID, borderRadius: 3, overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${Math.min((total / 13) * 100, 100)}%`, background: ok ? FELT : total > 13 ? CRIMSON : GOLD, borderRadius: 3 }} />
@@ -561,7 +561,7 @@ function DeclarationPicker({ session, kingdom, onConfirm, onCancel }: {
 
   return (
     <div style={{ background: IVORY, flex: 1, display: "flex", flexDirection: "column" }}>
-      <div style={{ background: "rgba(91,63,166,0.12)", border: "1px solid rgba(91,63,166,0.3)", borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px", fontSize: 11, color: "rgba(91,63,166,0.7)", lineHeight: 1.6 }}>
+      <div style={{ background: "rgba(91,63,166,0.12)", border: "1px solid rgba(91,63,166,0.3)", borderRadius: 8, margin: "16px 14px 0", padding: "10px 12px", fontSize: 13, color: "rgba(91,63,166,0.7)", lineHeight: 1.6 }}>
         🃏 <strong>تريكس</strong> يُلعب منفرداً · الباقي يمكن تجميعه في جولة واحدة
       </div>
       <div style={{ flex: 1, padding: "12px 14px" }}>
@@ -584,14 +584,14 @@ function DeclarationPicker({ session, kingdom, onConfirm, onCancel }: {
                 <span style={{ fontSize: 22, flexShrink: 0 }}>{DECL_ICONS[type]}</span>
                 <div style={{ flex: 1, textAlign: "right" }}>
                   <div style={{ fontSize: 15, fontWeight: 800, color: done ? "#AAA" : sel ? color : JET }}>{DECL_LABELS[type]}</div>
-                  <div style={{ fontSize: 10, color: "#AAA", marginTop: 2 }}>{done ? "تم لعبه ✓" : pts}</div>
+                  <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>{done ? "تم لعبه ✓" : pts}</div>
                 </div>
                 <div style={{
                   width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
                   background: sel ? color : "transparent",
                   border: `2px solid ${sel ? color : IVORY_MID}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#fff", fontSize: 12,
+                  color: "#fff", fontSize: 14,
                 }}>{sel ? "✓" : ""}</div>
               </button>
             );
@@ -624,14 +624,14 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
       <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px 10px 10px", display: "flex", gap: 4, overflowX: "auto", direction: "rtl" }}>
         {session.players.map((name, i) => (
           <div key={i} style={{ flexShrink: 0, minWidth: 64, textAlign: "center", background: "rgba(255,255,255,0.08)", borderRadius: 10, padding: "8px 6px" }}>
-            <div style={{ fontSize: 10, color: "rgba(248,242,228,0.55)", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
-            <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F2D060" : totals[i] > 0 ? "#FF8080" : IVORY }}>{totals[i]}</div>
+            <div style={{ fontSize: 13, color: "rgba(248,242,228,0.55)", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
+            <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F5BC22" : totals[i] > 0 ? "#FF8080" : IVORY }}>{totals[i]}</div>
           </div>
         ))}
       </div>
 
       <div style={{ background: "#256B45", padding: "8px 14px", display: "flex", gap: 6, alignItems: "center", direction: "rtl" }}>
-        <span style={{ fontSize: 10, color: "rgba(248,242,228,0.45)", flexShrink: 0 }}>ممالك</span>
+        <span style={{ fontSize: 13, color: "rgba(248,242,228,0.45)", flexShrink: 0 }}>ممالك</span>
         <div style={{ display: "flex", gap: 5 }}>
           {session.kingdoms.map((k, ki) => {
             const isDone = ki < session.currentKingdomIdx;
@@ -648,16 +648,16 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
             );
           })}
         </div>
-        <span style={{ fontSize: 10, color: "rgba(248,242,228,0.4)", marginRight: "auto" }}>
+        <span style={{ fontSize: 13, color: "rgba(248,242,228,0.4)", marginRight: "auto" }}>
           مملكة {session.currentKingdomIdx + 1} من {session.playerCount}
         </span>
-        <button onClick={onViewScores} style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 6, padding: "3px 10px", color: "rgba(248,242,228,0.7)", fontSize: 10, cursor: "pointer" }}>
+        <button onClick={onViewScores} style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 6, padding: "3px 10px", color: "rgba(248,242,228,0.7)", fontSize: 13, cursor: "pointer" }}>
           النقاط ↗
         </button>
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "14px 14px 100px" }}>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, fontWeight: 700, marginBottom: 10, textAlign: "right" }}>جميع الممالك</div>
+        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 700, marginBottom: 10, textAlign: "right" }}>جميع الممالك</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
           {session.kingdoms.map((k, ki) => {
             const isDone = ki < session.currentKingdomIdx;
@@ -672,8 +672,8 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
                   <Av idx={k.kingIdx} size={26} players={session.players} />
-                  <span style={{ flex: 1, fontSize: 12, fontWeight: 700, color: JET, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.players[k.kingIdx]}</span>
-                  <span style={{ fontSize: 13 }}>{isDone ? "✓" : isCurrent ? "👑" : ""}</span>
+                  <span style={{ flex: 1, fontSize: 14, fontWeight: 700, color: JET, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.players[k.kingIdx]}</span>
+                  <span style={{ fontSize: 15 }}>{isDone ? "✓" : isCurrent ? "👑" : ""}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 6 }}>
                   <span style={{ fontSize: 9, color: "#AAA" }}>نقاط</span>
@@ -698,7 +698,7 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
           })}
         </div>
 
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, fontWeight: 700, marginBottom: 10, textAlign: "right" }}>
+        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 700, marginBottom: 10, textAlign: "right" }}>
           مملكة {session.players[ck.kingIdx]} — الجارية
         </div>
         <div style={{ background: IVORY, borderRadius: 14, padding: 14, border: `2px solid ${GOLD}` }}>
@@ -706,9 +706,9 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
             <Av idx={ck.kingIdx} size={38} players={session.players} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 800, color: JET }}>{session.players[ck.kingIdx]} 👑</div>
-              <div style={{ fontSize: 10, color: "#AAA", marginTop: 1 }}>{5 - ck.done.length} إعلانات متبقية</div>
+              <div style={{ fontSize: 13, color: "#AAA", marginTop: 1 }}>{5 - ck.done.length} إعلانات متبقية</div>
             </div>
-            <div style={{ background: GOLD, borderRadius: 6, padding: "3px 8px", fontSize: 10, fontWeight: 700, color: JET }}>المملكة {session.currentKingdomIdx + 1}</div>
+            <div style={{ background: GOLD, borderRadius: 6, padding: "3px 8px", fontSize: 13, fontWeight: 700, color: JET }}>المملكة {session.currentKingdomIdx + 1}</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {ALL_DECL.map(d => {
@@ -719,8 +719,8 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
                   background: IVORY_DK, opacity: done ? 0.5 : 1,
                 }}>
                   <span style={{ fontSize: 16, width: 22, textAlign: "center", flexShrink: 0 }}>{DECL_ICONS[d]}</span>
-                  <span style={{ flex: 1, fontSize: 13, fontWeight: 700, color: JET }}>{DECL_LABELS[d]}</span>
-                  <span style={{ fontSize: 11, color: "#AAA" }}>
+                  <span style={{ flex: 1, fontSize: 15, fontWeight: 700, color: JET }}>{DECL_LABELS[d]}</span>
+                  <span style={{ fontSize: 13, color: "#AAA" }}>
                     {d === "trix" ? "−200/−150/−100/−50" : d === "hearts" ? `${HEARTS_PENALTY} نقطة` : d === "queens" ? "25 × 4" : d === "diamonds" ? "10 × 13" : "15 × 13"}
                   </span>
                   <span style={{ fontSize: 14, color: done ? FELT : "#CCC" }}>{done ? "✓" : "○"}</span>
@@ -752,8 +752,8 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
         <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 2 }}>
           {session.players.map((name, i) => (
             <div key={i} style={{ background: "rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 10px", textAlign: "center", flexShrink: 0, minWidth: 72 }}>
-              <div style={{ fontSize: 10, color: "rgba(248,242,228,0.55)", marginBottom: 2, whiteSpace: "nowrap" }}>{name}</div>
-              <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F2D060" : totals[i] === worst ? "#FF8080" : IVORY }}>{totals[i]}</div>
+              <div style={{ fontSize: 13, color: "rgba(248,242,228,0.55)", marginBottom: 2, whiteSpace: "nowrap" }}>{name}</div>
+              <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F5BC22" : totals[i] === worst ? "#FF8080" : IVORY }}>{totals[i]}</div>
             </div>
           ))}
         </div>
@@ -782,7 +782,7 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
               return (
                 <>
                   <tr key={`sep-${ki}`} style={{ background: FELT }}>
-                    <td colSpan={session.playerCount + 1} style={{ padding: "8px 8px", fontSize: 10, fontWeight: 800, color: "rgba(248,242,228,0.9)", borderTop: "3px solid " + FELT_DK, borderBottom: "3px solid " + FELT_DK }}>
+                    <td colSpan={session.playerCount + 1} style={{ padding: "8px 8px", fontSize: 13, fontWeight: 800, color: "rgba(248,242,228,0.9)", borderTop: "3px solid " + FELT_DK, borderBottom: "3px solid " + FELT_DK }}>
                       مملكة {session.players[k.kingIdx]} 👑{isCurrent ? " — جارية" : ""}
                     </td>
                   </tr>
@@ -793,7 +793,7 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
                           <span style={{ display: "inline-block", borderRadius: 4, padding: "1px 5px", fontSize: 9, fontWeight: 700, background: `${DECL_COLORS[res.type]}22`, color: DECL_COLORS[res.type] }}>{DECL_LABELS[res.type]}</span>
                         </td>
                         {res.scores.map((score, si) => (
-                          <td key={si} style={{ padding: "7px 5px", textAlign: "center", fontSize: 12, fontVariantNumeric: "tabular-nums" }}>
+                          <td key={si} style={{ padding: "7px 5px", textAlign: "center", fontSize: 14, fontVariantNumeric: "tabular-nums" }}>
                             <span style={{ fontWeight: score !== 0 ? 700 : 400, color: score < 0 ? FELT : score > 0 ? CRIMSON : "#CCC" }}>
                               {score === 0 ? "0" : score > 0 ? `+${score}` : score}
                             </span>
@@ -806,7 +806,7 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
                     <tr key={`sub-${ki}`} style={{ background: "rgba(27,94,56,0.06)" }}>
                       <td style={{ padding: "7px 8px", fontSize: 9, color: FELT, fontWeight: 800, textAlign: "right" }}>مجموع</td>
                       {kt.map((t, ti) => (
-                        <td key={ti} style={{ padding: "7px 5px", textAlign: "center", fontWeight: 900, fontVariantNumeric: "tabular-nums", fontSize: 12, color: t < 0 ? FELT : t > 0 ? CRIMSON : "#CCC" }}>
+                        <td key={ti} style={{ padding: "7px 5px", textAlign: "center", fontWeight: 900, fontVariantNumeric: "tabular-nums", fontSize: 14, color: t < 0 ? FELT : t > 0 ? CRIMSON : "#CCC" }}>
                           {t === 0 ? "0" : t > 0 ? `+${t}` : t}
                         </td>
                       ))}
@@ -850,20 +850,20 @@ function GameOver({ session, onRestart, onHome }: { session: TrixSession; onRest
       {/* Hero */}
       <div style={{ background: `linear-gradient(155deg, ${FELT}, #0A2816)`, padding: "28px 20px 20px", textAlign: "center" }}>
         <span style={{ fontSize: 52, display: "block", marginBottom: 10 }}>🏆</span>
-        <div style={{ fontSize: 12, color: "rgba(248,242,228,0.45)", letterSpacing: 1, marginBottom: 5 }}>الفائز — الأقل نقاطاً</div>
-        <div style={{ fontSize: 26, fontWeight: 900, color: "#F2D060" }}>{winner.name}</div>
-        <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)", marginTop: 4 }}>{winner.total} نقطة · {session.playerCount} ممالك</div>
+        <div style={{ fontSize: 14, color: "rgba(248,242,228,0.45)", letterSpacing: 1, marginBottom: 5 }}>الفائز — الأقل نقاطاً</div>
+        <div style={{ fontSize: 26, fontWeight: 900, color: "#F5BC22" }}>{winner.name}</div>
+        <div style={{ fontSize: 15, color: "rgba(248,242,228,0.5)", marginTop: 4 }}>{winner.total} نقطة · {session.playerCount} ممالك</div>
       </div>
 
       {/* Standings */}
       <div style={{ background: "#fff" }}>
         {sorted.map(({ name, i, total }, rank) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderBottom: rank < sorted.length - 1 ? `1px solid ${IVORY_DK}` : "none" }}>
-            <div style={{ fontSize: 20, fontWeight: 900, color: ["#D4A420","#C0C0C0","#CD7F32"][rank] ?? IVORY_DK, width: 28, textAlign: "center", flexShrink: 0 }}>{rank + 1}</div>
+            <div style={{ fontSize: 20, fontWeight: 900, color: ["#F5BC22","#C0C0C0","#CD7F32"][rank] ?? IVORY_DK, width: 28, textAlign: "center", flexShrink: 0 }}>{rank + 1}</div>
             <Av idx={i} size={40} players={session.players} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: JET }}>{name}</div>
-              {rank === 0 && <div style={{ fontSize: 11, color: "#AAA", marginTop: 2 }}>أقل نقاط · الفائز</div>}
+              {rank === 0 && <div style={{ fontSize: 13, color: "#AAA", marginTop: 2 }}>أقل نقاط · الفائز</div>}
             </div>
             <div style={{ fontSize: 22, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: total < 0 ? FELT : total > 0 ? CRIMSON : JET, direction: "ltr" }}>{total}</div>
           </div>
@@ -872,7 +872,7 @@ function GameOver({ session, onRestart, onHome }: { session: TrixSession; onRest
 
       {/* Statistics per declaration */}
       <div style={{ background: IVORY_DK, padding: "14px 16px" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#888", marginBottom: 10, textAlign: "right" }}>إحصائيات تفصيلية</div>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#888", marginBottom: 10, textAlign: "right" }}>إحصائيات تفصيلية</div>
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 300 }}>
             <thead>
@@ -892,14 +892,14 @@ function GameOver({ session, onRestart, onHome }: { session: TrixSession; onRest
               {ALL_DECL.map(d => (
                 <tr key={d} style={{ borderTop: `1px solid ${IVORY_MID}` }}>
                   <td style={{ padding: "7px 8px", textAlign: "right" }}>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 10, fontWeight: 700, color: DECL_COLORS[d] }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 13, fontWeight: 700, color: DECL_COLORS[d] }}>
                       <span>{DECL_ICONS[d]}</span>{DECL_LABELS[d]}
                     </span>
                   </td>
                   {session.players.map((_, i) => {
                     const s = byDecl[d][i];
                     return (
-                      <td key={i} style={{ padding: "7px 4px", textAlign: "center", fontSize: 11, fontWeight: s !== 0 ? 800 : 400, fontVariantNumeric: "tabular-nums", color: s < 0 ? FELT : s > 0 ? CRIMSON : "#CCC" }}>
+                      <td key={i} style={{ padding: "7px 4px", textAlign: "center", fontSize: 13, fontWeight: s !== 0 ? 800 : 400, fontVariantNumeric: "tabular-nums", color: s < 0 ? FELT : s > 0 ? CRIMSON : "#CCC" }}>
                         {s === 0 ? "—" : s > 0 ? `+${s}` : s}
                       </td>
                     );
@@ -909,9 +909,9 @@ function GameOver({ session, onRestart, onHome }: { session: TrixSession; onRest
             </tbody>
             <tfoot>
               <tr style={{ background: IVORY, borderTop: `2px solid ${IVORY_MID}` }}>
-                <td style={{ padding: "8px 8px", fontSize: 10, fontWeight: 800, color: JET, textAlign: "right" }}>الإجمالي</td>
+                <td style={{ padding: "8px 8px", fontSize: 13, fontWeight: 800, color: JET, textAlign: "right" }}>الإجمالي</td>
                 {totals.map((t, i) => (
-                  <td key={i} style={{ padding: "8px 4px", textAlign: "center", fontSize: 13, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: t < 0 ? FELT : t > 0 ? CRIMSON : JET }}>{t}</td>
+                  <td key={i} style={{ padding: "8px 4px", textAlign: "center", fontSize: 15, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: t < 0 ? FELT : t > 0 ? CRIMSON : JET }}>{t}</td>
                 ))}
               </tr>
             </tfoot>
@@ -1063,9 +1063,9 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
         }}>←</button>
         <div style={{ flex: 1 }}>
           <div style={{ color: IVORY, fontSize: 15, fontWeight: 700, textAlign: "right" }}>{topTitle}</div>
-          {topSub && <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" }}>{topSub}</div>}
+          {topSub && <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>{topSub}</div>}
         </div>
-        <div style={{ background: PURPLE, borderRadius: 8, padding: "4px 10px", color: "#fff", fontSize: 12, fontWeight: 800 }}>♛</div>
+        <div style={{ background: PURPLE, borderRadius: 8, padding: "4px 10px", color: "#fff", fontSize: 14, fontWeight: 800 }}>♛</div>
       </div>
 
       {view.type === "kingdoms" && <KingdomBoard session={session} onStartRound={() => setView({ type: "picker" })} onViewScores={() => setView({ type: "scores" })} />}

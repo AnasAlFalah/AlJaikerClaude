@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -145,7 +145,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
               <div key={i} style={{
                 width: 6, height: 6, borderRadius: "50%",
                 background: i === cyclePos
-                  ? "#D4A420"
+                  ? "#F5BC22"
                   : i < cyclePos
                     ? "rgba(212,164,32,0.5)"
                     : "rgba(212,164,32,0.25)",
@@ -177,8 +177,8 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
             {session.players.map((p, i) => (
               <div key={i} style={{ flex: 1, textAlign: "center" }}>
                 <div style={{
-                  fontSize: 11, fontWeight: 700, marginBottom: 2,
-                  color: i === leaderIdx ? "#D4A420" : "rgba(248,242,228,0.6)",
+                  fontSize: 13, fontWeight: 700, marginBottom: 2,
+                  color: i === leaderIdx ? "#F5BC22" : "rgba(248,242,228,0.6)",
                 }}>{p.name}</div>
                 <div style={{
                   fontSize: 28, fontWeight: 900, lineHeight: 1,
@@ -234,13 +234,13 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
               {passArrow(round.passDirection)}
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 11, color: "rgba(248,242,228,0.5)" }}>
+              <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)" }}>
                 {round.type === "eatAll"
                   ? `أكل الكل — ${session.players[round.eatAllWinner!]?.name}`
                   : "جولة عادية"}
               </div>
               {round.type === "normal" && (
-                <div style={{ fontSize: 10, color: "rgba(248,242,228,0.3)" }}>
+                <div style={{ fontSize: 13, color: "rgba(248,242,228,0.3)" }}>
                   {roundSummaryLine(round, session)}
                 </div>
               )}
@@ -248,7 +248,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
             {round.scores.map((score, i) => (
               <div key={i} style={{
                 ...s.td,
-                color: score < 0 ? "#2ECC71" : score === 0 ? "rgba(248,242,228,0.4)" : "#F8F2E4",
+                color: score < 0 ? "#2ECC71" : score === 0 ? "rgba(248,242,228,0.4)" : "#FFFFFF",
               }}>
                 {score > 0 ? `+${score}` : score}
               </div>
@@ -257,7 +257,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
               onClick={() => onEditRound(round)}
               style={{
                 background: "none", border: "none", cursor: "pointer",
-                color: "rgba(248,242,228,0.25)", fontSize: 13, padding: 2,
+                color: "rgba(248,242,228,0.25)", fontSize: 15, padding: 2,
                 fontFamily: "inherit",
               }}
             >✎</button>
@@ -265,7 +265,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
         ))}
 
         {session.rounds.length === 0 && (
-          <div style={{ padding: "32px 16px", textAlign: "center", color: "rgba(248,242,228,0.3)", fontSize: 13 }}>
+          <div style={{ padding: "32px 16px", textAlign: "center", color: "rgba(248,242,228,0.3)", fontSize: 15 }}>
             لا توجد جولات بعد
           </div>
         )}
@@ -371,29 +371,29 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
                   <div style={{ ...s.avatar32, background: p.avatarColor }}>
                     {p.name[0]}
                   </div>
-                  <div style={{ flex: 1, textAlign: "right", color: eatAllWinner === i ? "#D4A420" : "rgba(248,242,228,0.6)", fontSize: 14, fontWeight: 700 }}>
+                  <div style={{ flex: 1, textAlign: "right", color: eatAllWinner === i ? "#F5BC22" : "rgba(248,242,228,0.6)", fontSize: 14, fontWeight: 700 }}>
                     {p.name}
                   </div>
-                  <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 12 }}>
+                  <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 14 }}>
                     {totals[i]} نقطة
                   </div>
-                  {eatAllWinner === i && <div style={{ color: "#D4A420", fontSize: 18 }}>✓</div>}
+                  {eatAllWinner === i && <div style={{ color: "#F5BC22", fontSize: 18 }}>✓</div>}
                 </button>
               ))}
             </div>
 
             {eatAllWinner !== null && (
               <div style={s.resultPreview}>
-                <div style={{ color: "rgba(212,164,32,0.7)", fontSize: 11, marginBottom: 8 }}>نتيجة أكل الكل</div>
+                <div style={{ color: "rgba(212,164,32,0.7)", fontSize: 13, marginBottom: 8 }}>نتيجة أكل الكل</div>
                 <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
                   <div style={{ textAlign: "center" }}>
                     <div style={{ color: "#2ECC71", fontSize: 22, fontWeight: 900 }}>0</div>
-                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 10 }}>{session.players[eatAllWinner].name}</div>
+                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13 }}>{session.players[eatAllWinner].name}</div>
                   </div>
                   <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 20 }}>|</div>
                   <div style={{ textAlign: "center" }}>
                     <div style={{ color: "#E74C3C", fontSize: 22, fontWeight: 900 }}>+26</div>
-                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 10 }}>الباقين</div>
+                    <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13 }}>الباقين</div>
                   </div>
                 </div>
               </div>
@@ -422,7 +422,7 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
             }}>
               <div>
                 <div style={s.countLabel}>مجموع الحاس</div>
-                <div style={{ fontSize: 11, color: heartsOk ? "rgba(46,204,113,0.7)" : "rgba(231,76,60,0.7)" }}>
+                <div style={{ fontSize: 13, color: heartsOk ? "rgba(46,204,113,0.7)" : "rgba(231,76,60,0.7)" }}>
                   {heartsOk ? "مكتمل ✓" : `باقي ${13 - totalHearts} حاسة لم تُوزَّع`}
                 </div>
               </div>
@@ -441,7 +441,7 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
             borderRadius: 12,
             border: roundType === "eatAll" ? "2px solid #D4A420" : "1px solid rgba(212,164,32,0.3)",
             background: roundType === "eatAll" ? "rgba(212,164,32,0.15)" : "transparent",
-            color: roundType === "eatAll" ? "#D4A420" : "rgba(212,164,32,0.5)",
+            color: roundType === "eatAll" ? "#F5BC22" : "rgba(212,164,32,0.5)",
             fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
           }}
           onClick={() => setRoundType(roundType === "eatAll" ? "normal" : "eatAll")}
@@ -496,13 +496,13 @@ function PlayerCard({ player, total, entry, onChange }: {
   return (
     <div style={s.playerCard}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div style={{ ...s.avatar, background: player.avatarColor, width: 32, height: 32, fontSize: 12 }}>
+        <div style={{ ...s.avatar, background: player.avatarColor, width: 32, height: 32, fontSize: 14 }}>
           {player.name[0]}
         </div>
-        <div style={{ flex: 1, textAlign: "right", color: "#F8F2E4", fontSize: 14, fontWeight: 700 }}>
+        <div style={{ flex: 1, textAlign: "right", color: "#FFFFFF", fontSize: 14, fontWeight: 700 }}>
           {player.name}
         </div>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 12 }}>{total} نقطة</div>
+        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 14 }}>{total} نقطة</div>
       </div>
 
       {/* Card pills */}
@@ -581,7 +581,7 @@ function PlayerCard({ player, total, entry, onChange }: {
       {!entry.ateNothing && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 12 }}>الحاس ♥</div>
+            <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 14 }}>الحاس ♥</div>
             <div style={{
               fontSize: 22, fontWeight: 900,
               fontVariantNumeric: "tabular-nums",
@@ -607,8 +607,8 @@ function PlayerCard({ player, total, entry, onChange }: {
             }}
           />
           <div style={{ display: "flex", justifyContent: "space-between", direction: "ltr" }}>
-            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 10 }}>0</div>
-            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 10 }}>13</div>
+            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 13 }}>0</div>
+            <div style={{ color: "rgba(248,242,228,0.2)", fontSize: 13 }}>13</div>
           </div>
         </div>
       )}
@@ -675,14 +675,14 @@ function GameOver({ session, totals, onRestart, onHome }: {
             borderBottom: "1px solid rgba(212,164,32,0.3)",
           }}>
             <div style={{ fontSize: 40, marginBottom: 8 }}>🏆</div>
-            <div style={{ color: "#D4A420", fontSize: 11, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
-            <div style={{ color: "#F8F2E4", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>{winnerName}</div>
-            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13 }}>{winnerScore} — {loserScore}</div>
+            <div style={{ color: "#F5BC22", fontSize: 13, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
+            <div style={{ color: "#FFFFFF", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>{winnerName}</div>
+            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 15 }}>{winnerScore} — {loserScore}</div>
           </div>
 
           {/* Team standings */}
           <div style={{ padding: "16px 16px 0" }}>
-            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>ترتيب الفرق</div>
+            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>ترتيب الفرق</div>
             {teamStandings.map(({ name, total }, rank) => (
               <div key={name} style={{
                 display: "flex", alignItems: "center", gap: 12,
@@ -692,24 +692,24 @@ function GameOver({ session, totals, onRestart, onHome }: {
               }}>
                 <div style={{
                   width: 28, height: 28, borderRadius: "50%",
-                  background: rank === 0 ? "#D4A420" : "rgba(255,255,255,0.1)",
+                  background: rank === 0 ? "#F5BC22" : "rgba(255,255,255,0.1)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: rank === 0 ? "#0F3D24" : "rgba(248,242,228,0.4)",
-                  fontSize: 13, fontWeight: 900,
+                  color: rank === 0 ? "#0F5F2C" : "rgba(248,242,228,0.4)",
+                  fontSize: 15, fontWeight: 900,
                 }}>{rank + 1}</div>
-                <div style={{ flex: 1, color: "#F8F2E4", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{name}</div>
-                <div style={{ color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900 }}>{total}</div>
+                <div style={{ flex: 1, color: "#FFFFFF", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{name}</div>
+                <div style={{ color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900 }}>{total}</div>
               </div>
             ))}
           </div>
 
           {/* Player stats */}
           <div style={{ padding: "16px 16px 0" }}>
-            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
+            <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
             <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 40px 40px 40px 40px", padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
                 {["اللاعب", "♥", "♛", "◆", "نقاط"].map((h, i) => (
-                  <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 10, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
+                  <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
                 ))}
               </div>
               {playerStats.map((ps, i) => (
@@ -720,13 +720,13 @@ function GameOver({ session, totals, onRestart, onHome }: {
                   alignItems: "center",
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
-                    <div style={{ color: "#F8F2E4", fontSize: 13, fontWeight: 600 }}>{ps.name}</div>
+                    <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{ps.name}</div>
                     <div style={{ width: 22, height: 22, borderRadius: "50%", background: ps.avatarColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{ps.name[0]}</div>
                   </div>
-                  <div style={{ color: "#E74C3C", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
-                  <div style={{ color: "#A990F0", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
-                  <div style={{ color: "#D4A420", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
-                  <div style={{ color: "rgba(248,242,228,0.7)", fontSize: 13, fontWeight: 700, textAlign: "center", fontVariantNumeric: "tabular-nums" as const }}>{ps.total}</div>
+                  <div style={{ color: "#E74C3C", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
+                  <div style={{ color: "#A990F0", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
+                  <div style={{ color: "#F5BC22", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
+                  <div style={{ color: "rgba(248,242,228,0.7)", fontSize: 15, fontWeight: 700, textAlign: "center", fontVariantNumeric: "tabular-nums" as const }}>{ps.total}</div>
                 </div>
               ))}
             </div>
@@ -766,14 +766,14 @@ function GameOver({ session, totals, onRestart, onHome }: {
           borderBottom: "1px solid rgba(212,164,32,0.3)",
         }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>🏆</div>
-          <div style={{ color: "#D4A420", fontSize: 11, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
-          <div style={{ color: "#F8F2E4", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>{winner.name}</div>
-          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13 }}>أقل النقاط · {winner.total} نقطة</div>
+          <div style={{ color: "#F5BC22", fontSize: 13, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>الفائز</div>
+          <div style={{ color: "#FFFFFF", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>{winner.name}</div>
+          <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 15 }}>أقل النقاط · {winner.total} نقطة</div>
         </div>
 
         {/* Standings */}
         <div style={{ padding: "16px 16px 0" }}>
-          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>الترتيب النهائي</div>
+          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>الترتيب النهائي</div>
           {sorted.map((p, rank) => (
             <div key={p.originalIndex} style={{
               display: "flex", alignItems: "center", gap: 12,
@@ -783,24 +783,24 @@ function GameOver({ session, totals, onRestart, onHome }: {
             }}>
               <div style={{
                 width: 28, height: 28, borderRadius: "50%",
-                background: rank === 0 ? "#D4A420" : "rgba(255,255,255,0.1)",
+                background: rank === 0 ? "#F5BC22" : "rgba(255,255,255,0.1)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: rank === 0 ? "#0F3D24" : "rgba(248,242,228,0.4)",
-                fontSize: 13, fontWeight: 900,
+                color: rank === 0 ? "#0F5F2C" : "rgba(248,242,228,0.4)",
+                fontSize: 15, fontWeight: 900,
               }}>{rank + 1}</div>
-              <div style={{ flex: 1, color: "#F8F2E4", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{p.name}</div>
-              <div style={{ color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums" as const }}>{p.total}</div>
+              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 14, fontWeight: 700, textAlign: "right" }}>{p.name}</div>
+              <div style={{ color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.5)", fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums" as const }}>{p.total}</div>
             </div>
           ))}
         </div>
 
         {/* Player stats */}
         <div style={{ padding: "16px 16px 0" }}>
-          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
+          <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>إحصائيات اللاعبين</div>
           <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 36px 36px 36px 36px 42px", padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
               {["اللاعب", "♥", "♛", "◆", "ما أكل", "نقاط"].map((h, i) => (
-                <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 10, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
+                <div key={i} style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 600, textAlign: i === 0 ? "right" : "center" }}>{h}</div>
               ))}
             </div>
             {sorted.map((ps, rank) => (
@@ -811,24 +811,24 @@ function GameOver({ session, totals, onRestart, onHome }: {
                 alignItems: "center",
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
-                  <div style={{ color: "#F8F2E4", fontSize: 13, fontWeight: 600 }}>{ps.name}</div>
+                  <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{ps.name}</div>
                   <div style={{ width: 22, height: 22, borderRadius: "50%", background: ps.avatarColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{ps.name[0]}</div>
                 </div>
-                <div style={{ color: "#E74C3C", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
-                <div style={{ color: "#A990F0", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
-                <div style={{ color: "#D4A420", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
-                <div style={{ color: "#2ECC71", fontSize: 13, fontWeight: 700, textAlign: "center" }}>{ps.ateNothing}</div>
+                <div style={{ color: "#E74C3C", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.hearts}</div>
+                <div style={{ color: "#A990F0", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.queens}</div>
+                <div style={{ color: "#F5BC22", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.diamonds}</div>
+                <div style={{ color: "#2ECC71", fontSize: 15, fontWeight: 700, textAlign: "center" }}>{ps.ateNothing}</div>
                 <div style={{
-                  color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.7)",
-                  fontSize: 13, fontWeight: 900, textAlign: "center", fontVariantNumeric: "tabular-nums" as const,
+                  color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.7)",
+                  fontSize: 15, fontWeight: 900, textAlign: "center", fontVariantNumeric: "tabular-nums" as const,
                 }}>{ps.total}</div>
               </div>
             ))}
           </div>
           <div style={{ display: "flex", gap: 16, justifyContent: "flex-end", marginTop: 8 }}>
-            {[["♥", "حاسة أكلها", "#E74C3C"], ["♛", "ميم السبيت", "#A990F0"], ["◆", "عشر الديمن", "#D4A420"], ["ما أكل", "جولات بدون", "#2ECC71"]].map(([icon, label, color]) => (
+            {[["♥", "حاسة أكلها", "#E74C3C"], ["♛", "ميم السبيت", "#A990F0"], ["◆", "عشر الديمن", "#F5BC22"], ["ما أكل", "جولات بدون", "#2ECC71"]].map(([icon, label, color]) => (
               <div key={icon} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <div style={{ color, fontSize: 11 }}>{icon}</div>
+                <div style={{ color, fontSize: 13 }}>{icon}</div>
                 <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 9 }}>{label}</div>
               </div>
             ))}
@@ -874,7 +874,7 @@ function roundSummaryLine(round: SpideRound, session: SpideSession): string {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "#0F3D24",
+    background: "#0F5F2C",
     display: "flex",
     flexDirection: "column" as const,
     maxWidth: 390,
@@ -883,7 +883,7 @@ const styles = {
     position: "relative" as const,
   },
   topbar: {
-    background: "#1B5E38",
+    background: "#1C9245",
     padding: "48px 16px 14px",
     display: "flex",
     alignItems: "center",
@@ -894,12 +894,12 @@ const styles = {
   backBtn: {
     width: 30, height: 30, borderRadius: "50%",
     background: "rgba(255,255,255,0.1)",
-    border: "none", color: "#F8F2E4", fontSize: 16,
+    border: "none", color: "#FFFFFF", fontSize: 16,
     display: "flex", alignItems: "center", justifyContent: "center",
     cursor: "pointer", flexShrink: 0,
   } as React.CSSProperties,
-  topTitle: { color: "#F8F2E4", fontSize: 15, fontWeight: 700, textAlign: "right" as const },
-  topSub: { color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" as const },
+  topTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" as const },
+  topSub: { color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" as const },
   topBadge: { fontSize: 20 },
   scoreHeader: {
     background: "rgba(0,0,0,0.2)",
@@ -915,16 +915,16 @@ const styles = {
     display: "flex", alignItems: "center", justifyContent: "space-between",
     marginBottom: 10,
   },
-  passLabel: { color: "rgba(248,242,228,0.5)", fontSize: 11 },
-  passValue: { color: "#D4A420", fontSize: 13, fontWeight: 700 },
+  passLabel: { color: "rgba(248,242,228,0.5)", fontSize: 13 },
+  passValue: { color: "#F5BC22", fontSize: 15, fontWeight: 700 },
   th: {
-    color: "rgba(248,242,228,0.35)", fontSize: 10, fontWeight: 600, textAlign: "center" as const,
+    color: "rgba(248,242,228,0.35)", fontSize: 13, fontWeight: 600, textAlign: "center" as const,
   },
   td: {
-    color: "#F8F2E4", fontSize: 12, textAlign: "center" as const, fontVariantNumeric: "tabular-nums" as const,
+    color: "#FFFFFF", fontSize: 14, textAlign: "center" as const, fontVariantNumeric: "tabular-nums" as const,
   },
   tdNum: {
-    color: "rgba(248,242,228,0.35)", fontSize: 11, textAlign: "center" as const,
+    color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center" as const,
   },
   body: {
     flex: 1,
@@ -937,7 +937,7 @@ const styles = {
   },
   secLabel: {
     color: "rgba(248,242,228,0.45)",
-    fontSize: 11, fontWeight: 700,
+    fontSize: 13, fontWeight: 700,
     textAlign: "right" as const,
     marginBottom: 8,
   },
@@ -950,10 +950,10 @@ const styles = {
     display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6,
   },
   roundTypeNormal: {
-    borderColor: "#1B5E38", background: "rgba(27,94,56,0.3)", color: "#F8F2E4",
+    borderColor: "#1C9245", background: "rgba(27,94,56,0.3)", color: "#FFFFFF",
   },
   roundTypeEat: {
-    borderColor: "#D4A420", background: "rgba(212,164,32,0.12)", color: "#D4A420",
+    borderColor: "#F5BC22", background: "rgba(212,164,32,0.12)", color: "#F5BC22",
   },
   playerCard: {
     background: "rgba(255,255,255,0.06)",
@@ -963,33 +963,33 @@ const styles = {
   avatar: {
     width: 28, height: 28, borderRadius: "50%",
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#fff", fontSize: 11, fontWeight: 700, flexShrink: 0,
+    color: "#fff", fontSize: 13, fontWeight: 700, flexShrink: 0,
   } as React.CSSProperties,
   avatar32: {
     width: 32, height: 32, borderRadius: "50%",
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#fff", fontSize: 12, fontWeight: 700, flexShrink: 0,
+    color: "#fff", fontSize: 14, fontWeight: 700, flexShrink: 0,
   } as React.CSSProperties,
   pill: {
     padding: "6px 12px", borderRadius: 20,
     border: "1px solid rgba(255,255,255,0.12)",
     background: "rgba(255,255,255,0.05)",
-    color: "rgba(248,242,228,0.5)", fontSize: 12, fontWeight: 600,
+    color: "rgba(248,242,228,0.5)", fontSize: 14, fontWeight: 600,
     cursor: "pointer", fontFamily: "inherit",
   },
   pillQueen: { borderColor: "#5B3FA6", background: "rgba(91,63,166,0.2)", color: "#A990F0" },
-  pillDiamond: { borderColor: "#D4A420", background: "rgba(212,164,32,0.15)", color: "#D4A420" },
+  pillDiamond: { borderColor: "#F5BC22", background: "rgba(212,164,32,0.15)", color: "#F5BC22" },
   pillZero: { borderColor: "#2ECC71", background: "rgba(46,204,113,0.12)", color: "#2ECC71" },
   announceRow: {
     display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8,
   },
-  announceLabel: { color: "rgba(248,242,228,0.4)", fontSize: 11 },
+  announceLabel: { color: "rgba(248,242,228,0.4)", fontSize: 13 },
   announceToggle: {
     display: "flex", background: "rgba(0,0,0,0.3)", borderRadius: 20, padding: 3, gap: 3,
   },
   annBtn: {
     padding: "4px 12px", borderRadius: 16, border: "none",
-    fontSize: 11, fontWeight: 700,
+    fontSize: 13, fontWeight: 700,
     cursor: "pointer", fontFamily: "inherit",
     background: "transparent", color: "rgba(248,242,228,0.35)",
   },
@@ -1003,7 +1003,7 @@ const styles = {
   },
   countBarOk: { borderColor: "rgba(46,204,113,0.3)", background: "rgba(46,204,113,0.06)" },
   countBarWarn: { borderColor: "rgba(231,76,60,0.3)", background: "rgba(231,76,60,0.06)" },
-  countLabel: { color: "rgba(248,242,228,0.45)", fontSize: 12 },
+  countLabel: { color: "rgba(248,242,228,0.45)", fontSize: 14 },
   resultPreview: {
     marginTop: 8,
     background: "rgba(212,164,32,0.08)", border: "1px solid rgba(212,164,32,0.2)",
@@ -1016,8 +1016,8 @@ const styles = {
   },
   btnPrimary: {
     width: "100%", padding: "15px 0",
-    background: "#1B5E38", border: "none", borderRadius: 12,
-    color: "#F8F2E4", fontSize: 16, fontWeight: 700,
+    background: "#1C9245", border: "none", borderRadius: 12,
+    color: "#FFFFFF", fontSize: 16, fontWeight: 700,
     cursor: "pointer", fontFamily: "inherit",
   },
   btnDisabled: {

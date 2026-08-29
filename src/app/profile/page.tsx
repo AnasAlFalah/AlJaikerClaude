@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,11 +7,11 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 
-const FELT    = "#1B5E38";
-const FELT_DK = "#0F3D24";
-const IVORY   = "#F8F2E4";
-const GOLD    = "#F2D060";
-const JET     = "#1A1210";
+const FELT    = "#0F5F2C";
+const FELT_DK = "#0F5F2C";
+const IVORY   = "#FFFFFF";
+const GOLD    = "#F5BC22";
+const JET     = "#14110F";
 
 export default function ProfilePage() {
   const t  = useTranslations("profile");
@@ -47,7 +47,7 @@ export default function ProfilePage() {
           <div style={{ background: "rgba(242,208,96,0.1)", border: "1.5px solid rgba(242,208,96,0.25)", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 10, alignItems: "center", textAlign: "center" }}>
             <div style={{ fontSize: 40 }}>👤</div>
             <div style={{ color: GOLD, fontSize: 15, fontWeight: 700 }}>{t("guestBanner")}</div>
-            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 12 }}>{t("guestBannerSub")}</div>
+            <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 14 }}>{t("guestBannerSub")}</div>
             <button onClick={() => router.push("/auth")} style={{
               marginTop: 4, padding: "12px 28px", background: GOLD, border: "none",
               borderRadius: 10, color: JET, fontSize: 14, fontWeight: 800, cursor: "pointer",
@@ -127,26 +127,26 @@ export default function ProfilePage() {
                 placeholder={t("namePlaceholder")}
                 style={{ flex: 1, background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 8, padding: "8px 12px", color: IVORY, fontSize: 15, outline: "none", fontFamily: "inherit", direction: dir, textAlign: "center" }}
               />
-              <button onClick={handleSaveName} disabled={savingName || !nameValue.trim()} style={{ padding: "8px 14px", background: GOLD, border: "none", borderRadius: 8, color: JET, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+              <button onClick={handleSaveName} disabled={savingName || !nameValue.trim()} style={{ padding: "8px 14px", background: GOLD, border: "none", borderRadius: 8, color: JET, fontWeight: 700, fontSize: 15, cursor: "pointer" }}>
                 {savingName ? "..." : tc("save")}
               </button>
-              <button onClick={() => { setEditingName(false); setNameValue(profile?.name ?? ""); }} style={{ padding: "8px 10px", background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 8, color: IVORY, fontSize: 13, cursor: "pointer" }}>
+              <button onClick={() => { setEditingName(false); setNameValue(profile?.name ?? ""); }} style={{ padding: "8px 10px", background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 8, color: IVORY, fontSize: 15, cursor: "pointer" }}>
                 {tc("cancel")}
               </button>
             </div>
           ) : (
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ color: IVORY, fontSize: 18, fontWeight: 700 }}>{profile?.name ?? user.email}</div>
-              <button onClick={() => { setEditingName(true); setNameValue(profile?.name ?? ""); }} style={{ background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 6, padding: "4px 8px", color: "rgba(248,242,228,0.5)", fontSize: 12, cursor: "pointer" }}>
+              <button onClick={() => { setEditingName(true); setNameValue(profile?.name ?? ""); }} style={{ background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 6, padding: "4px 8px", color: "rgba(248,242,228,0.5)", fontSize: 14, cursor: "pointer" }}>
                 ✏️
               </button>
             </div>
           )}
 
-          {nameSaved && <div style={{ color: "#4CAF50", fontSize: 12 }}>✓ {t("nameSaved")}</div>}
+          {nameSaved && <div style={{ color: "#4CAF50", fontSize: 14 }}>✓ {t("nameSaved")}</div>}
 
-          {user.email && <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 12 }}>{user.email}</div>}
-          {memberDate && <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 11 }}>{t("memberSince")} {memberDate}</div>}
+          {user.email && <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 14 }}>{user.email}</div>}
+          {memberDate && <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 13 }}>{t("memberSince")} {memberDate}</div>}
         </div>
 
         {/* Language */}
@@ -154,19 +154,19 @@ export default function ProfilePage() {
 
         {/* Account section */}
         <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 14, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}>
-          <div style={{ padding: "10px 16px", color: "rgba(248,242,228,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 1, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ padding: "10px 16px", color: "rgba(248,242,228,0.35)", fontSize: 13, fontWeight: 700, letterSpacing: 1, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
             {t("account")}
           </div>
 
           {/* Logout */}
           {confirmLogout ? (
             <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ color: IVORY, fontSize: 13, textAlign: "center" }}>{t("logoutConfirm")}</div>
+              <div style={{ color: IVORY, fontSize: 15, textAlign: "center" }}>{t("logoutConfirm")}</div>
               <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={() => setConfirmLogout(false)} style={{ flex: 1, padding: "10px 0", background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 8, color: IVORY, fontSize: 13, cursor: "pointer" }}>
+                <button onClick={() => setConfirmLogout(false)} style={{ flex: 1, padding: "10px 0", background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 8, color: IVORY, fontSize: 15, cursor: "pointer" }}>
                   {tc("cancel")}
                 </button>
-                <button onClick={handleLogout} disabled={loggingOut} style={{ flex: 1, padding: "10px 0", background: "#C8102E", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                <button onClick={handleLogout} disabled={loggingOut} style={{ flex: 1, padding: "10px 0", background: "#CE1F26", border: "none", borderRadius: 8, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
                   {loggingOut ? "..." : t("logout")}
                 </button>
               </div>
@@ -185,13 +185,13 @@ export default function ProfilePage() {
 
 // ── Shared language row ─────────────────────────────────────────────────────
 function LangRow({ locale, onSwitch, t }: { locale: string; onSwitch: () => void; t: ReturnType<typeof useTranslations> }) {
-  const IVORY = "#F8F2E4";
-  const GOLD  = "#F2D060";
-  const FELT  = "#1B5E38";
+  const IVORY = "#FFFFFF";
+  const GOLD  = "#F5BC22";
+  const FELT  = "#0F5F2C";
 
   return (
     <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 14, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}>
-      <div style={{ padding: "10px 16px", color: "rgba(248,242,228,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 1, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ padding: "10px 16px", color: "rgba(248,242,228,0.35)", fontSize: 13, fontWeight: 700, letterSpacing: 1, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         {t("language")}
       </div>
       <div style={{ padding: 12, display: "flex", gap: 8 }}>

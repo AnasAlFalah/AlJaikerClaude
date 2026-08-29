@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import {
   getStandings,
 } from "@/lib/general";
 
-const AVATAR_COLORS = ["#C8102E", "#1B5E38", "#D4A420", "#5B3FA6", "#0077B6", "#E07B39"];
+const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#F5BC22", "#5B3FA6", "#0077B6", "#E07B39"];
 
 function generateId() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -57,13 +57,13 @@ function RoundEntry({
     }}>
       <div style={{
         width: "100%", maxWidth: 390, margin: "0 auto",
-        background: "#0F3D24",
+        background: "#0F5F2C",
         borderRadius: "20px 20px 0 0",
         padding: "16px 16px 36px",
         direction: "rtl",
       }}>
         <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.2)", borderRadius: 2, margin: "0 auto 18px" }} />
-        <div style={{ color: "#F8F2E4", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
+        <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right", marginBottom: 16 }}>
           تسجيل جولة {roundNumber}
         </div>
 
@@ -74,11 +74,11 @@ function RoundEntry({
                 width: 30, height: 30, borderRadius: "50%",
                 background: AVATAR_COLORS[i % AVATAR_COLORS.length],
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#fff", fontSize: 11, fontWeight: 700, flexShrink: 0,
+                color: "#fff", fontSize: 13, fontWeight: 700, flexShrink: 0,
               }}>
                 {name.charAt(0)}
               </div>
-              <div style={{ flex: 1, color: "#F8F2E4", fontSize: 13, fontWeight: 600 }}>{name}</div>
+              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: 600 }}>{name}</div>
               <input
                 type="number"
                 value={inputs[i]}
@@ -91,7 +91,7 @@ function RoundEntry({
                   border: `1px solid ${inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "rgba(212,164,32,0.4)" : "rgba(255,255,255,0.15)"}`,
                   borderRadius: 8,
                   padding: "9px 10px",
-                  color: inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "#D4A420" : "#F8F2E4",
+                  color: inputs[i].trim() !== "" && !isNaN(Number(inputs[i])) ? "#F5BC22" : "#FFFFFF",
                   fontSize: 16, fontWeight: 700,
                   textAlign: "center",
                   outline: "none",
@@ -117,8 +117,8 @@ function RoundEntry({
             disabled={!canConfirm}
             style={{
               flex: 2, padding: "13px 0", borderRadius: 12, border: "none",
-              background: canConfirm ? "#1B5E38" : "rgba(27,94,56,0.3)",
-              color: canConfirm ? "#F8F2E4" : "rgba(248,242,228,0.3)",
+              background: canConfirm ? "#1C9245" : "rgba(27,94,56,0.3)",
+              color: canConfirm ? "#FFFFFF" : "rgba(248,242,228,0.3)",
               fontSize: 15, fontWeight: 700, cursor: canConfirm ? "pointer" : "not-allowed",
             }}
           >
@@ -165,8 +165,8 @@ function Scoreboard({
           return (
             <div key={idx} style={{ flex: 1, textAlign: "center" }}>
               <div style={{
-                fontSize: 11, fontWeight: 700, marginBottom: 2,
-                color: isLeader ? "#D4A420" : "rgba(248,242,228,0.55)",
+                fontSize: 13, fontWeight: 700, marginBottom: 2,
+                color: isLeader ? "#F5BC22" : "rgba(248,242,228,0.55)",
                 overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
               }}>
                 {name}
@@ -188,7 +188,7 @@ function Scoreboard({
       {/* Win mode label */}
       <div style={{ padding: "5px 12px", textAlign: "center", direction: "rtl" }}>
         <span style={{
-          fontSize: 10,
+          fontSize: 13,
           color: session.winMode === "highest" ? "rgba(46,204,113,0.5)" : "rgba(231,76,60,0.5)",
           fontWeight: 600,
         }}>
@@ -205,10 +205,10 @@ function Scoreboard({
           borderBottom: "1px solid rgba(255,255,255,0.08)",
           direction: "rtl",
         }}>
-          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 10, textAlign: "center" }}>#</div>
+          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center" }}>#</div>
           {session.players.map((name, idx) => (
             <div key={idx} style={{
-              color: "rgba(248,242,228,0.35)", fontSize: 10, textAlign: "center",
+              color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center",
               overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
             }}>
               {name.length > 4 ? name.slice(0, 3) + "…" : name}
@@ -217,7 +217,7 @@ function Scoreboard({
         </div>
 
         {session.rounds.length === 0 && (
-          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 13, textAlign: "center", padding: "40px 0" }}>
+          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
             لم تُسجَّل أي جولة بعد
           </div>
         )}
@@ -241,10 +241,10 @@ function Scoreboard({
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 11 }}>{round.number}</div>
+                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13 }}>{round.number}</div>
                 <button
                   onClick={() => onEditRound(round)}
-                  style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 10, cursor: "pointer", padding: 0 }}
+                  style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 13, cursor: "pointer", padding: 0 }}
                 >
                   ✎
                 </button>
@@ -252,8 +252,8 @@ function Scoreboard({
               {round.scores.map((score, pIdx) => (
                 <div key={pIdx} style={{ textAlign: "center" }}>
                   <div style={{
-                    fontSize: 12, fontWeight: 700, fontVariantNumeric: "tabular-nums",
-                    color: pIdx === roundLeader ? "#D4A420" : "#F8F2E4",
+                    fontSize: 14, fontWeight: 700, fontVariantNumeric: "tabular-nums",
+                    color: pIdx === roundLeader ? "#F5BC22" : "#FFFFFF",
                   }}>
                     {score > 0 ? `+${score}` : score}
                   </div>
@@ -276,8 +276,8 @@ function Scoreboard({
           onClick={onNewRound}
           style={{
             width: "100%", padding: "14px 0",
-            background: "#1B5E38", border: "none", borderRadius: 12,
-            color: "#F8F2E4", fontSize: 15, fontWeight: 700, cursor: "pointer",
+            background: "#1C9245", border: "none", borderRadius: 12,
+            color: "#FFFFFF", fontSize: 15, fontWeight: 700, cursor: "pointer",
           }}
         >
           + تسجيل جولة
@@ -291,7 +291,7 @@ function Scoreboard({
             border: `1px solid ${session.rounds.length > 0 ? "rgba(231,76,60,0.35)" : "rgba(255,255,255,0.08)"}`,
             borderRadius: 12,
             color: session.rounds.length > 0 ? "rgba(231,76,60,0.75)" : "rgba(248,242,228,0.2)",
-            fontSize: 13, cursor: session.rounds.length > 0 ? "pointer" : "not-allowed",
+            fontSize: 15, cursor: session.rounds.length > 0 ? "pointer" : "not-allowed",
           }}
         >
           إنهاء اللعبة
@@ -327,20 +327,20 @@ function GameOver({
         borderBottom: "1px solid rgba(212,164,32,0.3)",
       }}>
         <div style={{ fontSize: 40, marginBottom: 8 }}>🏆</div>
-        <div style={{ color: "#D4A420", fontSize: 11, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>
+        <div style={{ color: "#F5BC22", fontSize: 13, fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>
           الفائز
         </div>
-        <div style={{ color: "#F8F2E4", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>
+        <div style={{ color: "#FFFFFF", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>
           {session.players[winnerIdx]}
         </div>
-        <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 13 }}>
+        <div style={{ color: "rgba(248,242,228,0.5)", fontSize: 15 }}>
           {session.winMode === "highest" ? "أعلى النقاط" : "أقل النقاط"} · {totals[winnerIdx]} نقطة
         </div>
       </div>
 
       {/* Standings */}
       <div style={{ padding: "16px 16px 0", direction: "rtl" }}>
-        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 11, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
+        <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textAlign: "right", marginBottom: 10, fontWeight: 700 }}>
           الترتيب النهائي
         </div>
         <div style={{
@@ -361,10 +361,10 @@ function GameOver({
             >
               <div style={{
                 width: 26, height: 26, borderRadius: "50%",
-                background: rank === 0 ? "#D4A420" : "rgba(255,255,255,0.08)",
+                background: rank === 0 ? "#F5BC22" : "rgba(255,255,255,0.08)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: rank === 0 ? "#0F3D24" : "rgba(248,242,228,0.35)",
-                fontSize: 12, fontWeight: 900, flexShrink: 0,
+                color: rank === 0 ? "#0F5F2C" : "rgba(248,242,228,0.35)",
+                fontSize: 14, fontWeight: 900, flexShrink: 0,
               }}>
                 {rank + 1}
               </div>
@@ -372,15 +372,15 @@ function GameOver({
                 width: 28, height: 28, borderRadius: "50%",
                 background: AVATAR_COLORS[pIdx % AVATAR_COLORS.length],
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#fff", fontSize: 11, fontWeight: 700, flexShrink: 0,
+                color: "#fff", fontSize: 13, fontWeight: 700, flexShrink: 0,
               }}>
                 {session.players[pIdx].charAt(0)}
               </div>
-              <div style={{ flex: 1, color: "#F8F2E4", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
+              <div style={{ flex: 1, color: "#FFFFFF", fontSize: 14, fontWeight: 700, textAlign: "right" }}>
                 {session.players[pIdx]}
               </div>
               <div style={{
-                color: rank === 0 ? "#D4A420" : "rgba(248,242,228,0.5)",
+                color: rank === 0 ? "#F5BC22" : "rgba(248,242,228,0.5)",
                 fontSize: 18, fontWeight: 900, fontVariantNumeric: "tabular-nums",
               }}>
                 {totals[pIdx]}
@@ -395,7 +395,7 @@ function GameOver({
           onClick={onRestart}
           style={{
             width: "100%", padding: "14px 0", borderRadius: 12, border: "none",
-            background: "#1B5E38", color: "#F8F2E4", fontSize: 15, fontWeight: 700, cursor: "pointer",
+            background: "#1C9245", color: "#FFFFFF", fontSize: 15, fontWeight: 700, cursor: "pointer",
           }}
         >
           لعبة جديدة بنفس اللاعبين
@@ -479,7 +479,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
 
   if (loading || !session) {
     return (
-      <div style={{ minHeight: "100vh", background: "#0F3D24", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ minHeight: "100vh", background: "#0F5F2C", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ color: "rgba(248,242,228,0.4)", fontSize: 14 }}>جاري التحميل...</div>
       </div>
     );
@@ -490,7 +490,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F3D24",
+      background: "#0F5F2C",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -499,7 +499,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1B5E38",
+        background: "#1C9245",
         padding: "44px 16px 14px",
         display: "flex",
         alignItems: "center",
@@ -512,7 +512,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
           style={{
             width: 30, height: 30, borderRadius: "50%",
             background: "rgba(255,255,255,0.1)",
-            border: "none", color: "#F8F2E4", fontSize: 16,
+            border: "none", color: "#FFFFFF", fontSize: 16,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}
@@ -520,10 +520,10 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
           ←
         </button>
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#F8F2E4", fontSize: 15, fontWeight: 700, textAlign: "right" }}>
+          <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>
             {gameOver ? "انتهت اللعبة" : "تسجيل عام"}
           </div>
-          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" }}>
+          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>
             {gameOver
               ? `${session.rounds.length} جولات`
               : `جولة ${session.rounds.length + 1} · ${session.winMode === "highest" ? "الأعلى يفوز" : "الأقل يفوز"}`}

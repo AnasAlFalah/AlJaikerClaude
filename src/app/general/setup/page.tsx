@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { GeneralSession, GeneralWinMode, saveSession } from "@/lib/general";
 
-const AVATAR_COLORS = ["#C8102E", "#1B5E38", "#D4A420", "#5B3FA6", "#0077B6", "#E07B39"];
+const AVATAR_COLORS = ["#CE1F26", "#1C9245", "#F5BC22", "#5B3FA6", "#0077B6", "#E07B39"];
 
 function generateId() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -42,7 +42,7 @@ export default function GeneralSetupPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F3D24",
+      background: "#0F5F2C",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -51,7 +51,7 @@ export default function GeneralSetupPage() {
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1B5E38",
+        background: "#1C9245",
         padding: "44px 16px 14px",
         display: "flex",
         alignItems: "center",
@@ -63,7 +63,7 @@ export default function GeneralSetupPage() {
           style={{
             width: 30, height: 30, borderRadius: "50%",
             background: "rgba(255,255,255,0.1)",
-            border: "none", color: "#F8F2E4", fontSize: 16,
+            border: "none", color: "#FFFFFF", fontSize: 16,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}
@@ -71,8 +71,8 @@ export default function GeneralSetupPage() {
           ←
         </button>
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#F8F2E4", fontSize: 15, fontWeight: 700, textAlign: "right" }}>لعبة جديدة</div>
-          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 10, textAlign: "right" }}>تسجيل عام</div>
+          <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>لعبة جديدة</div>
+          <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>تسجيل عام</div>
         </div>
         <div style={{ fontSize: 20 }}>★</div>
       </div>
@@ -82,7 +82,7 @@ export default function GeneralSetupPage() {
 
         {/* Player count */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 11, fontWeight: 700, textAlign: "right", marginBottom: 8 }}>
+          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, fontWeight: 700, textAlign: "right", marginBottom: 8 }}>
             عدد اللاعبين
           </div>
           <div style={{
@@ -95,8 +95,8 @@ export default function GeneralSetupPage() {
                 onClick={() => setPlayerCount(n)}
                 style={{
                   padding: "10px 0", borderRadius: 8, border: "none",
-                  background: playerCount === n ? "#1B5E38" : "transparent",
-                  color: playerCount === n ? "#F8F2E4" : "rgba(248,242,228,0.45)",
+                  background: playerCount === n ? "#1C9245" : "transparent",
+                  color: playerCount === n ? "#FFFFFF" : "rgba(248,242,228,0.45)",
                   fontSize: 15, fontWeight: 700, cursor: "pointer",
                   boxShadow: playerCount === n ? "0 1px 4px rgba(0,0,0,0.4)" : "none",
                 }}
@@ -109,7 +109,7 @@ export default function GeneralSetupPage() {
 
         {/* Win mode */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 11, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
+          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
             من يفوز؟
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -125,10 +125,10 @@ export default function GeneralSetupPage() {
               }}
             >
               <div style={{ fontSize: 22, color: winMode === "highest" ? "#2ECC71" : "rgba(248,242,228,0.25)" }}>▲</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: winMode === "highest" ? "#2ECC71" : "rgba(248,242,228,0.35)" }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: winMode === "highest" ? "#2ECC71" : "rgba(248,242,228,0.35)" }}>
                 الأعلى نقطة
               </div>
-              <div style={{ fontSize: 10, color: winMode === "highest" ? "rgba(46,204,113,0.5)" : "rgba(248,242,228,0.2)" }}>
+              <div style={{ fontSize: 13, color: winMode === "highest" ? "rgba(46,204,113,0.5)" : "rgba(248,242,228,0.2)" }}>
                 يفوز الأكثر
               </div>
             </button>
@@ -144,10 +144,10 @@ export default function GeneralSetupPage() {
               }}
             >
               <div style={{ fontSize: 22, color: winMode === "lowest" ? "#E74C3C" : "rgba(248,242,228,0.25)" }}>▼</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: winMode === "lowest" ? "#E74C3C" : "rgba(248,242,228,0.35)" }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: winMode === "lowest" ? "#E74C3C" : "rgba(248,242,228,0.35)" }}>
                 الأقل نقطة
               </div>
-              <div style={{ fontSize: 10, color: winMode === "lowest" ? "rgba(231,76,60,0.5)" : "rgba(248,242,228,0.2)" }}>
+              <div style={{ fontSize: 13, color: winMode === "lowest" ? "rgba(231,76,60,0.5)" : "rgba(248,242,228,0.2)" }}>
                 يفوز الأقل
               </div>
             </button>
@@ -156,7 +156,7 @@ export default function GeneralSetupPage() {
 
         {/* Players */}
         <div>
-          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 11, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
+          <div style={{ color: "rgba(248,242,228,0.55)", fontSize: 13, fontWeight: 700, textAlign: "right", marginBottom: 10 }}>
             اللاعبون
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -166,7 +166,7 @@ export default function GeneralSetupPage() {
                   width: 32, height: 32, borderRadius: "50%",
                   background: AVATAR_COLORS[i % AVATAR_COLORS.length],
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#fff", fontSize: 12, fontWeight: 700, flexShrink: 0,
+                  color: "#fff", fontSize: 14, fontWeight: 700, flexShrink: 0,
                 }}>
                   {players[i].trim().charAt(0).toUpperCase() || (i + 1)}
                 </div>
@@ -181,7 +181,7 @@ export default function GeneralSetupPage() {
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: 10,
                     padding: "10px 12px",
-                    color: "#F8F2E4",
+                    color: "#FFFFFF",
                     fontSize: 14,
                     outline: "none",
                     textAlign: "right",
@@ -204,9 +204,9 @@ export default function GeneralSetupPage() {
           disabled={!canStart}
           style={{
             width: "100%", padding: "15px 0",
-            background: canStart ? "#1B5E38" : "rgba(27,94,56,0.3)",
+            background: canStart ? "#1C9245" : "rgba(27,94,56,0.3)",
             border: "none", borderRadius: 12,
-            color: canStart ? "#F8F2E4" : "rgba(248,242,228,0.3)",
+            color: canStart ? "#FFFFFF" : "rgba(248,242,228,0.3)",
             fontSize: 16, fontWeight: 700,
             cursor: canStart ? "pointer" : "not-allowed",
           }}
