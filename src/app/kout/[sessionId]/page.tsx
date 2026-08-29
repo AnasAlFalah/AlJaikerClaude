@@ -621,16 +621,17 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
         <button
           onClick={() => router.push("/app")}
           style={{
-            width: 30, height: 30, borderRadius: "50%",
-            background: "rgba(255,255,255,0.1)",
-            border: "none", color: "#FFFFFF", fontSize: 16,
+            width: 34, height: 34, borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
+            border: "none", color: "#FFFFFF", fontSize: 18,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
           }}
         >
           ←
         </button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>كوت</div>
+          <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" }}>كوت</div>
           <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>
             {session.teamA.name} ضد {session.teamB.name}
           </div>

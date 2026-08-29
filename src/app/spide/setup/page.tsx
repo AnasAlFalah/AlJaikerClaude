@@ -12,7 +12,7 @@ const TEAM_BORDER_COLORS = ["#D4EDDA", "#FADADD", "#D6EAF8"];
 
 export default function SpideSetupPage() {
   const router = useRouter();
-  const [playerCount, setPlayerCount] = useState<4 | 5 | 6>(4);
+  const [playerCount, setPlayerCount] = useState<2 | 3 | 4 | 5 | 6>(4);
   const [mode, setMode] = useState<SpideMode>("individual");
   const [numTeams, setNumTeams] = useState<2 | 3>(2);
   const [names, setNames] = useState<string[]>(["", "", "", "", "", ""]);
@@ -33,7 +33,7 @@ export default function SpideSetupPage() {
     const next = ["", "", "", "", "", ""];
     team.players.forEach((p, i) => { if (i < 6) next[i] = p; });
     setNames(next);
-    setPlayerCount(Math.min(Math.max(team.players.length, 4), 6) as 4 | 5 | 6);
+    setPlayerCount(Math.min(Math.max(team.players.length, 2), 6) as 2 | 3 | 4 | 5 | 6);
   }
 
   function handleSaveTeam() {
@@ -65,7 +65,7 @@ export default function SpideSetupPage() {
       playerCount,
       players,
       teams,
-      target: 9999 as SpideTarget,
+      target: 9999,
       rounds: [],
       status: "active",
       createdAt: new Date().toISOString(),
@@ -105,9 +105,9 @@ export default function SpideSetupPage() {
 
         <div>
           <div style={s.secLabel}>عدد اللاعبين</div>
-          <div style={{ ...s.toggleStrip, gridTemplateColumns: "1fr 1fr 1fr" }}>
-            {([4, 5, 6] as const).map(n => {
-              const disabled = mode === "teams" && n === 5;
+          <div style={{ ...s.toggleStrip, gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr" }}>
+            {([2, 3, 4, 5, 6] as const).map(n => {
+              const disabled = mode === "teams" && (n === 3 || n === 5);
               return (
                 <button
                   key={n}
@@ -116,7 +116,12 @@ export default function SpideSetupPage() {
                     ...(playerCount === n ? s.toggleActive : {}),
                     ...(disabled ? { opacity: 0.3, cursor: "not-allowed" } : {}),
                   }}
-                  onClick={() => { if (!disabled) setPlayerCount(n); }}
+                  onClick={() => {
+                    if (!disabled) {
+                      setPlayerCount(n);
+                      if (mode === "teams" && n === 2) setNumTeams(2);
+                    }
+                  }}
                 >
                   {n}
                 </button>
@@ -125,7 +130,7 @@ export default function SpideSetupPage() {
           </div>
           {mode === "teams" && (
             <div style={{ fontSize: 13, color: "#A59F9A", textAlign: "right", marginTop: 4 }}>
-              الفرق تتطلب عدد زوجي من اللاعبين (4 أو 6)
+              الفرق تتطلب عدد زوجي من اللاعبين (2 أو 4 أو 6)
             </div>
           )}
         </div>
@@ -139,7 +144,7 @@ export default function SpideSetupPage() {
                 style={{ ...s.toggleBtn, ...(mode === m ? s.toggleActive : {}) }}
                 onClick={() => {
                   setMode(m);
-                  if (m === "teams" && playerCount === 5) setPlayerCount(4);
+                  if (m === "teams" && (playerCount === 3 || playerCount === 5)) setPlayerCount(4);
                 }}
               >
                 {m === "individual" ? "فردي" : "فرق"}

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import {
   SpideSession, SpideRound, SpideRoundEntry,
   getSession, saveSession, getPlayerTotals, getLeaderIndex,
-  isGameOver, getPassDirection, passDirectionLabel,
-  calcRoundScores, calcEatAllScores,
+  getPassDirection, passDirectionLabel,
+  calcRoundScores, calcEatAllScores, calcEatAllScoresTeam,
 } from "@/lib/spide";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -382,7 +382,9 @@ function RoundEntry({ session, roundNumber, passDirection, totals, initialValues
   function handleSubmit() {
     let scores: number[];
     if (roundType === "eatAll" && eatAllWinner !== null) {
-      scores = calcEatAllScores(eatAllWinner, session.players.length);
+      scores = session.mode === "teams" && session.teams
+        ? calcEatAllScoresTeam(eatAllWinner, session.players.length, session.teams.length)
+        : calcEatAllScores(eatAllWinner, session.players.length);
     } else {
       scores = calcRoundScores(entries);
     }

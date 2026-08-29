@@ -612,8 +612,8 @@ function DeclarationPicker({ session, kingdom, onConfirm, onCancel }: {
 }
 
 // ── Kingdom Board ─────────────────────────────────────────────────────────────
-function KingdomBoard({ session, onStartRound, onViewScores }: {
-  session: TrixSession; onStartRound: () => void; onViewScores: () => void;
+function KingdomBoard({ session, onStartRound, onViewScores, onEndGame }: {
+  session: TrixSession; onStartRound: () => void; onViewScores: () => void; onEndGame?: () => void;
 }) {
   const totals = getPlayerTotals(session);
   const best = Math.min(...totals);
@@ -948,6 +948,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
   const [session, setSession] = useState<TrixSession | null>(null);
   const [view, setView] = useState<ViewState>({ type: "kingdoms" });
   const [loading, setLoading] = useState(true);
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
   const getTrixData = useCallback(() => getSession(sessionId), [sessionId]);
 
   useEffect(() => {
@@ -1057,10 +1058,11 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
       {/* Topbar */}
       <div style={{ background: FELT, padding: "44px 16px 14px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0, direction: "rtl" }}>
         <button onClick={backAction} style={{
-          width: 30, height: 30, borderRadius: "50%", background: "rgba(255,255,255,0.1)",
-          border: "none", color: IVORY, fontSize: 16, cursor: "pointer",
+          width: 34, height: 34, borderRadius: "50%", background: "rgba(255,255,255,0.15)",
+          border: "none", color: IVORY, fontSize: 18, cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
         }}>←</button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: IVORY, fontSize: 15, fontWeight: 700, textAlign: "right" }}>{topTitle}</div>
           {topSub && <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>{topSub}</div>}

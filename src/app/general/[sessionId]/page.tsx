@@ -409,7 +409,7 @@ function GameOver({
         </div>
       </div>
 
-      <div style={{ padding: "20px 16px 0", display: "flex", flexDirection: "column", gap: 8, direction: "rtl" }}>
+      <div style={{ padding: "20px 16px 40px", display: "flex", flexDirection: "column", gap: 8, direction: "rtl" }}>
         <button
           onClick={onRestart}
           style={{
@@ -444,6 +444,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
   const [showEntry, setShowEntry] = useState(false);
   const [editingRound, setEditingRound] = useState<GeneralRound | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
 
   useEffect(() => {
     const s = getSession(sessionId);
@@ -477,10 +478,15 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
   };
 
   const handleEndGame = () => {
+    setShowEndConfirm(true);
+  };
+
+  const confirmEndGame = () => {
     if (!session) return;
     const updated: GeneralSession = { ...session, status: "finished" };
     saveSession(updated);
     setSession(updated);
+    setShowEndConfirm(false);
   };
 
   const handleRestart = () => {
@@ -507,6 +513,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
   const gameOver = session.status === "finished";
 
   return (
+    <>
     <div style={{
       minHeight: "100vh",
       background: "#FFFFFF",
@@ -538,6 +545,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
         >
           ←
         </button>
+        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>
             {gameOver ? "انتهت اللعبة" : "تسجيل عام"}
@@ -572,5 +580,45 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
         />
       )}
     </div>
+    {showEndConfirm && (
+      <div style={{
+        position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        zIndex: 9999, padding: "0 24px",
+      }}>
+        <div style={{
+          background: "#FFFFFF", borderRadius: 20, padding: "28px 24px",
+          maxWidth: 340, width: "100%", textAlign: "center",
+          boxShadow: "0 16px 60px rgba(0,0,0,0.3)",
+        }}>
+          <div style={{ fontSize: 36, marginBottom: 12 }}>🏁</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: "#14110F", marginBottom: 8 }}>إنهاء اللعبة؟</div>
+          <div style={{ fontSize: 14, color: "#7A736E", marginBottom: 24, lineHeight: 1.6 }}>
+            سيتم حفظ النتائج الحالية وعرض الترتيب النهائي
+          </div>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button
+              onClick={() => setShowEndConfirm(false)}
+              style={{
+                flex: 1, padding: "13px 0", borderRadius: 28,
+                background: "#F2F0EE", border: "none",
+                color: "#3A3330", fontSize: 15, fontWeight: 700,
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >إلغاء</button>
+            <button
+              onClick={confirmEndGame}
+              style={{
+                flex: 1, padding: "13px 0", borderRadius: 28,
+                background: "#CE1F26", border: "none",
+                color: "#FFFFFF", fontSize: 15, fontWeight: 700,
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >إنهاء</button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

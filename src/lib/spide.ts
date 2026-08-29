@@ -1,5 +1,5 @@
 export type SpideMode = "individual" | "teams";
-export type SpideTarget = 100 | 150 | 200 | 250;
+export type SpideTarget = 100 | 150 | 200 | 250 | 9999;
 export type SpidePassDirection = "right" | "left" | "none";
 
 export interface SpidePlayer {
@@ -35,7 +35,7 @@ export interface SpideRound {
 export interface SpideSession {
   id: string;
   mode: SpideMode;
-  playerCount: 4 | 5 | 6;
+  playerCount: 2 | 3 | 4 | 5 | 6;
   players: SpidePlayer[];
   teams?: SpideTeam[];
   target: SpideTarget;
@@ -79,10 +79,23 @@ export function calcRoundScores(entries: SpideRoundEntry[]): number[] {
   return entries.map(calcPlayerPoints);
 }
 
-// Calculate scores for eat-all round
+// Calculate scores for eat-all round (individual mode)
 export function calcEatAllScores(winnerIndex: number, playerCount: number): number[] {
   return Array.from({ length: playerCount }, (_, i) =>
     i === winnerIndex ? 0 : 26
+  );
+}
+
+// Calculate scores for eat-all round in TEAM mode
+// The whole winning team gets 0; every player on other teams gets 26
+export function calcEatAllScoresTeam(
+  winnerIndex: number,
+  playerCount: number,
+  numTeams: number,
+): number[] {
+  const winnerTeam = winnerIndex % numTeams;
+  return Array.from({ length: playerCount }, (_, i) =>
+    i % numTeams === winnerTeam ? 0 : 26
   );
 }
 
