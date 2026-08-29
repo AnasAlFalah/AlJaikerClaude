@@ -621,11 +621,11 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px 10px 10px", display: "flex", gap: 4, overflowX: "auto", direction: "rtl" }}>
+      <div style={{ background: "#F1FAF4", padding: "12px 10px 10px", display: "flex", gap: 4, overflowX: "auto", direction: "rtl", borderBottom: "1px solid #E2F4E8" }}>
         {session.players.map((name, i) => (
-          <div key={i} style={{ flexShrink: 0, minWidth: 64, textAlign: "center", background: "rgba(255,255,255,0.08)", borderRadius: 10, padding: "8px 6px" }}>
-            <div style={{ fontSize: 13, color: "rgba(248,242,228,0.55)", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
-            <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F5BC22" : totals[i] > 0 ? "#FF8080" : IVORY }}>{totals[i]}</div>
+          <div key={i} style={{ flexShrink: 0, minWidth: 64, textAlign: "center", background: totals[i] === best ? "#FFFBF0" : "#FFFFFF", border: `1.5px solid ${totals[i] === best ? "#F5BC22" : "#E4E0DD"}`, borderRadius: 14, padding: "8px 6px" }}>
+            <div style={{ fontSize: 13, color: "#3A3330", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
+            <div style={{ fontSize: 34, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: "#14110F" }}>{totals[i]}</div>
           </div>
         ))}
       </div>
@@ -732,7 +732,7 @@ function KingdomBoard({ session, onStartRound, onViewScores }: {
       </div>
 
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, maxWidth: 390, margin: "0 auto", padding: "10px 14px 28px", background: "linear-gradient(to top, #0F3D24 70%, transparent)" }}>
-        <button onClick={onStartRound} style={{ width: "100%", padding: "14px 0", background: CRIMSON, border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
+        <button onClick={onStartRound} style={{ width: "100%", padding: "14px 0", background: "#1C9245", border: "none", borderRadius: 28, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
           ▶ إعلان الجولة التالية
         </button>
       </div>
@@ -748,12 +748,12 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", background: IVORY }}>
-      <div style={{ background: FELT, padding: "12px 14px 10px" }}>
+      <div style={{ background: "#F1FAF4", padding: "12px 14px 10px", borderBottom: "1px solid #E2F4E8" }}>
         <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 2 }}>
           {session.players.map((name, i) => (
-            <div key={i} style={{ background: "rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 10px", textAlign: "center", flexShrink: 0, minWidth: 72 }}>
-              <div style={{ fontSize: 13, color: "rgba(248,242,228,0.55)", marginBottom: 2, whiteSpace: "nowrap" }}>{name}</div>
-              <div style={{ fontSize: 20, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: totals[i] === best ? "#F5BC22" : totals[i] === worst ? "#FF8080" : IVORY }}>{totals[i]}</div>
+            <div key={i} style={{ background: totals[i] === best ? "#FFFBF0" : "#FFFFFF", border: `1.5px solid ${totals[i] === best ? "#F5BC22" : "#E4E0DD"}`, borderRadius: 14, padding: "8px 10px", textAlign: "center", flexShrink: 0, minWidth: 72 }}>
+              <div style={{ fontSize: 13, color: "#3A3330", marginBottom: 2, whiteSpace: "nowrap" }}>{name}</div>
+              <div style={{ fontSize: 34, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: "#14110F" }}>{totals[i]}</div>
             </div>
           ))}
         </div>
@@ -762,10 +762,10 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
       <div style={{ flex: 1, overflowX: "auto", paddingBottom: 80 }}>
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 340 }}>
           <thead>
-            <tr style={{ background: IVORY_DK }}>
+            <tr style={{ background: "#FFFFFF" }}>
               <th style={{ padding: "7px 8px", fontSize: 9, fontWeight: 700, color: "#999", textAlign: "right", width: 80 }}>الإعلان</th>
               {session.players.map((name, i) => (
-                <th key={i} style={{ padding: "7px 5px" }}>
+                <th key={i} style={{ padding: "7px 5px", background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0" }}>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
                     <Av idx={i} size={20} players={session.players} />
                     <span style={{ fontSize: 9, color: "#999" }}>{name.length > 4 ? name.slice(0, 3) + "…" : name}</span>
@@ -788,13 +788,13 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
                   </tr>
                   {k.rounds.flatMap(r =>
                     r.results.map((res, ri) => (
-                      <tr key={`${ki}-${r.id}-${ri}`} style={{ borderTop: `1px solid ${IVORY_DK}` }}>
+                      <tr key={`${ki}-${r.id}-${ri}`} style={{ borderTop: `1px solid ${IVORY_DK}`, background: "#FFFFFF" }}>
                         <td style={{ padding: "7px 8px", textAlign: "right" }}>
                           <span style={{ display: "inline-block", borderRadius: 4, padding: "1px 5px", fontSize: 9, fontWeight: 700, background: `${DECL_COLORS[res.type]}22`, color: DECL_COLORS[res.type] }}>{DECL_LABELS[res.type]}</span>
                         </td>
                         {res.scores.map((score, si) => (
-                          <td key={si} style={{ padding: "7px 5px", textAlign: "center", fontSize: 14, fontVariantNumeric: "tabular-nums" }}>
-                            <span style={{ fontWeight: score !== 0 ? 700 : 400, color: score < 0 ? FELT : score > 0 ? CRIMSON : "#CCC" }}>
+                          <td key={si} style={{ padding: "7px 5px", textAlign: "center", fontSize: 14, fontVariantNumeric: "tabular-nums", background: si % 2 === 0 ? "#F1FAF4" : "#FEF6E0" }}>
+                            <span style={{ fontWeight: score !== 0 ? 700 : 400, color: "#14110F" }}>
                               {score === 0 ? "0" : score > 0 ? `+${score}` : score}
                             </span>
                           </td>
@@ -803,10 +803,10 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
                     ))
                   )}
                   {k.rounds.length > 0 && (
-                    <tr key={`sub-${ki}`} style={{ background: "rgba(27,94,56,0.06)" }}>
+                    <tr key={`sub-${ki}`} style={{ background: "#F1FAF4" }}>
                       <td style={{ padding: "7px 8px", fontSize: 9, color: FELT, fontWeight: 800, textAlign: "right" }}>مجموع</td>
                       {kt.map((t, ti) => (
-                        <td key={ti} style={{ padding: "7px 5px", textAlign: "center", fontWeight: 900, fontVariantNumeric: "tabular-nums", fontSize: 14, color: t < 0 ? FELT : t > 0 ? CRIMSON : "#CCC" }}>
+                        <td key={ti} style={{ padding: "7px 5px", textAlign: "center", fontWeight: 900, fontVariantNumeric: "tabular-nums", fontSize: 14, color: "#14110F", background: ti % 2 === 0 ? "#F1FAF4" : "#FEF6E0" }}>
                           {t === 0 ? "0" : t > 0 ? `+${t}` : t}
                         </td>
                       ))}
@@ -818,9 +818,9 @@ function ScoreTable({ session, onBack }: { session: TrixSession; onBack: () => v
           </tbody>
           <tfoot>
             <tr>
-              <td style={{ background: IVORY_DK, fontSize: 9, color: "#AAA", padding: "10px 8px", textAlign: "right" }}>المجموع</td>
+              <td style={{ background: "#F1FAF4", fontSize: 9, color: "#AAA", padding: "10px 8px", textAlign: "right", borderTop: "2px solid #E4E0DD" }}>المجموع</td>
               {totals.map((t, i) => (
-                <td key={i} style={{ background: IVORY_DK, fontSize: 15, fontWeight: 900, fontVariantNumeric: "tabular-nums", borderTop: `2.5px solid ${IVORY_MID}`, padding: "10px 5px", textAlign: "center", color: t === best ? FELT : t === worst ? CRIMSON : JET }}>{t}</td>
+                <td key={i} style={{ background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0", fontSize: 16, fontWeight: 900, fontVariantNumeric: "tabular-nums", borderTop: "2px solid #E4E0DD", padding: "10px 5px", textAlign: "center", color: "#14110F" }}>{t}</td>
               ))}
             </tr>
           </tfoot>

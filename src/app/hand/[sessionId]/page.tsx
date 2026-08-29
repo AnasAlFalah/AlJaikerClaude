@@ -306,27 +306,34 @@ function Scoreboard({
 
       {/* Player score strip */}
       <div style={{
-        background: "rgba(0,0,0,0.2)",
+        background: "#F1FAF4",
+        borderBottom: "1px solid #E2F4E8",
         padding: "14px 10px 10px",
         display: "flex",
-        gap: 4,
+        gap: 6,
         direction: "rtl",
       }}>
         {session.players.map((name, idx) => {
           const isLeader = idx === leaderIdx;
           return (
-            <div key={idx} style={{ flex: 1, textAlign: "center" }}>
+            <div key={idx} style={{
+              flex: 1, textAlign: "center",
+              background: isLeader ? "#FFFBF0" : "#FFFFFF",
+              border: `1.5px solid ${isLeader ? "#F5BC22" : "#E4E0DD"}`,
+              borderRadius: 14,
+              padding: "8px 4px",
+            }}>
               <div style={{
-                fontSize: 13, fontWeight: 700, marginBottom: 2,
-                color: isLeader ? "#F5BC22" : "rgba(248,242,228,0.55)",
+                fontSize: 13, fontWeight: 700, marginBottom: 4,
+                color: "#3A3330",
                 overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
               }}>
                 {name}
               </div>
               <div style={{
-                fontSize: session.playerCount > 4 ? 22 : 28,
+                fontSize: 44,
                 fontWeight: 900,
-                color: isLeader ? "#fff" : "rgba(248,242,228,0.7)",
+                color: "#14110F",
                 fontVariantNumeric: "tabular-nums",
                 lineHeight: 1,
               }}>
@@ -349,12 +356,12 @@ function Scoreboard({
               key={i}
               style={{
                 width: 8, height: 8, borderRadius: "50%",
-                background: i < session.rounds.length ? "#F5BC22" : "rgba(255,255,255,0.1)",
+                background: i < session.rounds.length ? "#F5BC22" : "#D8EDE0",
               }}
             />
           ))}
         </div>
-        <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13 }}>
+        <div style={{ color: "#9E9893", fontSize: 13 }}>
           {session.rounds.length} / {session.roundCount}
         </div>
       </div>
@@ -367,20 +374,26 @@ function Scoreboard({
           display: "grid",
           gridTemplateColumns: `28px 1fr ${session.players.map(() => "44px").join(" ")}`,
           padding: "7px 10px",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid #E8E4E0",
           direction: "rtl",
+          background: "#FFFFFF",
         }}>
-          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center" }}>#</div>
-          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "right" }}>الفائز</div>
+          <div style={{ color: "#9E9893", fontSize: 13, textAlign: "center" }}>#</div>
+          <div style={{ color: "#9E9893", fontSize: 13, textAlign: "right" }}>الفائز</div>
           {session.players.map((name, idx) => (
-            <div key={idx} style={{ color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <div key={idx} style={{
+              color: "#9E9893", fontSize: 13, textAlign: "center",
+              overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              background: idx % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
+              padding: "2px 0",
+            }}>
               {name.charAt(0)}
             </div>
           ))}
         </div>
 
         {session.rounds.length === 0 && (
-          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
+          <div style={{ color: "#9E9893", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
             لم تُسجَّل أي جولة بعد
           </div>
         )}
@@ -400,17 +413,18 @@ function Scoreboard({
                 display: "grid",
                 gridTemplateColumns: `28px 1fr ${session.players.map(() => "44px").join(" ")}`,
                 padding: "9px 10px",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                borderBottom: "1px solid #F0EDE8",
                 alignItems: "center",
                 direction: "rtl",
+                background: "#FFFFFF",
               }}
             >
               {/* Round # + edit */}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13 }}>{round.number}</div>
+                <div style={{ color: "#9E9893", fontSize: 13 }}>{round.number}</div>
                 <button
                   onClick={() => onEditRound(round)}
-                  style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 13, cursor: "pointer", padding: 0 }}
+                  style={{ background: "none", border: "none", color: "#C8C4C0", fontSize: 13, cursor: "pointer", padding: 0 }}
                 >
                   ✎
                 </button>
@@ -418,10 +432,10 @@ function Scoreboard({
 
               {/* Winner name + win value */}
               <div style={{ textAlign: "right" }}>
-                <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 600 }}>
+                <div style={{ color: "#14110F", fontSize: 14, fontWeight: 600 }}>
                   {session.players[round.winnerIdx]}
                 </div>
-                <div style={{ color: "#2ECC71", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
+                <div style={{ color: "#1C9245", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
                   {round.winValue}
                 </div>
               </div>
@@ -433,10 +447,15 @@ function Scoreboard({
                 const isWinner = s?.isWinner;
                 const isOverride = s?.hasCardsInHand;
                 return (
-                  <div key={pIdx} style={{ textAlign: "center" }}>
+                  <div key={pIdx} style={{
+                    textAlign: "center",
+                    background: pIdx % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
+                    alignSelf: "stretch",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
                     <div style={{
-                      color: isWinner ? "#2ECC71" : isOverride ? "rgba(255,165,0,0.9)" : "#E74C3C",
-                      fontSize: 14, fontWeight: 700,
+                      color: isWinner ? "#1C9245" : "#14110F",
+                      fontSize: 17, fontWeight: 700,
                       fontVariantNumeric: "tabular-nums",
                     }}>
                       {isWinner ? score : `+${score}`}
@@ -451,7 +470,7 @@ function Scoreboard({
 
         {/* Legend for * */}
         {session.rounds.some(r => r.scores.some(s => s.hasCardsInHand)) && (
-          <div style={{ padding: "6px 12px", fontSize: 13, color: "rgba(248,242,228,0.25)", textAlign: "right", direction: "rtl" }}>
+          <div style={{ padding: "6px 12px", fontSize: 13, color: "#9E9893", textAlign: "right", direction: "rtl" }}>
             * بيده ورق — نقاط يدوية
           </div>
         )}
@@ -462,13 +481,13 @@ function Scoreboard({
         position: "fixed", bottom: 0, left: 0, right: 0,
         maxWidth: 390, margin: "0 auto",
         padding: "10px 16px 28px",
-        background: "linear-gradient(to top, #0F3D24 70%, transparent)",
+        background: "linear-gradient(to top, #FFFFFF 70%, transparent)",
       }}>
         <button
           onClick={onNewRound}
           style={{
             width: "100%", padding: "14px 0",
-            background: "#1C9245", border: "none", borderRadius: 12,
+            background: "#1C9245", border: "none", borderRadius: 28,
             color: "#FFFFFF", fontSize: 15, fontWeight: 700, cursor: "pointer",
           }}
         >
@@ -727,7 +746,7 @@ export default function HandGamePage({ params }: { params: Promise<{ sessionId: 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F5F2C",
+      background: "#FFFFFF",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -736,7 +755,7 @@ export default function HandGamePage({ params }: { params: Promise<{ sessionId: 
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1C9245",
+        background: "#0F5F2C",
         padding: "44px 16px 14px",
         display: "flex",
         alignItems: "center",

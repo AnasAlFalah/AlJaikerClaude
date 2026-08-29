@@ -91,6 +91,12 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
     );
   }
 
+  function handleEndGame() {
+    const updated: SpideSession = { ...session!, status: "finished" };
+    updateSession(updated);
+    setView("gameOver");
+  }
+
   return (
     <Scoreboard
       session={session}
@@ -100,12 +106,13 @@ export default function SpideGamePage({ params }: { params: Promise<{ sessionId:
       onAddRound={() => setView("roundEntry")}
       onEditRound={(round) => { setEditingRound(round); setView("roundEntry"); }}
       onBack={() => router.push("/app")}
+      onEndGame={handleEndGame}
     />
   );
 }
 
 // ─── Scoreboard ───────────────────────────────────────────────────────────────
-function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEditRound, onBack }: {
+function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEditRound, onBack, onEndGame }: {
   session: SpideSession;
   totals: number[];
   leaderIdx: number;
@@ -113,6 +120,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
   onAddRound: () => void;
   onEditRound: (round: SpideRound) => void;
   onBack: () => void;
+  onEndGame: () => void;
 }) {
   const s = styles;
   const roundNum = session.rounds.length + 1;
@@ -173,17 +181,23 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
             })}
           </div>
         ) : (
-          <div style={{ display: "flex", alignItems: "center", gap: 4, paddingBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "stretch", gap: 6, paddingBottom: 12 }}>
             {session.players.map((p, i) => (
-              <div key={i} style={{ flex: 1, textAlign: "center" }}>
+              <div key={i} style={{
+                flex: 1, textAlign: "center",
+                background: i === leaderIdx ? "#FFFBF0" : "#FFFFFF",
+                border: i === leaderIdx ? "1.5px solid #F5BC22" : "1.5px solid #E4E0DD",
+                borderRadius: 14,
+                padding: "8px 4px",
+              }}>
                 <div style={{
                   fontSize: 13, fontWeight: 700, marginBottom: 2,
-                  color: i === leaderIdx ? "#F5BC22" : "rgba(248,242,228,0.6)",
+                  color: "#3A3330",
                 }}>{p.name}</div>
                 <div style={{
-                  fontSize: 28, fontWeight: 900, lineHeight: 1,
+                  fontSize: 44, fontWeight: 900, lineHeight: 1,
                   fontVariantNumeric: "tabular-nums",
-                  color: i === leaderIdx ? "#fff" : "rgba(248,242,228,0.7)",
+                  color: "#14110F",
                 }}>{totals[i]}</div>
               </div>
             ))}
@@ -191,7 +205,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
         )}
 
         {/* Progress bars */}
-        <div style={{ height: 4, display: "flex", background: "rgba(255,255,255,0.06)" }}>
+        <div style={{ height: 4, display: "flex", background: "#E2F4E8" }}>
           {session.players.map((p, i) => (
             <div key={i} style={{
               height: "100%",
@@ -204,19 +218,20 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
       </div>
 
       {/* Round history — oldest first */}
-      <div style={{ flex: 1, overflowY: "auto", paddingBottom: 80 }}>
+      <div style={{ flex: 1, overflowY: "auto", paddingBottom: 80, background: "#FFFFFF" }}>
         {/* Table header */}
         <div style={{
           display: "grid",
           gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
           padding: "8px 10px",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid #E4E0DD",
+          background: "#FFFFFF",
         }}>
           <div style={s.th}>#</div>
           <div style={s.th}>↔</div>
           <div style={{ ...s.th, textAlign: "right" }}>تفاصيل</div>
           {session.players.map((p, i) => (
-            <div key={i} style={s.th}>{p.name}</div>
+            <div key={i} style={{ ...s.th, background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0", padding: "4px 0" }}>{p.name}</div>
           ))}
           <div style={s.th} />
         </div>
@@ -226,21 +241,22 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
             display: "grid",
             gridTemplateColumns: `22px 28px 1fr ${session.players.map(() => "44px").join(" ")} 28px`,
             padding: "9px 10px",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            borderBottom: "1px solid #F0EDE9",
             alignItems: "center",
+            background: "#FFFFFF",
           }}>
             <div style={s.tdNum}>{round.number}</div>
             <div style={{ ...s.td, fontSize: 14, color: passArrowColor(round.passDirection) }}>
               {passArrow(round.passDirection)}
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)" }}>
+              <div style={{ fontSize: 13, color: "#6B6460" }}>
                 {round.type === "eatAll"
                   ? `أكل الكل — ${session.players[round.eatAllWinner!]?.name}`
                   : "جولة عادية"}
               </div>
               {round.type === "normal" && (
-                <div style={{ fontSize: 13, color: "rgba(248,242,228,0.3)" }}>
+                <div style={{ fontSize: 13, color: "#9E9895" }}>
                   {roundSummaryLine(round, session)}
                 </div>
               )}
@@ -248,7 +264,10 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
             {round.scores.map((score, i) => (
               <div key={i} style={{
                 ...s.td,
-                color: score < 0 ? "#2ECC71" : score === 0 ? "rgba(248,242,228,0.4)" : "#FFFFFF",
+                background: i % 2 === 0 ? "#F1FAF4" : "#FEF6E0",
+                color: score < 0 ? "#1C9245" : "#14110F",
+                fontSize: 18,
+                padding: "4px 0",
               }}>
                 {score > 0 ? `+${score}` : score}
               </div>
@@ -257,7 +276,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
               onClick={() => onEditRound(round)}
               style={{
                 background: "none", border: "none", cursor: "pointer",
-                color: "rgba(248,242,228,0.25)", fontSize: 15, padding: 2,
+                color: "#BDBAB7", fontSize: 15, padding: 2,
                 fontFamily: "inherit",
               }}
             >✎</button>
@@ -265,7 +284,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
         ))}
 
         {session.rounds.length === 0 && (
-          <div style={{ padding: "32px 16px", textAlign: "center", color: "rgba(248,242,228,0.3)", fontSize: 15 }}>
+          <div style={{ padding: "32px 16px", textAlign: "center", color: "#BDBAB7", fontSize: 15 }}>
             لا توجد جولات بعد
           </div>
         )}
@@ -273,6 +292,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
 
       <div style={s.stickyBtn}>
         <button style={s.btnPrimary} onClick={onAddRound}>+ تسجيل جولة</button>
+        <button style={s.btnEndGame} onClick={onEndGame}>إنهاء اللعبة</button>
       </div>
     </main>
   );
@@ -874,7 +894,7 @@ function roundSummaryLine(round: SpideRound, session: SpideSession): string {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "#0F5F2C",
+    background: "#FFFFFF",
     display: "flex",
     flexDirection: "column" as const,
     maxWidth: 390,
@@ -902,29 +922,30 @@ const styles = {
   topSub: { color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" as const },
   topBadge: { fontSize: 20 },
   scoreHeader: {
-    background: "rgba(0,0,0,0.2)",
+    background: "#F1FAF4",
+    borderBottom: "1px solid #E2F4E8",
     padding: "12px 16px 0",
     flexShrink: 0,
     direction: "rtl" as const,
   },
   passIndicator: {
-    background: "rgba(212,164,32,0.12)",
-    border: "1px solid rgba(212,164,32,0.25)",
+    background: "rgba(28,146,69,0.08)",
+    border: "1px solid rgba(28,146,69,0.2)",
     borderRadius: 10,
     padding: "8px 12px",
     display: "flex", alignItems: "center", justifyContent: "space-between",
     marginBottom: 10,
   },
-  passLabel: { color: "rgba(248,242,228,0.5)", fontSize: 13 },
-  passValue: { color: "#F5BC22", fontSize: 15, fontWeight: 700 },
+  passLabel: { color: "#6B8F77", fontSize: 13 },
+  passValue: { color: "#1C9245", fontSize: 15, fontWeight: 700 },
   th: {
-    color: "rgba(248,242,228,0.35)", fontSize: 13, fontWeight: 600, textAlign: "center" as const,
+    color: "#6B6460", fontSize: 13, fontWeight: 600, textAlign: "center" as const,
   },
   td: {
-    color: "#FFFFFF", fontSize: 14, textAlign: "center" as const, fontVariantNumeric: "tabular-nums" as const,
+    color: "#14110F", fontSize: 18, textAlign: "center" as const, fontVariantNumeric: "tabular-nums" as const,
   },
   tdNum: {
-    color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center" as const,
+    color: "#9E9895", fontSize: 13, textAlign: "center" as const,
   },
   body: {
     flex: 1,
@@ -1012,12 +1033,22 @@ const styles = {
   stickyBtn: {
     position: "absolute" as const, bottom: 0, left: 0, right: 0,
     padding: "12px 16px 28px",
-    background: "linear-gradient(to top, #0F3D24 70%, transparent)",
+    background: "#FFFFFF",
+    borderTop: "1px solid #E4E0DD",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: 8,
   },
   btnPrimary: {
     width: "100%", padding: "15px 0",
-    background: "#1C9245", border: "none", borderRadius: 12,
+    background: "#1C9245", border: "none", borderRadius: 28,
     color: "#FFFFFF", fontSize: 16, fontWeight: 700,
+    cursor: "pointer", fontFamily: "inherit",
+  },
+  btnEndGame: {
+    width: "100%", padding: "13px 0",
+    background: "#CE1F26", border: "none", borderRadius: 28,
+    color: "#FFFFFF", fontSize: 15, fontWeight: 700,
     cursor: "pointer", fontFamily: "inherit",
   },
   btnDisabled: {

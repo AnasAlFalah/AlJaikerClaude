@@ -150,31 +150,41 @@ function Scoreboard({
   // columns: round# + one per player
   const colTemplate = `28px ${session.players.map(() => "1fr").join(" ")}`;
 
+  // alternating column backgrounds for player columns (1-indexed: odd=#F1FAF4, even=#FEF6E0)
+  const colBg = (playerIdx: number) => playerIdx % 2 === 0 ? "#F1FAF4" : "#FEF6E0";
+
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
       {/* Score strip */}
       <div style={{
-        background: "rgba(0,0,0,0.2)",
+        background: "#F1FAF4",
+        borderBottom: "1px solid #E2F4E8",
         padding: "14px 10px 10px",
-        display: "flex", gap: 4,
+        display: "flex", gap: 8,
         direction: "rtl",
       }}>
         {session.players.map((name, idx) => {
           const isLeader = idx === leaderIdx;
           return (
-            <div key={idx} style={{ flex: 1, textAlign: "center" }}>
+            <div key={idx} style={{
+              flex: 1, textAlign: "center",
+              background: isLeader ? "#FFFBF0" : "#FFFFFF",
+              border: `1.5px solid ${isLeader ? "#F5BC22" : "#E4E0DD"}`,
+              borderRadius: 14,
+              padding: "8px 4px 10px",
+            }}>
               <div style={{
-                fontSize: 13, fontWeight: 700, marginBottom: 2,
-                color: isLeader ? "#F5BC22" : "rgba(248,242,228,0.55)",
+                fontSize: 13, fontWeight: 700, marginBottom: 4,
+                color: "#3A3330",
                 overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
               }}>
                 {name}
               </div>
               <div style={{
-                fontSize: session.playerCount > 4 ? 22 : 28,
+                fontSize: 44,
                 fontWeight: 900,
-                color: isLeader ? "#fff" : "rgba(248,242,228,0.7)",
+                color: "#14110F",
                 fontVariantNumeric: "tabular-nums",
                 lineHeight: 1,
               }}>
@@ -189,7 +199,7 @@ function Scoreboard({
       <div style={{ padding: "5px 12px", textAlign: "center", direction: "rtl" }}>
         <span style={{
           fontSize: 13,
-          color: session.winMode === "highest" ? "rgba(46,204,113,0.5)" : "rgba(231,76,60,0.5)",
+          color: session.winMode === "highest" ? "#1C9245" : "#CE1F26",
           fontWeight: 600,
         }}>
           {session.winMode === "highest" ? "▲ الأعلى يفوز" : "▼ الأقل يفوز"}
@@ -197,19 +207,21 @@ function Scoreboard({
       </div>
 
       {/* Table */}
-      <div style={{ flex: 1, overflowY: "auto", paddingBottom: 120 }}>
+      <div style={{ flex: 1, overflowY: "auto", paddingBottom: 120, background: "#FFFFFF" }}>
         {/* Header */}
         <div style={{
           display: "grid", gridTemplateColumns: colTemplate,
           padding: "7px 10px",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid #E4E0DD",
           direction: "rtl",
         }}>
-          <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center" }}>#</div>
+          <div style={{ color: "#9E9B99", fontSize: 13, textAlign: "center" }}>#</div>
           {session.players.map((name, idx) => (
             <div key={idx} style={{
-              color: "rgba(248,242,228,0.35)", fontSize: 13, textAlign: "center",
+              color: "#9E9B99", fontSize: 13, textAlign: "center",
               overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              background: colBg(idx),
+              padding: "4px 0",
             }}>
               {name.length > 4 ? name.slice(0, 3) + "…" : name}
             </div>
@@ -217,7 +229,7 @@ function Scoreboard({
         </div>
 
         {session.rounds.length === 0 && (
-          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
+          <div style={{ color: "#9E9B99", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
             لم تُسجَّل أي جولة بعد
           </div>
         )}
@@ -234,26 +246,31 @@ function Scoreboard({
               key={round.id}
               style={{
                 display: "grid", gridTemplateColumns: colTemplate,
-                padding: "9px 10px",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                borderBottom: "1px solid #F0EDEB",
                 alignItems: "center",
                 direction: "rtl",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13 }}>{round.number}</div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "9px 0" }}>
+                <div style={{ color: "#9E9B99", fontSize: 13 }}>{round.number}</div>
                 <button
                   onClick={() => onEditRound(round)}
-                  style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 13, cursor: "pointer", padding: 0 }}
+                  style={{ background: "none", border: "none", color: "#C4C0BD", fontSize: 13, cursor: "pointer", padding: 0 }}
                 >
                   ✎
                 </button>
               </div>
               {round.scores.map((score, pIdx) => (
-                <div key={pIdx} style={{ textAlign: "center" }}>
+                <div key={pIdx} style={{
+                  textAlign: "center",
+                  background: colBg(pIdx),
+                  padding: "9px 0",
+                  alignSelf: "stretch",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
                   <div style={{
-                    fontSize: 14, fontWeight: 700, fontVariantNumeric: "tabular-nums",
-                    color: pIdx === roundLeader ? "#F5BC22" : "#FFFFFF",
+                    fontSize: 17, fontWeight: 700, fontVariantNumeric: "tabular-nums",
+                    color: "#14110F",
                   }}>
                     {score > 0 ? `+${score}` : score}
                   </div>
@@ -269,14 +286,14 @@ function Scoreboard({
         position: "fixed", bottom: 0, left: 0, right: 0,
         maxWidth: 390, margin: "0 auto",
         padding: "10px 16px 28px",
-        background: "linear-gradient(to top, #0F3D24 80%, transparent)",
+        background: "linear-gradient(to top, rgba(255,255,255,1) 80%, rgba(255,255,255,0))",
         display: "flex", flexDirection: "column", gap: 8,
       }}>
         <button
           onClick={onNewRound}
           style={{
             width: "100%", padding: "14px 0",
-            background: "#1C9245", border: "none", borderRadius: 12,
+            background: "#1C9245", border: "none", borderRadius: 28,
             color: "#FFFFFF", fontSize: 15, fontWeight: 700, cursor: "pointer",
           }}
         >
@@ -287,11 +304,13 @@ function Scoreboard({
           disabled={session.rounds.length === 0}
           style={{
             width: "100%", padding: "12px 0",
-            background: "transparent",
-            border: `1px solid ${session.rounds.length > 0 ? "rgba(231,76,60,0.35)" : "rgba(255,255,255,0.08)"}`,
-            borderRadius: 12,
-            color: session.rounds.length > 0 ? "rgba(231,76,60,0.75)" : "rgba(248,242,228,0.2)",
-            fontSize: 15, cursor: session.rounds.length > 0 ? "pointer" : "not-allowed",
+            background: "#CE1F26",
+            border: "none",
+            borderRadius: 28,
+            color: "#FFFFFF",
+            fontSize: 15, fontWeight: 700,
+            cursor: session.rounds.length > 0 ? "pointer" : "not-allowed",
+            opacity: session.rounds.length === 0 ? 0.4 : 1,
           }}
         >
           إنهاء اللعبة
@@ -490,7 +509,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F5F2C",
+      background: "#FFFFFF",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -499,7 +518,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1C9245",
+        background: "#0F5F2C",
         padding: "44px 16px 14px",
         display: "flex",
         alignItems: "center",

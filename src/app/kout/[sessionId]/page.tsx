@@ -214,18 +214,25 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
       {/* Team score header */}
       <div style={{
-        background: "rgba(0,0,0,0.2)",
+        background: "#F1FAF4",
+        borderBottom: "1px solid #E2F4E8",
         padding: "14px 16px 10px",
         display: "flex",
         alignItems: "center",
         gap: 12,
       }}>
         {/* Team A */}
-        <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ color: leadA ? "#CE1F26" : "rgba(248,242,228,0.6)", fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+        <div style={{
+          flex: 1, textAlign: "center",
+          background: leadA ? "#FFFBF0" : "#FFFFFF",
+          border: leadA ? "1.5px solid #F5BC22" : "1.5px solid #E4E0DD",
+          borderRadius: 14,
+          padding: "10px 8px",
+        }}>
+          <div style={{ color: "#3A3330", fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
             {session.teamA.name}
           </div>
-          <div style={{ color: leadA ? "#fff" : "rgba(248,242,228,0.7)", fontSize: 36, fontWeight: 900, lineHeight: 1 }}>
+          <div style={{ color: "#14110F", fontSize: 48, fontWeight: 900, lineHeight: 1 }}>
             {scores.A}
           </div>
           {leadA && <div style={{ color: "#CE1F26", fontSize: 9, marginTop: 2 }}>▲ متقدم</div>}
@@ -233,17 +240,23 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
 
         {/* Center */}
         <div style={{ textAlign: "center", minWidth: 60 }}>
-          <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 13 }}>هدف</div>
-          <div style={{ color: "rgba(212,164,32,0.8)", fontSize: 20, fontWeight: 900 }}>{session.target}</div>
-          <div style={{ color: "rgba(248,242,228,0.3)", fontSize: 9, marginTop: 2 }}>شوط {session.rounds.length + 1}</div>
+          <div style={{ color: "#6B7280", fontSize: 13 }}>هدف</div>
+          <div style={{ color: "#F5BC22", fontSize: 20, fontWeight: 900 }}>{session.target}</div>
+          <div style={{ color: "#6B7280", fontSize: 9, marginTop: 2 }}>شوط {session.rounds.length + 1}</div>
         </div>
 
         {/* Team B */}
-        <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ color: leadB ? "#5B3FA6" : "rgba(248,242,228,0.6)", fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+        <div style={{
+          flex: 1, textAlign: "center",
+          background: leadB ? "#FFFBF0" : "#FFFFFF",
+          border: leadB ? "1.5px solid #F5BC22" : "1.5px solid #E4E0DD",
+          borderRadius: 14,
+          padding: "10px 8px",
+        }}>
+          <div style={{ color: "#3A3330", fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
             {session.teamB.name}
           </div>
-          <div style={{ color: leadB ? "#fff" : "rgba(248,242,228,0.7)", fontSize: 36, fontWeight: 900, lineHeight: 1 }}>
+          <div style={{ color: "#14110F", fontSize: 48, fontWeight: 900, lineHeight: 1 }}>
             {scores.B}
           </div>
           {leadB && <div style={{ color: "#5B3FA6", fontSize: 9, marginTop: 2 }}>▲ متقدم</div>}
@@ -258,24 +271,24 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
       </div>
 
       {/* Rounds table */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "0 0 80px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "0 0 80px", background: "#FFFFFF" }}>
         {/* Table header */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "30px 1fr 80px 70px",
           padding: "8px 14px",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid #E4E0DD",
         }}>
           {["#", "الحاكم · الحكم", "النقاط", "الإجمالي"].map((h, i) => (
             <div key={i} style={{
-              color: "rgba(248,242,228,0.4)", fontSize: 13, fontWeight: 600,
+              color: "#6B7280", fontSize: 13, fontWeight: 600,
               textAlign: i === 0 ? "center" : i === 1 ? "right" : "center",
             }}>{h}</div>
           ))}
         </div>
 
         {session.rounds.length === 0 && (
-          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
+          <div style={{ color: "#9CA3AF", fontSize: 15, textAlign: "center", padding: "40px 0" }}>
             لم يُسجَّل أي شوط بعد
           </div>
         )}
@@ -298,19 +311,20 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
                 display: "grid",
                 gridTemplateColumns: "30px 1fr 80px 70px",
                 padding: "9px 14px",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                borderBottom: "1px solid #F3F0ED",
                 alignItems: "center",
+                background: "#FFFFFF",
               }}
             >
               {/* Round # + edit */}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 13 }}>{r.number}</div>
-                <button onClick={() => onEditRound(r)} style={{ background: "none", border: "none", color: "rgba(248,242,228,0.2)", fontSize: 13, cursor: "pointer", padding: 0, lineHeight: 1 }}>✎</button>
+                <div style={{ color: "#9CA3AF", fontSize: 13 }}>{r.number}</div>
+                <button onClick={() => onEditRound(r)} style={{ background: "none", border: "none", color: "#C0BAB5", fontSize: 13, cursor: "pointer", padding: 0, lineHeight: 1 }}>✎</button>
               </div>
 
               {/* Hakim + Hokm */}
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)", marginBottom: 1 }}>{teamName}</div>
+                <div style={{ fontSize: 13, color: "#6B7280", marginBottom: 1 }}>{teamName}</div>
                 <div style={{ display: "flex", alignItems: "center", gap: 5, justifyContent: "flex-end" }}>
                   <div style={{
                     fontSize: 13, fontWeight: 700,
@@ -320,14 +334,14 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
                   }}>
                     {r.hokm}
                   </div>
-                  <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 600 }}>{r.hakim}</div>
+                  <div style={{ color: "#14110F", fontSize: 14, fontWeight: 600 }}>{r.hakim}</div>
                 </div>
               </div>
 
               {/* Points + who got them */}
               <div style={{ textAlign: "center" }}>
                 <div style={{ color: winColor, fontSize: 14, fontWeight: 900 }}>+{delta}</div>
-                <div style={{ color: "rgba(248,242,228,0.35)", fontSize: 9, marginTop: 1 }}>
+                <div style={{ color: "#9CA3AF", fontSize: 9, marginTop: 1 }}>
                   {winTeam === "A" ? session.teamA.name : session.teamB.name}
                 </div>
               </div>
@@ -335,9 +349,9 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
               {/* Running totals */}
               <div style={{ textAlign: "center" }}>
                 <div style={{ display: "flex", justifyContent: "center", gap: 4 }}>
-                  <span style={{ color: "#CE1F26", fontSize: 13, fontWeight: 700 }}>{cumA}</span>
-                  <span style={{ color: "rgba(248,242,228,0.2)", fontSize: 13 }}>·</span>
-                  <span style={{ color: "#5B3FA6", fontSize: 13, fontWeight: 700 }}>{cumB}</span>
+                  <span style={{ color: "#14110F", fontSize: 16, fontWeight: 700 }}>{cumA}</span>
+                  <span style={{ color: "#C0BAB5", fontSize: 16 }}>·</span>
+                  <span style={{ color: "#14110F", fontSize: 16, fontWeight: 700 }}>{cumB}</span>
                 </div>
               </div>
             </div>
@@ -346,12 +360,12 @@ function Scoreboard({ session, onNewRound, onEditRound }: { session: KoutSession
       </div>
 
       {/* Add round button */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, maxWidth: 390, margin: "0 auto", padding: "10px 16px 24px", background: "#0F5F2C" }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, maxWidth: 390, margin: "0 auto", padding: "10px 16px 24px", background: "#FFFFFF", borderTop: "1px solid #E4E0DD" }}>
         <button
           onClick={onNewRound}
           style={{
             width: "100%", padding: "14px 0",
-            background: "#1C9245", border: "none", borderRadius: 12,
+            background: "#1C9245", border: "none", borderRadius: 28,
             color: "#FFFFFF", fontSize: 15, fontWeight: 700, cursor: "pointer",
           }}
         >
@@ -588,7 +602,7 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0F5F2C",
+      background: "#FFFFFF",
       display: "flex",
       flexDirection: "column",
       maxWidth: 390,
@@ -597,7 +611,7 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
     }}>
       {/* Topbar */}
       <div style={{
-        background: "#1C9245",
+        background: "#0F5F2C",
         padding: "14px 16px",
         display: "flex",
         alignItems: "center",
