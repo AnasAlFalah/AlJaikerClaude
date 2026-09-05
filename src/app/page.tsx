@@ -15,119 +15,209 @@ export const metadata: Metadata = {
   },
 };
 
-const FELT    = "#1B5E38";
-const FELT_DK = "#0F3D24";
-const IVORY   = "#F8F2E4";
-const GOLD    = "#F2D060";
-const JET     = "#1A1210";
+const GREEN    = "#1C9245";
+const GREEN_DK = "#0F5F2C";
+const GOLD     = "#F5BC22";
+const INK      = "#14110F";
+const INK_700  = "#3A3330";
+const INK_500  = "#7A736E";
+const BG       = "#F0FAF4";
+const WHITE    = "#FFFFFF";
 
-const GAMES = [
-  { name: "تريكس", desc: "اللعبة الأكثر شعبية في الكويت — ممالك وإعلانات وتنافس حقيقي", icon: "♛", color: "#5B3FA6" },
-  { name: "كوت بو ستة", desc: "لعبة الفريق الكلاسيكية — 51 أو 101 نقطة للفوز", icon: "🃏", color: "#C8102E" },
-  { name: "سبيدة", desc: "احجب القلوب وتجنب ملكة البستون", icon: "♥", color: "#0077B6" },
-  { name: "هند", desc: "سبع جولات، من يجمع أقل يفوز", icon: "✋", color: "#D4A420" },
-];
-
-const FEATURES = [
-  { icon: "📡", title: "بث مباشر", desc: "شارك رمز QR مع الجالسين — يتابعون النقاط على جواليهم في الوقت الفعلي" },
-  { icon: "🏡", title: "الديوانية", desc: "أنشئ مجموعتك الخاصة، ادع الأعضاء، وتابع السجل والترتيب" },
-  { icon: "🏆", title: "السجل والإحصائيات", desc: "كل لعبة تُحفظ — اعرف من الأكثر فوزاً في ديوانيتك" },
-  { icon: "👤", title: "بدون إجبار", desc: "التطبيق يعمل بالكامل بدون تسجيل — سجّل فقط إذا أردت الديوانية والسجل" },
-];
+const GAME_TAGS = ["تريكس", "كوت بو 6", "هند", "سبيدة", "تسجيل عام"];
 
 export default function LandingPage() {
   return (
-    <div style={{ background: FELT_DK, minHeight: "100vh", fontFamily: "system-ui,-apple-system,sans-serif", direction: "rtl", color: IVORY }}>
+    <div style={{ background: BG, minHeight: "100vh", fontFamily: "system-ui,-apple-system,sans-serif", direction: "rtl", color: INK }}>
 
       {/* Nav */}
-      <nav style={{ background: FELT, padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, position: "sticky", top: 0, zIndex: 50, boxShadow: "0 2px 12px rgba(0,0,0,0.3)" }}>
-        <div style={{ color: GOLD, fontSize: 22, fontWeight: 900, letterSpacing: -0.5 }}>الجيكر</div>
-        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-          <Link href="/about" style={{ color: "rgba(248,242,228,0.6)", fontSize: 14, textDecoration: "none" }}>عنّا</Link>
-          <Link href="/blog" style={{ color: "rgba(248,242,228,0.6)", fontSize: 14, textDecoration: "none" }}>دليل الألعاب</Link>
-          <Link href="/app" style={{ background: GOLD, color: JET, fontSize: 14, fontWeight: 800, padding: "8px 18px", borderRadius: 10, textDecoration: "none" }}>افتح التطبيق</Link>
+      <nav style={{
+        background: WHITE,
+        padding: "0 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: 64,
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        boxShadow: "0 1px 0 rgba(0,0,0,0.06)",
+      }}>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <img
+            src="/images/AlJaiker%20Profile%20White.jpg"
+            alt="الجيكر"
+            style={{ width: 44, height: 44, borderRadius: 10, objectFit: "cover" }}
+          />
+          <span style={{ fontSize: 20, fontWeight: 900, color: GREEN_DK, letterSpacing: -0.5 }}>الجيكر</span>
+        </div>
+
+        {/* Right side */}
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <Link href="/blog" style={{ color: INK_500, fontSize: 14, textDecoration: "none", fontWeight: 600 }}>الألعاب</Link>
+          <Link href="/app" style={{
+            background: GOLD,
+            color: INK,
+            fontSize: 14,
+            fontWeight: 800,
+            padding: "9px 18px",
+            borderRadius: 10,
+            textDecoration: "none",
+          }}>افتح التطبيق</Link>
         </div>
       </nav>
 
+      {/* Site label */}
+      <div style={{ textAlign: "center", paddingTop: 18, fontSize: 11, fontWeight: 800, color: GREEN, letterSpacing: 2 }}>
+        ALJAIKER.COM
+      </div>
+
       {/* Hero */}
-      <section style={{ padding: "72px 24px 64px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ display: "inline-block", background: "rgba(242,208,96,0.12)", border: "1px solid rgba(242,208,96,0.25)", borderRadius: 20, padding: "6px 16px", fontSize: 13, color: GOLD, marginBottom: 24, fontWeight: 700 }}>
-          مجاني تماماً · بدون تحميل · يعمل على الجوال
-        </div>
-        <h1 style={{ fontSize: "clamp(36px, 8vw, 64px)", fontWeight: 900, color: IVORY, lineHeight: 1.15, margin: "0 0 20px", letterSpacing: -1 }}>
-          ديوانيتك الإلكترونية<br />
-          <span style={{ color: GOLD }}>لألعاب الورق الكويتية</span>
+      <section style={{ padding: "24px 24px 40px", maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(36px, 9vw, 52px)", fontWeight: 900, color: INK, lineHeight: 1.2, margin: "0 0 8px" }}>
+          يا شباب منو الفايز؟
         </h1>
-        <p style={{ fontSize: 18, color: "rgba(248,242,228,0.6)", maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.7 }}>
-          سجّل نقاط تريكس، كوت، سبيدة وهند — شارك النتائج مباشرة مع من حولك، وأنشئ ديوانيتك مع أصدقاءك وعائلتك.
+        <div style={{ fontSize: "clamp(28px, 7vw, 40px)", fontWeight: 900, color: GREEN, margin: "0 0 18px", lineHeight: 1.2 }}>
+          الدفتر عند الجيكر
+        </div>
+        <p style={{ fontSize: 16, color: INK_500, margin: "0 0 32px", lineHeight: 1.7, maxWidth: 340, marginLeft: "auto", marginRight: "auto" }}>
+          كل جولة بضغطة، المجموع محسوب، والسجل محفوظ ومشاركه مع الشلة برابط واحد.
         </p>
-        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/app" style={{ background: GOLD, color: JET, fontSize: 17, fontWeight: 800, padding: "15px 36px", borderRadius: 14, textDecoration: "none", display: "inline-block" }}>
-            🃏 ابدأ اللعب الآن
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <Link href="/app" style={{
+            background: GOLD,
+            color: INK,
+            fontSize: 16,
+            fontWeight: 800,
+            padding: "14px 32px",
+            borderRadius: 14,
+            textDecoration: "none",
+            display: "inline-block",
+          }}>
+            ابدأ لعبة
           </Link>
-          <Link href="/blog" style={{ background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.15)", color: IVORY, fontSize: 17, fontWeight: 600, padding: "15px 36px", borderRadius: 14, textDecoration: "none", display: "inline-block" }}>
-            دليل الألعاب
+          <Link href="/blog" style={{
+            background: WHITE,
+            border: `1.5px solid #D4ECD9`,
+            color: INK_700,
+            fontSize: 16,
+            fontWeight: 600,
+            padding: "14px 32px",
+            borderRadius: 14,
+            textDecoration: "none",
+            display: "inline-block",
+          }}>
+            شوف مثال
           </Link>
         </div>
       </section>
 
-      {/* Games */}
-      <section style={{ padding: "64px 24px", background: "rgba(255,255,255,0.03)", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <h2 style={{ textAlign: "center", fontSize: 28, fontWeight: 800, color: IVORY, marginBottom: 40 }}>الألعاب المدعومة</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 16 }}>
-            {GAMES.map(g => (
-              <div key={g.name} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 22, display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: `${g.color}20`, border: `2px solid ${g.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, color: g.color }}>
-                  {g.icon}
-                </div>
-                <div style={{ fontSize: 17, fontWeight: 800, color: IVORY }}>{g.name}</div>
-                <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)", lineHeight: 1.6 }}>{g.desc}</div>
+      {/* Cards + Score Preview */}
+      <section style={{ padding: "0 20px 48px", maxWidth: 440, margin: "0 auto" }}>
+        {/* AlJaiker character illustration */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+          <div style={{ borderRadius: 32, overflow: "hidden", boxShadow: "0 12px 40px rgba(0,0,0,0.15)", width: 240 }}>
+            <img
+              src="/images/AlJaiker%20Profile%20White.jpg"
+              alt="الجيكر"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </div>
+        </div>
+
+        {/* Score preview card */}
+        <div style={{
+          background: WHITE,
+          borderRadius: 18,
+          boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
+          overflow: "hidden",
+        }}>
+          {/* Header row */}
+          <div style={{ padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #F0EDE9" }}>
+            <div style={{ fontSize: 15, fontWeight: 800, color: INK }}>تريكس · الجولة ٤</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: "#CE1F26", background: "#FFF0F0", padding: "3px 8px", borderRadius: 20 }}>مباشر</div>
+          </div>
+          {/* Players */}
+          {[
+            { name: "بو خالد", score: 310, delta: "+30" },
+            { name: "فهد",     score: 245, delta: "-40" },
+            { name: "أم سعود", score: 190, delta: "+10" },
+          ].map((p) => (
+            <div key={p.name} style={{ padding: "13px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #F8F6F4" }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: INK }}>{p.name}</div>
+              <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+                <div style={{
+                  fontSize: 13,
+                  fontWeight: 800,
+                  color: p.delta.startsWith("+") ? GREEN : "#CE1F26",
+                  minWidth: 36,
+                  textAlign: "left",
+                }}>{p.delta}</div>
+                <div style={{ fontSize: 22, fontWeight: 900, color: INK, fontVariantNumeric: "tabular-nums", minWidth: 48, textAlign: "left" }}>{p.score}</div>
               </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Games section */}
+      <section style={{ padding: "48px 24px", background: WHITE }}>
+        <div style={{ maxWidth: 480, margin: "0 auto" }}>
+          <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, color: INK, marginBottom: 20 }}>ألعابك كلها هنا</h2>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 32 }}>
+            {GAME_TAGS.map(tag => (
+              <div key={tag} style={{
+                padding: "8px 18px",
+                borderRadius: 24,
+                background: "#F1FAF4",
+                border: "1.5px solid #D4ECD9",
+                color: GREEN_DK,
+                fontSize: 14,
+                fontWeight: 700,
+              }}>{tag}</div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section style={{ padding: "64px 24px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <h2 style={{ textAlign: "center", fontSize: 28, fontWeight: 800, color: IVORY, marginBottom: 40 }}>لماذا الجيكر؟</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-            {FEATURES.map(f => (
-              <div key={f.title} style={{ display: "flex", flexDirection: "column", gap: 10, padding: "20px 18px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16 }}>
-                <div style={{ fontSize: 30 }}>{f.icon}</div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: IVORY }}>{f.title}</div>
-                <div style={{ fontSize: 13, color: "rgba(248,242,228,0.5)", lineHeight: 1.65 }}>{f.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA banner */}
-      <section style={{ padding: "64px 24px", background: FELT, textAlign: "center" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20, alignItems: "center" }}>
-          <h2 style={{ fontSize: 28, fontWeight: 900, color: IVORY, margin: 0 }}>جاهز للعب؟</h2>
-          <p style={{ color: "rgba(248,242,228,0.55)", fontSize: 16, margin: 0, lineHeight: 1.6 }}>لا تحتاج لتحميل أي شيء — يعمل مباشرة من المتصفح على جوالك</p>
-          <Link href="/app" style={{ background: GOLD, color: JET, fontSize: 17, fontWeight: 800, padding: "15px 44px", borderRadius: 14, textDecoration: "none" }}>
-            افتح التطبيق
+      {/* CTA */}
+      <section style={{ padding: "48px 24px", textAlign: "center" }}>
+        <div style={{ maxWidth: 440, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 24, fontWeight: 900, color: INK, marginBottom: 8 }}>أرسل الرابط للشلة</h2>
+          <p style={{ color: INK_500, fontSize: 14, marginBottom: 28, lineHeight: 1.6 }}>
+            شارك رابط اللعبة مع رفقتك — يتابعون النقاط على جوالهم بدون تحميل
+          </p>
+          <Link href="/app" style={{
+            display: "block",
+            background: GREEN,
+            color: WHITE,
+            fontSize: 17,
+            fontWeight: 800,
+            padding: "16px 0",
+            borderRadius: 16,
+            textDecoration: "none",
+          }}>
+            ابدأ لعبة الآن
           </Link>
+          <div style={{ marginTop: 12, fontSize: 12, color: INK_500 }}>بدون تحميل · بشغل على أي جوال</div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ background: FELT_DK, padding: "32px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ color: GOLD, fontSize: 20, fontWeight: 900 }}>الجيكر</div>
-          <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-            <Link href="/about"   style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textDecoration: "none" }}>عنّا</Link>
-            <Link href="/blog"    style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textDecoration: "none" }}>دليل الألعاب</Link>
-            <Link href="/contact" style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textDecoration: "none" }}>تواصل معنا</Link>
-            <Link href="/privacy" style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textDecoration: "none" }}>سياسة الخصوصية</Link>
-            <Link href="/terms"   style={{ color: "rgba(248,242,228,0.4)", fontSize: 13, textDecoration: "none" }}>شروط الاستخدام</Link>
+      <footer style={{ background: GREEN_DK, padding: "28px 24px" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <img src="/images/AlJaiker%20Profile%20White.jpg" alt="الجيكر" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+            <span style={{ color: GOLD, fontSize: 16, fontWeight: 900 }}>الجيكر</span>
           </div>
-          <div style={{ color: "rgba(248,242,228,0.25)", fontSize: 12 }}>© {new Date().getFullYear()} الجيكر. جميع الحقوق محفوظة.</div>
+          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+            <Link href="/about"   style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none" }}>عنّا</Link>
+            <Link href="/blog"    style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none" }}>دليل الألعاب</Link>
+            <Link href="/contact" style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none" }}>تواصل معنا</Link>
+            <Link href="/privacy" style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none" }}>الخصوصية</Link>
+          </div>
+          <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 11 }}>© {new Date().getFullYear()} الجيكر</div>
         </div>
       </footer>
 

@@ -80,7 +80,7 @@ export default function SpideSetupPage() {
     <main style={s.page}>
       <div style={s.topbar}>
         <button style={s.backBtn} onClick={() => router.push("/app")}>←</button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={s.topTitle}>لعبة جديدة</div>
           <div style={s.topSub}>سبيد</div>

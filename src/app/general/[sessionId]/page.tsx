@@ -545,7 +545,7 @@ export default function GeneralGamePage({ params }: { params: Promise<{ sessionI
         >
           ←
         </button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, textAlign: "right" }}>
             {gameOver ? "انتهت اللعبة" : "تسجيل عام"}

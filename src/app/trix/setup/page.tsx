@@ -87,7 +87,7 @@ export default function TrixSetupPage() {
           border: "none", color: "#FFFFFF", fontSize: 16, cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
         }}>←</button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" }}>تريكس</div>
           <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, textAlign: "right" }}>لعبة جديدة</div>

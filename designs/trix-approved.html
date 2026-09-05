@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الجيكر — تريكس</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --felt:#1B5E38;--felt-dk:#0F3D24;--felt-lt:#256B45;
+  --crimson:#C8102E;--gold:#D4A420;--gold-lt:#F2D060;--jet:#1A1210;
+  --ivory:#F8F2E4;--ivory-dk:#EDE3D0;--ivory-mid:#E0D4BC;
+  --sage:#4A7C5A;--purple:#5B3FA6;--blue:#0077B6;
+  --r:14px;--rs:10px;
+}
+body{background:#1A1A1A;font-family:'Segoe UI','Helvetica Neue',system-ui,sans-serif;padding:24px 16px 80px;}
+.screens{display:flex;flex-direction:column;gap:56px;max-width:390px;margin:0 auto;}
+.screen-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:10px;font-weight:700;direction:ltr;}
+.screen{background:var(--felt-dk);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.65);}
+
+/* TOP BAR */
+.topbar{background:var(--felt);padding:14px 14px 12px;display:flex;align-items:center;gap:10px;}
+.back-btn{width:30px;height:30px;background:rgba(255,255,255,.1);border-radius:50%;border:none;color:var(--ivory);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tb-center{flex:1;}
+.tb-title{font-size:15px;font-weight:700;color:var(--ivory);}
+.tb-sub{font-size:10px;color:rgba(248,242,228,.45);margin-top:1px;}
+.trix-badge{background:var(--purple);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;color:white;flex-shrink:0;}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;flex-shrink:0;}
+.c1{background:#C8102E;}.c2{background:#1B5E38;}.c3{background:#D4A420;color:var(--jet) !important;}
+.c4{background:#5B3FA6;}.c5{background:#0077B6;}
+
+/* ── SETUP SHARED ── */
+.setup-body{padding:16px 14px 20px;}
+.setup-q{font-size:13px;font-weight:700;color:rgba(248,242,228,.7);margin-bottom:10px;}
+.count-row{display:flex;gap:7px;margin-bottom:22px;}
+.count-btn{flex:1;background:var(--ivory);border:2.5px solid transparent;border-radius:var(--rs);padding:11px 4px;text-align:center;cursor:pointer;}
+.count-btn.sel{background:rgba(27,94,56,.08);border-color:var(--felt);}
+.cb-num{font-size:22px;font-weight:900;font-family:Georgia,serif;color:var(--jet);display:block;line-height:1;}
+.cb-label{font-size:9px;color:#AAA;margin-top:2px;display:block;}
+.count-btn.sel .cb-num{color:var(--felt);}
+.mode-grid{display:flex;flex-direction:column;gap:7px;margin-bottom:22px;}
+.mode-btn{background:var(--ivory);border:2.5px solid transparent;border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.mode-btn.sel{background:rgba(27,94,56,.08);border-color:var(--felt);}
+.mode-icon{font-size:18px;flex-shrink:0;}
+.mode-info{flex:1;}
+.mode-name{font-size:14px;font-weight:700;color:var(--jet);}
+.mode-desc{font-size:10px;color:#AAA;margin-top:2px;}
+.mode-btn.sel .mode-name{color:var(--felt);}
+.mode-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--ivory-mid);flex-shrink:0;}
+.mode-btn.sel .mode-check{background:var(--felt);border-color:var(--felt);display:flex;align-items:center;justify-content:center;font-size:10px;color:white;}
+.players-setup{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;}
+.player-setup-row{background:var(--ivory);border-radius:var(--rs);display:flex;align-items:center;gap:10px;padding:10px 12px;}
+.ps-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:white;flex-shrink:0;}
+.ps-input{flex:1;background:transparent;border:none;font-size:15px;font-weight:600;color:var(--jet);font-family:inherit;text-align:right;}
+.diwanya-hint{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(248,242,228,.4);margin-bottom:12px;}
+.start-btn{background:var(--felt);color:white;border:none;width:100%;padding:16px;font-size:16px;font-weight:700;cursor:pointer;}
+
+/* Team assignment (2vs2) */
+.teams-section{margin-bottom:20px;}
+.teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.team-box{border-radius:var(--rs);padding:10px;}
+.team-box.ta{background:rgba(200,16,46,.08);border:2px solid rgba(200,16,46,.25);}
+.team-box.tb{background:rgba(91,63,166,.08);border:2px solid rgba(91,63,166,.25);}
+.team-label{font-size:10px;font-weight:800;margin-bottom:8px;letter-spacing:.5px;}
+.team-label.ta{color:var(--crimson);}
+.team-label.tb{color:var(--purple);}
+.team-player{display:flex;align-items:center;gap:7px;background:white;border-radius:7px;padding:7px 8px;margin-bottom:5px;cursor:pointer;}
+.team-player:last-child{margin-bottom:0;}
+.tp-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
+.tp-name{font-size:13px;font-weight:600;color:var(--jet);flex:1;}
+.tp-swap{font-size:11px;color:#CCC;}
+.teams-hint{font-size:11px;color:rgba(248,242,228,.4);text-align:center;margin-top:4px;}
+
+/* ── KINGDOM BOARD ── */
+.kingdoms-body{padding:14px;}
+.section-title{font-size:11px;font-weight:700;color:rgba(248,242,228,.4);letter-spacing:.5px;margin-bottom:10px;}
+.kingdoms-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.kingdom-card{background:var(--ivory);border-radius:var(--rs);padding:12px 10px;border:2.5px solid transparent;}
+.kingdom-card.current{border-color:var(--gold);background:rgba(212,164,32,.06);}
+.kingdom-card.done{opacity:.55;}
+.kc-top{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.kc-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;flex-shrink:0;}
+.kc-name{font-size:12px;font-weight:700;color:var(--jet);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.kc-crown{font-size:13px;flex-shrink:0;}
+/* Score label inside card */
+.kc-score-wrap{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
+.kc-score-label{font-size:9px;color:#AAA;flex-shrink:0;}
+.kc-score{font-size:17px;font-weight:900;color:var(--crimson);font-variant-numeric:tabular-nums;line-height:1;}
+.kc-score.good{color:var(--felt);}
+.kc-score.neutral{color:#888;}
+.kc-decls{display:flex;gap:3px;flex-wrap:wrap;}
+.decl-dot{width:16px;height:16px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;}
+.decl-dot.done{opacity:1;}.decl-dot.todo{opacity:.22;}
+.decl-dot.trix{background:var(--purple);color:white;}
+.decl-dot.heart{background:var(--crimson);color:white;}
+.decl-dot.queens{background:var(--gold);color:var(--jet);}
+.decl-dot.diamond{background:var(--blue);color:white;}
+.decl-dot.eat{background:var(--sage);color:white;}
+/* Current kingdom expanded */
+.current-kingdom{background:var(--ivory);border-radius:var(--r);padding:14px;margin-bottom:14px;border:2px solid var(--gold);}
+.ck-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ck-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0;}
+.ck-info{flex:1;}
+.ck-name{font-size:16px;font-weight:800;color:var(--jet);}
+.ck-sub{font-size:10px;color:#AAA;margin-top:1px;}
+.ck-badge{background:var(--gold);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--jet);}
+.decl-list{display:flex;flex-direction:column;gap:6px;}
+.decl-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:var(--ivory-dk);}
+.decl-row.done{opacity:.5;}
+.decl-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.decl-name{flex:1;font-size:13px;font-weight:700;color:var(--jet);}
+.decl-pts{font-size:11px;color:#AAA;}
+.decl-check{font-size:14px;}
+.play-btn{background:var(--crimson);color:white;border:none;width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:var(--rs);cursor:pointer;}
+
+/* ── DECLARATION PICKER ── */
+.picker-body{padding:16px 14px;}
+.picker-note{background:rgba(91,63,166,.12);border:1px solid rgba(91,63,166,.3);border-radius:8px;padding:10px 12px;font-size:11px;color:rgba(248,242,228,.6);margin-bottom:16px;line-height:1.6;}
+.decl-picker-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.dp-item{background:var(--ivory);border-radius:var(--rs);padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;border:2.5px solid transparent;}
+.dp-item.sel-purple{border-color:var(--purple);background:rgba(91,63,166,.06);}
+.dp-item.sel-crimson{border-color:var(--crimson);background:rgba(200,16,46,.05);}
+.dp-item.sel-gold{border-color:var(--gold);background:rgba(212,164,32,.06);}
+.dp-item.sel-blue{border-color:var(--blue);background:rgba(0,119,182,.05);}
+.dp-item.sel-sage{border-color:var(--sage);background:rgba(74,124,90,.06);}
+.dp-item.disabled{opacity:.35;pointer-events:none;}
+.dpi-icon{font-size:22px;flex-shrink:0;}
+.dpi-info{flex:1;}
+.dpi-name{font-size:15px;font-weight:800;color:var(--jet);}
+.dpi-desc{font-size:10px;color:#AAA;margin-top:2px;}
+.dpi-pts{font-size:11px;font-weight:700;direction:ltr;}
+.dp-item.sel-purple .dpi-name{color:var(--purple);}
+.dp-item.sel-gold .dpi-name{color:var(--gold);}
+.dp-item.sel-blue .dpi-name{color:var(--blue);}
+.dp-item.sel-sage .dpi-name{color:var(--sage);}
+.dpi-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--ivory-mid);flex-shrink:0;}
+.dp-item[class*="sel-"] .dpi-check{display:flex;align-items:center;justify-content:center;font-size:11px;color:white;}
+.dp-item.sel-purple .dpi-check{background:var(--purple);border-color:var(--purple);}
+.dp-item.sel-gold .dpi-check{background:var(--gold);border-color:var(--gold);}
+.dp-item.sel-blue .dpi-check{background:var(--blue);border-color:var(--blue);}
+.dp-item.sel-sage .dpi-check{background:var(--sage);border-color:var(--sage);}
+.confirm-btn{background:var(--felt);color:white;border:none;width:100%;padding:16px;font-size:16px;font-weight:700;border-radius:var(--r);cursor:pointer;box-shadow:0 4px 14px rgba(27,94,56,.4);}
+.confirm-btn.disabled{background:#555;box-shadow:none;cursor:not-allowed;opacity:.6;}
+
+/* ── SCORE ENTRY SHARED ── */
+.entry-body{padding:16px 14px;}
+.entry-title-bar{border-radius:var(--rs);padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.etb-purple{background:rgba(91,63,166,.15);border:1px solid rgba(91,63,166,.3);}
+.etb-gold{background:rgba(212,164,32,.12);border:1px solid rgba(212,164,32,.3);}
+.etb-blue{background:rgba(0,119,182,.1);border:1px solid rgba(0,119,182,.25);}
+.etb-icon{font-size:22px;flex-shrink:0;}
+.etb-info{flex:1;}
+.etb-name{font-size:14px;font-weight:800;color:var(--ivory);}
+.etb-rule{font-size:10px;color:rgba(248,242,228,.45);margin-top:2px;}
+
+/* ── TRIX RANKING ── */
+.rank-instruction{background:rgba(91,63,166,.12);border:1px solid rgba(91,63,166,.25);border-radius:8px;padding:8px 12px;font-size:11px;color:rgba(248,242,228,.65);margin-bottom:14px;text-align:center;}
+/* Player chips pool */
+.player-pool{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.pool-chip{display:flex;align-items:center;gap:6px;background:var(--ivory);border-radius:20px;padding:5px 10px 5px 5px;cursor:pointer;border:2.5px solid transparent;}
+.pool-chip.selected{border-color:var(--gold);background:rgba(212,164,32,.08);}
+.pool-chip.assigned{opacity:.35;pointer-events:none;}
+.pc-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;flex-shrink:0;}
+.pc-name{font-size:12px;font-weight:700;color:var(--jet);}
+/* Rank rows */
+.trix-rank-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.rank-row{background:var(--ivory);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.rank-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.rank-1{background:var(--gold);color:var(--jet);}
+.rank-2{background:#C0C0C0;color:var(--jet);}
+.rank-3{background:#CD7F32;color:white;}
+.rank-4{background:var(--ivory-dk);color:#888;}
+.rank-pts{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;flex-shrink:0;color:var(--felt);}
+.rank-divider{width:1px;height:28px;background:var(--ivory-dk);flex-shrink:0;}
+.rank-slot{flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.rs-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0;}
+.rs-name{font-size:14px;font-weight:700;color:var(--jet);flex:1;}
+.rs-arrow{font-size:14px;color:#CCC;}
+/* Empty slot (unassigned) */
+.rank-slot-empty{flex:1;display:flex;align-items:center;gap:8px;border:1.5px dashed var(--gold);border-radius:8px;padding:5px 10px;cursor:pointer;}
+.rse-text{font-size:12px;color:var(--gold);font-weight:600;flex:1;}
+.rse-arrow{font-size:14px;color:var(--gold);}
+
+/* ── الميمات SCORE ENTRY ── */
+.queens-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.queen-row{background:var(--ivory);border-radius:var(--rs);padding:12px 14px;}
+.qr-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.queen-card{width:36px;height:48px;background:white;border-radius:5px;box-shadow:0 1px 4px rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.qc-suit{font-size:16px;line-height:1;}
+.qc-label{font-size:8px;font-weight:700;color:#888;margin-top:2px;}
+.qr-info{flex:1;}
+.qr-name{font-size:13px;font-weight:700;color:var(--jet);}
+.qr-pts{font-size:11px;color:#AAA;margin-top:1px;}
+.took-sel{background:var(--ivory-dk);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:8px;}
+.ts-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;flex-shrink:0;}
+.ts-name{flex:1;font-size:13px;font-weight:600;color:var(--jet);}
+.ts-arrow{font-size:12px;color:#CCC;}
+/* Announce section */
+.ann-toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ann-label{font-size:11px;color:#AAA;flex:1;}
+.ann-label.on{color:var(--gold);font-weight:700;}
+.toggle-switch{width:38px;height:22px;background:var(--ivory-mid);border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;}
+.toggle-switch.on{background:var(--gold);}
+.toggle-switch::after{content:'';position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-switch.on::after{right:18px;}
+/* Announcer selector (shown when toggled) */
+.ann-who-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ann-who-label{font-size:11px;color:var(--gold);font-weight:600;white-space:nowrap;flex-shrink:0;}
+.ann-who-sel{flex:1;background:rgba(212,164,32,.1);border:1px solid rgba(212,164,32,.3);border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;}
+.aw-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;flex-shrink:0;}
+.aw-name{flex:1;font-size:12px;font-weight:600;color:var(--jet);}
+.aw-arrow{font-size:11px;color:#CCC;}
+/* Result summary */
+.ann-result{background:rgba(212,164,32,.08);border:1px solid rgba(212,164,32,.25);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;}
+.ar-item{text-align:center;}
+.ar-name{font-size:9px;color:#AAA;display:block;margin-bottom:2px;}
+.ar-pts{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;}
+.ar-pts.good{color:var(--felt);}
+.ar-pts.bad{color:var(--crimson);}
+.ar-divider{width:1px;height:28px;background:rgba(212,164,32,.3);}
+
+/* ── الديامن / اكلات SCORE ENTRY ── */
+.dist-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.dist-row{background:var(--ivory);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.dr-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0;}
+.dr-name{flex:1;font-size:14px;font-weight:600;color:var(--jet);}
+.dr-pts{font-size:14px;font-weight:800;color:var(--crimson);font-variant-numeric:tabular-nums;direction:ltr;flex-shrink:0;}
+.num-scroll-wrap{position:relative;width:56px;height:66px;overflow:hidden;border-radius:8px;background:var(--ivory-dk);flex-shrink:0;}
+.num-scroll-wrap::before,.num-scroll-wrap::after{content:'';position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none;}
+.num-scroll-wrap::before{top:0;background:linear-gradient(to bottom,var(--ivory-dk),transparent);}
+.num-scroll-wrap::after{bottom:0;background:linear-gradient(to top,var(--ivory-dk),transparent);}
+.num-scroll{display:flex;flex-direction:column;align-items:center;overflow-y:auto;height:100%;scrollbar-width:none;}
+.num-scroll::-webkit-scrollbar{display:none;}
+.ns-item{font-size:12px;font-weight:700;color:#BBB;font-variant-numeric:tabular-nums;padding:5px 0;width:100%;text-align:center;flex-shrink:0;}
+.ns-item.sel{font-size:18px;font-weight:900;color:var(--blue);padding:6px 0;}
+
+/* Validation bar */
+.validation-bar{border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.vb-err{background:rgba(200,16,46,.08);border:1.5px solid rgba(200,16,46,.3);}
+.vb-ok{background:rgba(27,94,56,.08);border:1.5px solid rgba(27,94,56,.3);}
+.vb-icon{font-size:16px;flex-shrink:0;}
+.vb-inner{flex:1;}
+.vb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.vb-text{font-size:12px;font-weight:600;color:var(--jet);}
+.vb-count{font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;}
+.vb-count.err{color:var(--crimson);}
+.vb-count.ok{color:var(--felt);}
+.vb-track{height:5px;background:var(--ivory-mid);border-radius:3px;overflow:hidden;}
+.vb-fill{height:100%;border-radius:3px;}
+.vb-fill.err{background:var(--crimson);}
+.vb-fill.ok{background:var(--felt);}
+/* Preview box */
+.calc-preview{background:var(--ivory);border-radius:var(--r);padding:14px 16px;margin-bottom:14px;}
+.cp-title{font-size:10px;color:#AAA;text-align:center;letter-spacing:.5px;margin-bottom:10px;direction:ltr;text-transform:uppercase;}
+.cp-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--ivory-dk);}
+.cp-row:last-child{border-bottom:none;}
+.cp-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;flex-shrink:0;}
+.cp-name{flex:1;font-size:12px;color:var(--jet);}
+.cp-breakdown{font-size:10px;color:#AAA;direction:ltr;flex-shrink:0;}
+.cp-change{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;flex-shrink:0;}
+.cp-change.good{color:var(--felt);}
+.cp-change.bad{color:var(--crimson);}
+.cp-new{font-size:11px;color:#AAA;direction:ltr;flex-shrink:0;}
+
+/* ── LIVE SCORING ── */
+.score-header{background:var(--felt);padding:12px 14px 10px;}
+.score-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;}
+.score-chip{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 10px;text-align:center;flex-shrink:0;min-width:72px;}
+.sc-name{font-size:10px;color:rgba(248,242,228,.55);display:block;margin-bottom:2px;white-space:nowrap;}
+.sc-score{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;display:block;line-height:1;color:var(--ivory);}
+.sc-score.leading{color:var(--gold-lt);}
+.sc-score.danger{color:#FF8080;}
+.kingdoms-progress{background:var(--felt-lt);padding:8px 14px;display:flex;gap:6px;align-items:center;}
+.kp-label{font-size:10px;color:rgba(248,242,228,.45);flex-shrink:0;}
+.kp-dots{display:flex;gap:5px;}
+.kp-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;opacity:.35;}
+.kp-dot.done{opacity:1;}
+.kp-dot.current{opacity:1;box-shadow:0 0 0 2.5px var(--gold);}
+.rounds-wrap{background:var(--ivory);overflow-x:auto;}
+.rt{width:100%;border-collapse:collapse;min-width:340px;}
+.rt thead tr{background:var(--ivory-dk);}
+.rt th{padding:7px 5px;font-size:9px;font-weight:700;color:#999;text-align:center;}
+.rt th.col-l{text-align:right;padding-right:8px;width:80px;}
+.rt td{padding:7px 5px;border-top:1px solid var(--ivory-dk);font-size:12px;text-align:center;font-variant-numeric:tabular-nums;vertical-align:middle;}
+.rt td.col-l{font-size:10px;color:#888;text-align:right;padding-right:8px;}
+.th-player{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.th-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:white;margin:0 auto;}
+.th-name{font-size:9px;color:#999;}
+.pt-good{color:var(--felt);font-weight:800;}
+.pt-bad{color:var(--crimson);font-weight:700;}
+.decl-tag{display:inline-block;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;}
+.dt-trix{background:rgba(91,63,166,.15);color:var(--purple);}
+.dt-queens{background:rgba(212,164,32,.15);color:#B8900A;}
+.dt-diamond{background:rgba(0,119,182,.12);color:var(--blue);}
+.dt-heart{background:rgba(200,16,46,.1);color:var(--crimson);}
+.dt-eat{background:rgba(74,124,90,.12);color:var(--sage);}
+/* Kingdom separator row — clear thick divider */
+.kingdom-sep td{
+  background:var(--felt);
+  color:rgba(248,242,228,.9);
+  font-size:10px;
+  font-weight:800;
+  padding:8px 8px;
+  border-top:3px solid var(--felt-dk);
+  border-bottom:3px solid var(--felt-dk);
+  letter-spacing:.4px;
+}
+.kingdom-sep td.sep-sub{font-size:10px;font-weight:700;text-align:center;color:rgba(248,242,228,.6);}
+.rt tfoot td{background:var(--ivory-dk);font-size:15px;font-weight:900;border-top:2.5px solid var(--ivory-mid);padding:10px 5px;font-variant-numeric:tabular-nums;}
+.rt tfoot .tot-best{color:var(--felt);}
+.rt tfoot .tot-worst{color:var(--crimson);}
+.rt tfoot td.col-l{font-size:9px;color:#AAA;font-weight:400;}
+
+/* ── GAME OVER ── */
+.go-hero{background:linear-gradient(155deg,var(--felt),#0A2816);padding:28px 20px 20px;text-align:center;}
+.go-trophy{font-size:52px;display:block;margin-bottom:10px;}
+.go-label{font-size:12px;color:rgba(248,242,228,.45);letter-spacing:1px;margin-bottom:5px;}
+.go-winner{font-size:26px;font-weight:900;color:var(--gold-lt);}
+.go-sub{font-size:13px;color:rgba(248,242,228,.5);margin-top:4px;}
+.standings{background:var(--ivory);}
+.standing-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--ivory-dk);}
+.standing-row:last-child{border-bottom:none;}
+.st-rank{font-size:20px;font-weight:900;color:var(--ivory-mid);width:28px;text-align:center;flex-shrink:0;}
+.st-rank.gold{color:var(--gold);}
+.st-rank.silver{color:#AAA;}
+.st-rank.bronze{color:#CD7F32;}
+.st-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0;}
+.st-info{flex:1;}
+.st-name{font-size:16px;font-weight:700;color:var(--jet);}
+.st-detail{font-size:11px;color:#AAA;margin-top:2px;}
+.st-total{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;}
+.st-total.best{color:var(--felt);}
+.st-total.worst{color:var(--crimson);}
+.go-actions{display:flex;flex-direction:column;gap:8px;padding:16px 16px 20px;background:var(--ivory);}
+.btn-r{background:var(--crimson);color:white;border:none;border-radius:var(--r);padding:16px;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-g{background:var(--felt);color:white;border:none;border-radius:var(--r);padding:13px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-w{background:var(--ivory-dk);color:var(--jet);border:none;border-radius:var(--r);padding:13px;font-size:14px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="screens">
+
+<!-- ═══════════════════════════
+     SCREEN 1A — SETUP (فردي)
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 1A — Setup (فردي مختار)</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">تريكس</div>
+      <div class="tb-sub">ديوانية الجمعة</div>
+    </div>
+    <div class="trix-badge">♛</div>
+  </div>
+  <div class="setup-body">
+    <div class="setup-q">عدد اللاعبين</div>
+    <div class="count-row">
+      <div class="count-btn sel"><span class="cb-num">4</span><span class="cb-label">لاعبين</span></div>
+      <div class="count-btn"><span class="cb-num">5</span><span class="cb-label">لاعبين</span></div>
+    </div>
+    <div class="setup-q">طريقة اللعب</div>
+    <div class="mode-grid">
+      <div class="mode-btn sel">
+        <span class="mode-icon">👤</span>
+        <div class="mode-info"><div class="mode-name">فردي</div><div class="mode-desc">كل لاعب يسجل لحاله</div></div>
+        <div class="mode-check">✓</div>
+      </div>
+      <div class="mode-btn">
+        <span class="mode-icon">👥</span>
+        <div class="mode-info"><div class="mode-name">٢ ضد ٢</div><div class="mode-desc">فريقان، النقاط تُجمع</div></div>
+        <div class="mode-check"></div>
+      </div>
+    </div>
+    <div class="setup-q">اللاعبون</div>
+    <div class="diwanya-hint"><span style="font-size:14px;">👥</span><span>اختر من أعضاء الديوانية أو أضف اسماً جديداً</span></div>
+    <div class="players-setup">
+      <div class="player-setup-row"><div class="ps-avatar c1 av" style="width:32px;height:32px;font-size:13px;">أ</div><input class="ps-input" type="text" value="أنس"><span style="font-size:18px;color:#DDD;">▾</span></div>
+      <div class="player-setup-row"><div class="ps-avatar c2 av" style="width:32px;height:32px;font-size:13px;">م</div><input class="ps-input" type="text" value="محمد"><span style="font-size:18px;color:#DDD;">▾</span></div>
+      <div class="player-setup-row"><div class="ps-avatar c3 av" style="width:32px;height:32px;font-size:13px;">خ</div><input class="ps-input" type="text" value="خالد"><span style="font-size:18px;color:#DDD;">▾</span></div>
+      <div class="player-setup-row"><div class="ps-avatar c4 av" style="width:32px;height:32px;font-size:13px;">ف</div><input class="ps-input" type="text" value="فهد"><span style="font-size:18px;color:#DDD;">▾</span></div>
+    </div>
+  </div>
+  <button class="start-btn">ابدأ اللعبة ▶</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 1B — SETUP (٢×٢ مختار)
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 1B — Setup (٢×٢ مختار — تعيين الفرق)</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">تريكس</div>
+      <div class="tb-sub">ديوانية الجمعة</div>
+    </div>
+    <div class="trix-badge">♛</div>
+  </div>
+  <div class="setup-body">
+    <div class="setup-q">عدد اللاعبين</div>
+    <div class="count-row">
+      <div class="count-btn sel"><span class="cb-num">4</span><span class="cb-label">لاعبين</span></div>
+      <div class="count-btn"><span class="cb-num">5</span><span class="cb-label">لاعبين</span></div>
+    </div>
+    <div class="setup-q">طريقة اللعب</div>
+    <div class="mode-grid">
+      <div class="mode-btn">
+        <span class="mode-icon">👤</span>
+        <div class="mode-info"><div class="mode-name">فردي</div><div class="mode-desc">كل لاعب يسجل لحاله</div></div>
+        <div class="mode-check"></div>
+      </div>
+      <div class="mode-btn sel">
+        <span class="mode-icon">👥</span>
+        <div class="mode-info"><div class="mode-name">٢ ضد ٢</div><div class="mode-desc">فريقان، النقاط تُجمع</div></div>
+        <div class="mode-check">✓</div>
+      </div>
+    </div>
+
+    <!-- TEAM ASSIGNMENT — appears only when 2vs2 is selected -->
+    <div class="setup-q">تعيين الفرق</div>
+    <div class="teams-section">
+      <div class="teams-grid">
+        <!-- Team A -->
+        <div class="team-box ta">
+          <div class="team-label ta">الفريق الأول</div>
+          <div class="team-player">
+            <div class="tp-av av c1" style="width:26px;height:26px;font-size:11px;">أ</div>
+            <span class="tp-name">أنس</span>
+            <span class="tp-swap">⇄</span>
+          </div>
+          <div class="team-player">
+            <div class="tp-av av c3" style="width:26px;height:26px;font-size:11px;">خ</div>
+            <span class="tp-name">خالد</span>
+            <span class="tp-swap">⇄</span>
+          </div>
+        </div>
+        <!-- Team B -->
+        <div class="team-box tb">
+          <div class="team-label tb">الفريق الثاني</div>
+          <div class="team-player">
+            <div class="tp-av av c2" style="width:26px;height:26px;font-size:11px;">م</div>
+            <span class="tp-name">محمد</span>
+            <span class="tp-swap">⇄</span>
+          </div>
+          <div class="team-player">
+            <div class="tp-av av c4" style="width:26px;height:26px;font-size:11px;">ف</div>
+            <span class="tp-name">فهد</span>
+            <span class="tp-swap">⇄</span>
+          </div>
+        </div>
+      </div>
+      <div class="teams-hint">اضغط على ⇄ لتبديل اللاعب بين الفريقين</div>
+    </div>
+
+  </div>
+  <button class="start-btn">ابدأ اللعبة ▶</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 2 — KINGDOM BOARD
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 2 — Kingdom Board (الشاشة الرئيسية)</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">تريكس</div>
+      <div class="tb-sub">ديوانية الجمعة · مملكة ٢ من ٤</div>
+    </div>
+    <button class="back-btn" style="font-size:11px;font-weight:700;width:auto;padding:0 10px;border-radius:8px;">QR</button>
+  </div>
+  <div class="kingdoms-body">
+
+    <div class="section-title">جميع الممالك</div>
+    <div class="kingdoms-grid">
+      <!-- Kingdom 1 — done -->
+      <div class="kingdom-card done">
+        <div class="kc-top">
+          <div class="kc-av av c1" style="width:26px;height:26px;font-size:10px;">أ</div>
+          <span class="kc-name">أنس</span>
+          <span style="font-size:12px;">✓</span>
+        </div>
+        <!-- Score clearly labelled -->
+        <div class="kc-score-wrap">
+          <span class="kc-score-label">نقاط</span>
+          <span class="kc-score good">−50</span>
+        </div>
+        <div class="kc-decls">
+          <div class="decl-dot trix done">ت</div>
+          <div class="decl-dot heart done">♥</div>
+          <div class="decl-dot queens done">م</div>
+          <div class="decl-dot diamond done">♦</div>
+          <div class="decl-dot eat done">آ</div>
+        </div>
+      </div>
+      <!-- Kingdom 2 — current -->
+      <div class="kingdom-card current">
+        <div class="kc-top">
+          <div class="kc-av av c2" style="width:26px;height:26px;font-size:10px;">م</div>
+          <span class="kc-name">محمد</span>
+          <span class="kc-crown">👑</span>
+        </div>
+        <div class="kc-score-wrap">
+          <span class="kc-score-label">نقاط</span>
+          <span class="kc-score">−85</span>
+        </div>
+        <div class="kc-decls">
+          <div class="decl-dot trix done">ت</div>
+          <div class="decl-dot heart done">♥</div>
+          <div class="decl-dot queens todo">م</div>
+          <div class="decl-dot diamond todo">♦</div>
+          <div class="decl-dot eat todo">آ</div>
+        </div>
+      </div>
+      <!-- Kingdoms 3 & 4 — pending -->
+      <div class="kingdom-card" style="opacity:.4;">
+        <div class="kc-top">
+          <div class="kc-av av c3" style="width:26px;height:26px;font-size:10px;">خ</div>
+          <span class="kc-name">خالد</span>
+        </div>
+        <div class="kc-score-wrap"><span class="kc-score-label">نقاط</span><span class="kc-score neutral">—</span></div>
+        <div class="kc-decls">
+          <div class="decl-dot trix todo">ت</div><div class="decl-dot heart todo">♥</div>
+          <div class="decl-dot queens todo">م</div><div class="decl-dot diamond todo">♦</div><div class="decl-dot eat todo">آ</div>
+        </div>
+      </div>
+      <div class="kingdom-card" style="opacity:.4;">
+        <div class="kc-top">
+          <div class="kc-av av c4" style="width:26px;height:26px;font-size:10px;">ف</div>
+          <span class="kc-name">فهد</span>
+        </div>
+        <div class="kc-score-wrap"><span class="kc-score-label">نقاط</span><span class="kc-score neutral">—</span></div>
+        <div class="kc-decls">
+          <div class="decl-dot trix todo">ت</div><div class="decl-dot heart todo">♥</div>
+          <div class="decl-dot queens todo">م</div><div class="decl-dot diamond todo">♦</div><div class="decl-dot eat todo">آ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">مملكة محمد — الجارية</div>
+    <div class="current-kingdom">
+      <div class="ck-header">
+        <div class="ck-av av c2" style="width:38px;height:38px;font-size:16px;">م</div>
+        <div class="ck-info">
+          <div class="ck-name">محمد 👑</div>
+          <div class="ck-sub">٣ إعلانات متبقية</div>
+        </div>
+        <div class="ck-badge">المملكة ٢</div>
+      </div>
+      <div class="decl-list">
+        <div class="decl-row done">
+          <span class="decl-icon">🃏</span>
+          <span class="decl-name">تريكس</span>
+          <span class="decl-pts">−200/−150/−100/−50</span>
+          <span class="decl-check">✓</span>
+        </div>
+        <div class="decl-row done">
+          <span class="decl-icon">♥</span>
+          <span class="decl-name">باش الحاس</span>
+          <span class="decl-pts">75 نقطة</span>
+          <span class="decl-check">✓</span>
+        </div>
+        <div class="decl-row" style="background:rgba(212,164,32,.1);border:1px solid rgba(212,164,32,.2);">
+          <span class="decl-icon">♛</span>
+          <span class="decl-name">الميمات</span>
+          <span class="decl-pts">25 × 4</span>
+          <span class="decl-check" style="color:#CCC;">○</span>
+        </div>
+        <div class="decl-row">
+          <span class="decl-icon">♦</span>
+          <span class="decl-name">الديامن</span>
+          <span class="decl-pts">10 × 13</span>
+          <span class="decl-check" style="color:#CCC;">○</span>
+        </div>
+        <div class="decl-row">
+          <span class="decl-icon">🍴</span>
+          <span class="decl-name">اكلات</span>
+          <span class="decl-pts">15 × 13</span>
+          <span class="decl-check" style="color:#CCC;">○</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="play-btn">▶ إعلان الجولة التالية</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 3 — DECLARATION PICKER
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 3 — Declaration Picker</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">اختر الإعلان</div>
+      <div class="tb-sub">مملكة محمد · الجولة ٣</div>
+    </div>
+    <div class="av c2" style="width:32px;height:32px;font-size:13px;">م</div>
+  </div>
+  <div class="picker-body">
+    <div class="picker-note">
+      🃏 <strong>تريكس</strong> يُلعب منفرداً<br>
+      الباقي: يمكن اختيار أكثر من واحد في نفس الجولة
+    </div>
+    <div class="decl-picker-list">
+      <div class="dp-item disabled">
+        <span class="dpi-icon">🃏</span>
+        <div class="dpi-info"><div class="dpi-name">تريكس</div><div class="dpi-desc">تم لعبه ✓</div></div>
+        <div class="dpi-pts" style="color:#CCC;">−200/−50</div>
+        <div class="dpi-check"></div>
+      </div>
+      <div class="dp-item disabled">
+        <span class="dpi-icon">♥</span>
+        <div class="dpi-info"><div class="dpi-name">باش الحاس</div><div class="dpi-desc">تم لعبه ✓</div></div>
+        <div class="dpi-pts" style="color:#CCC;">75 نقطة</div>
+        <div class="dpi-check"></div>
+      </div>
+      <div class="dp-item sel-gold">
+        <span class="dpi-icon">♛</span>
+        <div class="dpi-info"><div class="dpi-name">الميمات</div><div class="dpi-desc">٤ ميمات · ٢٥ لكل واحدة</div></div>
+        <div class="dpi-pts" style="color:var(--gold);">100 نقطة</div>
+        <div class="dpi-check">✓</div>
+      </div>
+      <div class="dp-item sel-blue">
+        <span class="dpi-icon">♦</span>
+        <div class="dpi-info"><div class="dpi-name">الديامن</div><div class="dpi-desc">١٣ ورقة · ١٠ لكل ورقة</div></div>
+        <div class="dpi-pts" style="color:var(--blue);">130 نقطة</div>
+        <div class="dpi-check">✓</div>
+      </div>
+      <div class="dp-item">
+        <span class="dpi-icon">🍴</span>
+        <div class="dpi-info"><div class="dpi-name">اكلات</div><div class="dpi-desc">١٣ حيلة · ١٥ لكل حيلة</div></div>
+        <div class="dpi-pts" style="color:#CCC;">195 نقطة</div>
+        <div class="dpi-check"></div>
+      </div>
+    </div>
+    <button class="confirm-btn">▶ ابدأ الجولة — الميمات + الديامن</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 4A — TRIX RANKING
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 4A — Score Entry: تريكس (كيفية الترتيب)</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">نتيجة تريكس</div>
+      <div class="tb-sub">مملكة محمد</div>
+    </div>
+    <div class="trix-badge">تريكس</div>
+  </div>
+  <div class="entry-body">
+    <div class="entry-title-bar etb-purple">
+      <span class="etb-icon">🃏</span>
+      <div class="etb-info">
+        <div class="etb-name">تريكس — ترتيب الحيل</div>
+        <div class="etb-rule">الأقل حيلاً = المركز الأول = −200</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Select a player chip -->
+    <div class="rank-instruction">① اضغط على اسم اللاعب ② ثم اضغط على المركز المناسب له</div>
+
+    <!-- Player pool chips -->
+    <div class="player-pool">
+      <div class="pool-chip assigned">
+        <div class="pc-av av c1" style="width:24px;height:24px;font-size:10px;">أ</div>
+        <span class="pc-name">أنس</span>
+      </div>
+      <div class="pool-chip selected">
+        <div class="pc-av av c4" style="width:24px;height:24px;font-size:10px;">ف</div>
+        <span class="pc-name">فهد</span>
+      </div>
+      <div class="pool-chip">
+        <div class="pc-av av c3" style="width:24px;height:24px;font-size:10px;">خ</div>
+        <span class="pc-name">خالد</span>
+      </div>
+      <div class="pool-chip assigned">
+        <div class="pc-av av c2" style="width:24px;height:24px;font-size:10px;">م</div>
+        <span class="pc-name">محمد</span>
+      </div>
+    </div>
+
+    <!-- Rank rows -->
+    <div class="trix-rank-list">
+      <!-- Rank 1 — assigned -->
+      <div class="rank-row">
+        <div class="rank-num rank-1">١</div>
+        <div class="rank-pts">−200</div>
+        <div class="rank-divider"></div>
+        <div class="rank-slot">
+          <div class="rs-av av c1" style="width:30px;height:30px;font-size:12px;">أ</div>
+          <span class="rs-name">أنس</span>
+          <span class="rs-arrow">▾</span>
+        </div>
+      </div>
+      <!-- Rank 2 — empty, gold border = tap target for selected player -->
+      <div class="rank-row" style="border:1.5px solid var(--gold);">
+        <div class="rank-num rank-2">٢</div>
+        <div class="rank-pts">−150</div>
+        <div class="rank-divider"></div>
+        <div class="rank-slot-empty">
+          <span class="rse-text">اضغط هنا لوضع فهد</span>
+          <span class="rse-arrow">←</span>
+        </div>
+      </div>
+      <!-- Rank 3 — empty -->
+      <div class="rank-row">
+        <div class="rank-num rank-3">٣</div>
+        <div class="rank-pts">−100</div>
+        <div class="rank-divider"></div>
+        <div class="rank-slot-empty" style="border-color:var(--ivory-mid);">
+          <span class="rse-text" style="color:#CCC;">فارغ</span>
+          <span class="rse-arrow" style="color:#CCC;">←</span>
+        </div>
+      </div>
+      <!-- Rank 4 — assigned -->
+      <div class="rank-row">
+        <div class="rank-num rank-4">٤</div>
+        <div class="rank-pts">−50</div>
+        <div class="rank-divider"></div>
+        <div class="rank-slot">
+          <div class="rs-av av c2" style="width:30px;height:30px;font-size:12px;">م</div>
+          <span class="rs-name">محمد</span>
+          <span class="rs-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="confirm-btn disabled">✓ تأكيد — رتّب جميع اللاعبين أولاً</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 4B — الميمات SCORE ENTRY
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 4B — Score Entry: الميمات</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">نتيجة الميمات</div>
+      <div class="tb-sub">مملكة محمد</div>
+    </div>
+    <span style="font-size:22px;">♛</span>
+  </div>
+  <div class="entry-body">
+    <div class="entry-title-bar etb-gold">
+      <span class="etb-icon">♛</span>
+      <div class="etb-info">
+        <div class="etb-name">الميمات — ٤ × ٢٥ نقطة</div>
+        <div class="etb-rule">من أخذ كل ميم؟ · الإعلان يضاعف — المُعلِن يأخذ السالب</div>
+      </div>
+    </div>
+
+    <div class="queens-list">
+
+      <!-- ميم السبيت ♠ — announced -->
+      <div class="queen-row" style="border:1.5px solid rgba(212,164,32,.45);background:rgba(212,164,32,.04);">
+        <div class="qr-top">
+          <div class="queen-card">
+            <span class="qc-suit" style="color:#222;">♠</span>
+            <span class="qc-label">Q</span>
+          </div>
+          <div class="qr-info">
+            <div class="qr-name">ميم السبيت ♠</div>
+            <div class="qr-pts">٢٥ نقطة · معلنة ← ٥٠</div>
+          </div>
+        </div>
+        <!-- Who took it -->
+        <div class="took-sel" style="background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.2);">
+          <div class="ts-av av c1" style="width:24px;height:24px;font-size:10px;">أ</div>
+          <span class="ts-name">من أخذها: أنس (+50)</span>
+          <span class="ts-arrow">▾</span>
+        </div>
+        <!-- Announce toggle ON -->
+        <div class="ann-toggle-row">
+          <span class="ann-label on">★ إعلان — المُعلِن يأخذ −25</span>
+          <div class="toggle-switch on"></div>
+        </div>
+        <!-- Who declared — ANY player can be announcer -->
+        <div class="ann-who-row">
+          <span class="ann-who-label">من أعلن؟</span>
+          <div class="ann-who-sel">
+            <div class="aw-av av c4" style="width:20px;height:20px;font-size:9px;">ف</div>
+            <span class="aw-name">فهد</span>
+            <span class="aw-arrow">▾</span>
+          </div>
+        </div>
+        <!-- Result -->
+        <div class="ann-result">
+          <div class="ar-item">
+            <span class="ar-name">أنس (أخذها)</span>
+            <span class="ar-pts bad">+50</span>
+          </div>
+          <div class="ar-divider"></div>
+          <div class="ar-item">
+            <span class="ar-name">فهد (أعلن)</span>
+            <span class="ar-pts good">−25</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ميم الحاس ♥ — normal -->
+      <div class="queen-row">
+        <div class="qr-top">
+          <div class="queen-card">
+            <span class="qc-suit" style="color:var(--crimson);">♥</span>
+            <span class="qc-label">Q</span>
+          </div>
+          <div class="qr-info">
+            <div class="qr-name">ميم الحاس ♥</div>
+            <div class="qr-pts">٢٥ نقطة</div>
+          </div>
+        </div>
+        <div class="took-sel">
+          <div class="ts-av av c3" style="width:24px;height:24px;font-size:10px;">خ</div>
+          <span class="ts-name">من أخذها: خالد (+25)</span>
+          <span class="ts-arrow">▾</span>
+        </div>
+        <div class="ann-toggle-row">
+          <span class="ann-label">إعلان</span>
+          <div class="toggle-switch"></div>
+        </div>
+      </div>
+
+      <!-- ميم الديمن ♦ — normal -->
+      <div class="queen-row">
+        <div class="qr-top">
+          <div class="queen-card">
+            <span class="qc-suit" style="color:var(--blue);">♦</span>
+            <span class="qc-label">Q</span>
+          </div>
+          <div class="qr-info">
+            <div class="qr-name">ميم الديمن ♦</div>
+            <div class="qr-pts">٢٥ نقطة</div>
+          </div>
+        </div>
+        <div class="took-sel">
+          <div class="ts-av av c2" style="width:24px;height:24px;font-size:10px;">م</div>
+          <span class="ts-name">من أخذها: محمد (+25)</span>
+          <span class="ts-arrow">▾</span>
+        </div>
+        <div class="ann-toggle-row">
+          <span class="ann-label">إعلان</span>
+          <div class="toggle-switch"></div>
+        </div>
+      </div>
+
+      <!-- ميم الكلفس ♣ — unassigned -->
+      <div class="queen-row" style="border:1.5px dashed var(--ivory-mid);">
+        <div class="qr-top">
+          <div class="queen-card">
+            <span class="qc-suit" style="color:#333;">♣</span>
+            <span class="qc-label">Q</span>
+          </div>
+          <div class="qr-info">
+            <div class="qr-name">ميم الكلفس ♣</div>
+            <div class="qr-pts">٢٥ نقطة</div>
+          </div>
+        </div>
+        <div class="took-sel" style="border:1.5px dashed var(--ivory-mid);">
+          <span class="ts-name" style="color:#CCC;">اختر من أخذها</span>
+          <span class="ts-arrow">▾</span>
+        </div>
+        <div class="ann-toggle-row">
+          <span class="ann-label">إعلان</span>
+          <div class="toggle-switch"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="validation-bar vb-err">
+      <span class="vb-icon">⚠️</span>
+      <div class="vb-inner">
+        <div class="vb-top">
+          <span class="vb-text">الميمات المُسجَّلة</span>
+          <span class="vb-count err">3 من 4</span>
+        </div>
+        <div class="vb-track"><div class="vb-fill err" style="width:75%;"></div></div>
+      </div>
+    </div>
+    <button class="confirm-btn disabled">✓ تأكيد نتيجة الميمات</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 4C — الديامن SCORE ENTRY
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 4C — Score Entry: الديامن</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">نتيجة الديامن</div>
+      <div class="tb-sub">مملكة محمد</div>
+    </div>
+    <span style="font-size:22px;color:var(--gold-lt);">♦</span>
+  </div>
+  <div class="entry-body">
+    <div class="entry-title-bar etb-blue">
+      <span class="etb-icon">♦</span>
+      <div class="etb-info">
+        <div class="etb-name">الديامن — ١٣ × ١٠ نقاط</div>
+        <div class="etb-rule">المجموع يجب أن يساوي ١٣ ورقة</div>
+      </div>
+    </div>
+    <div class="dist-list">
+      <div class="dist-row">
+        <div class="dr-av av c1" style="width:30px;height:30px;font-size:12px;">أ</div>
+        <span class="dr-name">أنس</span>
+        <div class="num-scroll-wrap"><div class="num-scroll">
+          <div class="ns-item">1</div><div class="ns-item">2</div>
+          <div class="ns-item sel">3</div><div class="ns-item">4</div>
+        </div></div>
+        <span class="dr-pts">+30</span>
+      </div>
+      <div class="dist-row">
+        <div class="dr-av av c2" style="width:30px;height:30px;font-size:12px;">م</div>
+        <span class="dr-name">محمد</span>
+        <div class="num-scroll-wrap"><div class="num-scroll">
+          <div class="ns-item">3</div><div class="ns-item">4</div>
+          <div class="ns-item sel">4</div><div class="ns-item">5</div>
+        </div></div>
+        <span class="dr-pts">+40</span>
+      </div>
+      <div class="dist-row">
+        <div class="dr-av av c3" style="width:30px;height:30px;font-size:12px;">خ</div>
+        <span class="dr-name">خالد</span>
+        <div class="num-scroll-wrap"><div class="num-scroll">
+          <div class="ns-item">1</div><div class="ns-item">2</div>
+          <div class="ns-item sel">3</div><div class="ns-item">4</div>
+        </div></div>
+        <span class="dr-pts">+30</span>
+      </div>
+      <div class="dist-row">
+        <div class="dr-av av c4" style="width:30px;height:30px;font-size:12px;">ف</div>
+        <span class="dr-name">فهد</span>
+        <div class="num-scroll-wrap"><div class="num-scroll">
+          <div class="ns-item">1</div><div class="ns-item">2</div>
+          <div class="ns-item sel">3</div><div class="ns-item">4</div>
+        </div></div>
+        <span class="dr-pts">+30</span>
+      </div>
+    </div>
+    <!-- 13 of 13 — valid -->
+    <div class="validation-bar vb-ok">
+      <span class="vb-icon">✅</span>
+      <div class="vb-inner">
+        <div class="vb-top">
+          <span class="vb-text">الديامن مكتملة</span>
+          <span class="vb-count ok">13 من 13</span>
+        </div>
+        <div class="vb-track"><div class="vb-fill ok" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <div class="calc-preview">
+      <div class="cp-title">ملخص الديامن · مجموع 130 نقطة</div>
+      <div class="cp-row">
+        <div class="cp-av av c1" style="width:24px;height:24px;font-size:10px;">أ</div>
+        <span class="cp-name">أنس</span><span class="cp-breakdown">3 ♦</span>
+        <span class="cp-change bad">+30</span><span class="cp-new">← −155</span>
+      </div>
+      <div class="cp-row">
+        <div class="cp-av av c2" style="width:24px;height:24px;font-size:10px;">م</div>
+        <span class="cp-name">محمد</span><span class="cp-breakdown">4 ♦</span>
+        <span class="cp-change bad">+40</span><span class="cp-new">← −120</span>
+      </div>
+      <div class="cp-row">
+        <div class="cp-av av c3" style="width:24px;height:24px;font-size:10px;">خ</div>
+        <span class="cp-name">خالد</span><span class="cp-breakdown">3 ♦</span>
+        <span class="cp-change bad">+30</span><span class="cp-new">← 115</span>
+      </div>
+      <div class="cp-row">
+        <div class="cp-av av c4" style="width:24px;height:24px;font-size:10px;">ف</div>
+        <span class="cp-name">فهد</span><span class="cp-breakdown">3 ♦</span>
+        <span class="cp-change bad">+30</span><span class="cp-new">← −60</span>
+      </div>
+    </div>
+    <button class="confirm-btn">✓ تأكيد نتيجة الديامن</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 5 — LIVE SCORING
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 5 — Live Scoring</div>
+<div class="screen">
+  <div class="topbar">
+    <button class="back-btn">→</button>
+    <div class="tb-center">
+      <div class="tb-title">تريكس — النقاط</div>
+      <div class="tb-sub">ديوانية الجمعة</div>
+    </div>
+    <button class="back-btn" style="font-size:11px;font-weight:700;width:auto;padding:0 10px;border-radius:8px;">QR</button>
+  </div>
+  <!-- Score totals header -->
+  <div class="score-header">
+    <div class="score-chips">
+      <div class="score-chip"><span class="sc-name">أنس</span><span class="sc-score leading">−155</span></div>
+      <div class="score-chip"><span class="sc-name">محمد</span><span class="sc-score leading">−120</span></div>
+      <div class="score-chip"><span class="sc-name">خالد</span><span class="sc-score danger">115</span></div>
+      <div class="score-chip"><span class="sc-name">فهد</span><span class="sc-score">−60</span></div>
+    </div>
+  </div>
+  <!-- Kingdom progress -->
+  <div class="kingdoms-progress">
+    <span class="kp-label">ممالك</span>
+    <div class="kp-dots">
+      <div class="kp-dot done c1" style="width:22px;height:22px;font-size:9px;">أ</div>
+      <div class="kp-dot current c2" style="width:22px;height:22px;font-size:9px;">م</div>
+      <div class="kp-dot c3" style="width:22px;height:22px;font-size:9px;">خ</div>
+      <div class="kp-dot c4" style="width:22px;height:22px;font-size:9px;">ف</div>
+    </div>
+    <span style="font-size:10px;color:rgba(248,242,228,.4);margin-right:auto;">مملكة ٢ من ٤</span>
+  </div>
+  <!-- Score table -->
+  <div class="rounds-wrap">
+    <table class="rt">
+      <thead>
+        <tr>
+          <th class="col-l">الإعلان</th>
+          <th><div class="th-player"><div class="th-av av c1" style="width:20px;height:20px;font-size:8px;">أ</div><span class="th-name">أنس</span></div></th>
+          <th><div class="th-player"><div class="th-av av c2" style="width:20px;height:20px;font-size:8px;">م</div><span class="th-name">محمد</span></div></th>
+          <th><div class="th-player"><div class="th-av av c3" style="width:20px;height:20px;font-size:8px;">خ</div><span class="th-name">خالد</span></div></th>
+          <th><div class="th-player"><div class="th-av av c4" style="width:20px;height:20px;font-size:8px;">ف</div><span class="th-name">فهد</span></div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ════ Kingdom أنس ════ -->
+        <tr class="kingdom-sep">
+          <td colspan="5">مملكة أنس 👑</td>
+        </tr>
+        <tr><td class="col-l"><span class="decl-tag dt-trix">تريكس</span></td><td class="pt-good">−200</td><td class="pt-good">−150</td><td class="pt-good">−100</td><td class="pt-good">−50</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-queens">الميمات</span></td><td class="pt-bad">25</td><td class="pt-bad">25</td><td class="pt-good">−25</td><td class="pt-bad">25</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-heart">باش الحاس</span></td><td class="pt-bad">75</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-diamond">الديامن</span></td><td class="pt-bad">20</td><td class="pt-bad">30</td><td class="pt-bad">50</td><td class="pt-bad">30</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-eat">اكلات</span></td><td class="pt-bad">30</td><td class="pt-bad">60</td><td class="pt-bad">60</td><td class="pt-bad">45</td></tr>
+        <!-- Kingdom subtotal -->
+        <tr style="background:rgba(27,94,56,.06);">
+          <td class="col-l" style="font-size:9px;color:var(--felt);font-weight:800;">مجموع أنس</td>
+          <td style="font-weight:900;color:var(--felt);">−50</td>
+          <td style="font-weight:900;color:var(--felt);">−35</td>
+          <td style="font-weight:900;color:var(--crimson);">−15</td>
+          <td style="font-weight:900;color:var(--crimson);">50</td>
+        </tr>
+        <!-- ════ Kingdom محمد ════ -->
+        <tr class="kingdom-sep">
+          <td colspan="5">مملكة محمد 👑 — جارية</td>
+        </tr>
+        <tr><td class="col-l"><span class="decl-tag dt-trix">تريكس</span></td><td class="pt-good">−200</td><td class="pt-good">−50</td><td class="pt-good">−100</td><td class="pt-good">−150</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-heart">باش الحاس</span></td><td class="pt-bad">50</td><td class="pt-good">−75</td><td class="pt-bad">150</td><td>0</td></tr>
+        <tr><td class="col-l"><span class="decl-tag dt-diamond">الديامن</span></td><td class="pt-bad">30</td><td class="pt-bad">40</td><td class="pt-bad">30</td><td class="pt-bad">30</td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="col-l">المجموع</td>
+          <td class="tot-best">−155</td>
+          <td class="tot-best">−120</td>
+          <td class="tot-worst">115</td>
+          <td>−60</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════
+     SCREEN 6 — GAME OVER
+═══════════════════════════ -->
+<div>
+<div class="screen-label">Screen 6 — Game Over</div>
+<div class="screen">
+  <div class="go-hero">
+    <span class="go-trophy">🏆</span>
+    <div class="go-label">الفائز — الأقل نقاطاً</div>
+    <div class="go-winner">أنس</div>
+    <div class="go-sub">بعد ٤ ممالك كاملة</div>
+  </div>
+  <div class="standings">
+    <div class="standing-row">
+      <div class="st-rank gold">1</div>
+      <div class="st-av av c1" style="width:40px;height:40px;font-size:16px;">أ</div>
+      <div class="st-info"><div class="st-name">أنس</div><div class="st-detail">أقل نقاط · تريكس الأفضل</div></div>
+      <div class="st-total best">−295</div>
+    </div>
+    <div class="standing-row">
+      <div class="st-rank silver">2</div>
+      <div class="st-av av c2" style="width:40px;height:40px;font-size:16px;">م</div>
+      <div class="st-info"><div class="st-name">محمد</div><div class="st-detail"></div></div>
+      <div class="st-total">−240</div>
+    </div>
+    <div class="standing-row">
+      <div class="st-rank bronze">3</div>
+      <div class="st-av av c4" style="width:40px;height:40px;font-size:16px;">ف</div>
+      <div class="st-info"><div class="st-name">فهد</div><div class="st-detail"></div></div>
+      <div class="st-total">80</div>
+    </div>
+    <div class="standing-row">
+      <div class="st-rank" style="color:#DDD;">4</div>
+      <div class="st-av av c3" style="width:40px;height:40px;font-size:16px;">خ</div>
+      <div class="st-info"><div class="st-name">خالد</div><div class="st-detail"></div></div>
+      <div class="st-total worst">310</div>
+    </div>
+  </div>
+  <div class="go-actions">
+    <button class="btn-r">↺ نفس اللاعبين — لعبة جديدة</button>
+    <button class="btn-g">📤 شارك النتيجة</button>
+    <button class="btn-w">→ العودة للرئيسية</button>
+  </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

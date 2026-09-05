@@ -1062,7 +1062,7 @@ export default function TrixGamePage({ params }: { params: Promise<{ sessionId: 
           border: "none", color: IVORY, fontSize: 18, cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
         }}>←</button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: IVORY, fontSize: 15, fontWeight: 700, textAlign: "right" }}>{topTitle}</div>
           {topSub && <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>{topSub}</div>}

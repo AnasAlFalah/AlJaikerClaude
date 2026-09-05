@@ -629,7 +629,7 @@ export default function KoutGamePage({ params }: { params: Promise<{ sessionId: 
         >
           ←
         </button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, textAlign: "right" }}>كوت</div>
           <div style={{ color: "rgba(248,242,228,0.45)", fontSize: 13, textAlign: "right" }}>

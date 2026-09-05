@@ -4,10 +4,10 @@ import HomeClient from "@/components/HomeClient";
 import OngoingGames from "@/components/OngoingGames";
 
 const games = [
-  { id: "kout",  img: "/images/Kout.png"  },
-  { id: "trix",  img: "/images/Trix.png"  },
-  { id: "spide", img: "/images/Spide.png" },
-  { id: "hand",  img: "/images/Hand.png"  },
+  { id: "kout",  img: "/images/AlJaiker-Kout.png"  },
+  { id: "trix",  img: "/images/AlJaiker-Trix.png"  },
+  { id: "spide", img: "/images/AlJaiker-Sebeeta.png" },
+  { id: "hand",  img: "/images/AlJaiker-Hand.png"  },
 ];
 
 export default async function HomePage() {
@@ -46,7 +46,7 @@ export default async function HomePage() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <HomeClient locale={locale} />
           <img
-            src="/images/AlJaiker.png"
+            src="/images/AlJaiker%20Profile.png"
             alt="AlJaiker"
             style={{ width: 52, height: 52, borderRadius: 12, objectFit: "cover" }}
           />
@@ -81,7 +81,7 @@ export default async function HomePage() {
           </div>
           <Link href="/general/setup" style={{ textDecoration: "none", display: "block" }}>
             <img
-              src="/images/QaidAam.png" alt="تسجيل عام"
+              src="/images/AlJaiker-General.png" alt="تسجيل عام"
               style={{ width: "100%", borderRadius: 14, display: "block", boxShadow: "0 3px 12px rgba(0,0,0,0.18)" }}
             />
           </Link>

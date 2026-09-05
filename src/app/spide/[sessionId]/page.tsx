@@ -179,7 +179,7 @@ function Scoreboard({ session, totals, leaderIdx, nextPassDir, onAddRound, onEdi
       {/* Topbar */}
       <div style={s.topbar}>
         <button style={s.backBtn} onClick={onBack}>←</button>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
         <div style={{ flex: 1 }}>
           <div style={s.topTitle}>سبيد</div>
           <div style={s.topSub}>جولة {roundNum}</div>
@@ -909,7 +909,7 @@ function GameOver({ session, totals, onRestart, onHome }: {
           <div style={s.topTitle}>انتهت اللعبة</div>
           <div style={s.topSub}>سبيد · {session.rounds.length} جولة</div>
         </div>
-        <img src="/images/AlJaiker.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
+        <img src="/images/AlJaiker%20Profile.png" alt="AlJaiker" style={{ width: 32, height: 32, borderRadius: 8, objectFit: "cover" }} />
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "0 0 40px", direction: "rtl" as const }}>

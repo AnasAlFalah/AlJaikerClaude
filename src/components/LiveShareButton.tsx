@@ -50,30 +50,36 @@ export default function LiveShareButton({ sessionId, game, getData }: Props) {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating share button — above sticky action buttons + Safari toolbar */}
       <button
         onClick={openShare}
         title="مشاركة مباشرة"
         style={{
           position: "fixed",
-          bottom: 24,
+          bottom: "calc(env(safe-area-inset-bottom, 0px) + 110px)",
           left: 16,
-          width: 46,
-          height: 46,
-          borderRadius: "50%",
+          height: 44,
+          borderRadius: 22,
           background: isSharing ? "#C8102E" : FELT,
-          border: isSharing ? "2px solid rgba(200,16,46,0.5)" : "2px solid rgba(242,208,96,0.3)",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+          border: isSharing ? "2px solid rgba(200,16,46,0.5)" : "2px solid rgba(242,208,96,0.4)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.45)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 20,
+          gap: 6,
+          padding: "0 14px",
+          fontSize: 16,
           cursor: "pointer",
-          zIndex: 50,
+          zIndex: 200,
           transition: "background 0.2s",
+          color: "#fff",
+          fontFamily: "system-ui, -apple-system, sans-serif",
+          fontWeight: 700,
+          whiteSpace: "nowrap",
         }}
       >
         {isSharing ? "📡" : "📺"}
+        <span style={{ fontSize: 12 }}>{isSharing ? "بث مباشر" : "مشاركة"}</span>
       </button>
 
       {/* Modal */}
